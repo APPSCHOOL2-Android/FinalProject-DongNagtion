@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="영어 레슨"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="@style/Typography.Bold20" />
 
                 <TextView
                     android:id="@+id/textView_item_category"
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="스피킹 위주 발음/강세/애티튜드"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textAppearance="@style/Typography.Regular15"
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <LinearLayout
@@ -67,6 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="4.8 (520)"
+                        android:textAppearance="@style/Typography.Regular12"
                         android:textColor="?android:attr/textColorSecondary" />
                 </LinearLayout>
 
