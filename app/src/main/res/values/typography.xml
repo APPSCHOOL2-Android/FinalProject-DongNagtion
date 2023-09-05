@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Typography">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Typography.Bold12">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Bold13">
+        <item name="android:textSize">13sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Bold14">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Bold15">
+        <item name="android:textSize">15sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Bold16">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Bold20">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Bold24">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Bold32">
+        <item name="android:textSize">32sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Bold36">
+        <item name="android:textSize">36sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Bold64">
+        <item name="android:textSize">64sp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.Light12">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/pretendard_light</item>
+    </style>
+
+    <style name="Typography.Medium12">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Medium14">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Medium15">
+        <item name="android:textSize">15sp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Medium16">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Medium20">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Medium24">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Medium32">
+        <item name="android:textSize">32sp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Regular10">
+        <item name="android:textSize">10sp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Regular12">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Regular13">
+        <item name="android:textSize">13sp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Regular14">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Regular15">
+        <item name="android:textSize">15sp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Regular16">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Regular18">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Regular20">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Regular24">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+</resources>
