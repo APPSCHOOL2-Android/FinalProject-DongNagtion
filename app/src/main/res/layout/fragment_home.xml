@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".ui.home.HomeFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:subtitle="동네이션"
+        app:subtitleCentered="true"
+        app:subtitleTextAppearance="@style/Typography.Bold24"
+        app:subtitleTextColor="@color/green200"
+        app:title="우리 동네 재능 공유"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/Typography.Regular10"
+        app:titleTextColor="@color/gray300" />
+
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/search_bar_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:hint="키워드를 입력해주세요."
+        android:textAppearance="@style/Typography.Regular16"
+        app:hideNavigationIcon="true"
+        app:menu="@menu/menu_search_bar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_home_talent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+</LinearLayout>
