@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.login.LoginFragment">
+
+    <ImageView
+        android:id="@+id/imageView_login_backgroud"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/img_login_screen" />
+
+    <TextView
+        android:id="@+id/textView_login_title1"
+        style="@style/Typography.Bold64"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_title1"
+        android:textColor="@color/green200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_login_title2"
+        style="@style/Typography.Regular20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_title2"
+        android:textColor="@color/green150"
+        app:layout_constraintBottom_toTopOf="@+id/textView_login_title1"
+        app:layout_constraintStart_toStartOf="@+id/textView_login_title1" />
+
+    <Button
+        android:id="@+id/button_login_kakao"
+        style="@style/Widget.Material3.Button.Icon"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="204dp"
+        android:backgroundTint="#FEE500"
+        android:drawableLeft="@drawable/ic_login_kakao"
+        android:text="@string/login_button_kakao"
+        android:textAppearance="@style/Typography.Bold24"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_login_backgroud"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_login_title1" />
+
+    <Button
+        android:id="@+id/button_login_naver"
+        style="@style/Widget.Material3.Button.Icon"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#02C75A"
+        android:drawableLeft="@drawable/ic_login_naver"
+        android:text="@string/login_button_naver"
+        android:textAppearance="@style/Typography.Bold24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_login_kakao" />
+
+    <Button
+        android:id="@+id/button_login_google"
+        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:drawableLeft="@drawable/ic_login_google"
+        android:text="@string/login_button_google"
+        android:textAppearance="@style/Typography.Bold24"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_login_naver" />
+</androidx.constraintlayout.widget.ConstraintLayout>
