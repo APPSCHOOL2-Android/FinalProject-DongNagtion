@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
-        replaceFragment(LOGIN_FRAGMENT, false, null)
+        replaceFragment(USER_INFO_FRAGMENT, false, null)
     }
 
     fun replaceFragment(name:String, addToBackStack:Boolean, bundle:Bundle?){
