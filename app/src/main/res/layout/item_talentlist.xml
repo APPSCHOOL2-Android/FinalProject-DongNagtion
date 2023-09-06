@@ -13,24 +13,42 @@
         android:layout_margin="8dp"
         tools:ignore="MissingConstraints">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <!-- Media -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_item_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/green200"
+                android:text="레슨"
+                android:textAppearance="@style/Typography.Bold13"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="@+id/imageView_item_thumbnail"
+                app:layout_constraintTop_toTopOf="@+id/imageView_item_thumbnail" />
+
             <ImageView
                 android:id="@+id/imageView_item_thumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="194dp"
+                android:layout_height="200dp"
                 android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_launcher_logo_foreground" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
                     android:id="@+id/textView_item_title"
@@ -40,7 +58,7 @@
                     android:textAppearance="@style/Typography.Bold20" />
 
                 <TextView
-                    android:id="@+id/textView_item_category"
+                    android:id="@+id/textView_item_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -73,7 +91,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
