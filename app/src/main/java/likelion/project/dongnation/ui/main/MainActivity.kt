@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.transition.MaterialSharedAxis
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
+import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFragment
 
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         newFragment = when(name){
             LOGIN_FRAGMENT -> LoginFragment()
             USER_INFO_FRAGMENT -> UserInfoFragment()
+            HOME_FRAGMENT -> HomeFragment()
             else -> Fragment()
         }
 
@@ -67,5 +69,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         val LOGIN_FRAGMENT = "LoginFragment"
         val USER_INFO_FRAGMENT = "UserInfoFragment"
+        val HOME_FRAGMENT = "HomeFragment"
     }
 }
