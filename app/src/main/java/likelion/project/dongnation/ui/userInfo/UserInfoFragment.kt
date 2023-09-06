@@ -24,10 +24,6 @@ class UserInfoFragment : Fragment() {
 
         fragmentUserInfoBinding.run {
             toolbarUserInfo.title = "내 정보"
-
-            layoutInfoRemit.setOnClickListener {
-                Toast.makeText(mainActivity, "송금 코드", Toast.LENGTH_SHORT).show()
-            }
         }
 
         return fragmentUserInfoBinding.root

@@ -157,13 +157,15 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="20dp"
                     android:background="?attr/selectableItemBackground"
                     android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="5dp"
                         android:text="송금 코드"
                         android:textAppearance="@style/Typography.Medium14"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -191,13 +193,15 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="20dp"
                     android:background="?attr/selectableItemBackground"
                     android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="5dp"
                         android:text="동네 변경"
                         android:textAppearance="@style/Typography.Medium14"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -225,13 +229,15 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="20dp"
                     android:background="?attr/selectableItemBackground"
                     android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="5dp"
                         android:text="이웃 팔로잉"
                         android:textAppearance="@style/Typography.Medium14"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -259,13 +265,15 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="20dp"
                     android:background="?attr/selectableItemBackground"
                     android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="5dp"
                         android:text="게시판 작성 글"
                         android:textAppearance="@style/Typography.Medium14"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -293,13 +301,15 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="20dp"
                     android:background="?attr/selectableItemBackground"
                     android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="5dp"
                         android:text="로그아웃"
                         android:textAppearance="@style/Typography.Medium14"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -327,13 +337,15 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="20dp"
                     android:background="?attr/selectableItemBackground"
                     android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="5dp"
                         android:text="계정 탈퇴"
                         android:textAppearance="@style/Typography.Medium14"
                         app:layout_constraintBottom_toBottomOf="parent"
