@@ -8,6 +8,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.ui.login.LoginFragment
+import likelion.project.dongnation.ui.userInfo.UserInfoFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var activityMainBinding: ActivityMainBinding
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
-        replaceFragment(LOGIN_FRAGMENT, false, null)
+        replaceFragment(USER_INFO_FRAGMENT, false, null)
     }
 
     fun replaceFragment(name:String, addToBackStack:Boolean, bundle:Bundle?){
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         // 새로운 Fragment를 담을 변수
         newFragment = when(name){
             LOGIN_FRAGMENT -> LoginFragment()
+            USER_INFO_FRAGMENT -> UserInfoFragment()
             else -> Fragment()
         }
 
@@ -64,5 +66,6 @@ class MainActivity : AppCompatActivity() {
     }
     companion object {
         val LOGIN_FRAGMENT = "LoginFragment"
+        val USER_INFO_FRAGMENT = "UserInfoFragment"
     }
 }

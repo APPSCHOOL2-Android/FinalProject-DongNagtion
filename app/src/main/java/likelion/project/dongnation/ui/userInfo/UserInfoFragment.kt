@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentUserInfoBinding
 import likelion.project.dongnation.ui.main.MainActivity
@@ -22,8 +23,10 @@ class UserInfoFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         fragmentUserInfoBinding.run {
-            toolbarUserInfo.run {
-                title = "내 정보"
+            toolbarUserInfo.title = "내 정보"
+
+            layoutInfoRemit.setOnClickListener {
+                Toast.makeText(mainActivity, "송금 코드", Toast.LENGTH_SHORT).show()
             }
         }
 
