@@ -5,6 +5,9 @@ data class User (
     val userId: String = "",
     val userName: String = "",
     val userEmail: String = "",
-    val userAddressMain: String = "",
-    val userAddressDetail: String = ""
+    val userAddress: String = "",
+    val userTransCode: String = "",
+    val userFollowingNum: Int = 0,
+    val userFollowList: List<String>,
+    val userExperience: Int
 )
