@@ -2,8 +2,10 @@ package likelion.project.dongnation.ui.main
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,12 +30,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
 
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    val permissionListVersion33 = arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.READ_MEDIA_IMAGES,
+    )
+
     val permissionList = arrayOf(
         Manifest.permission.CAMERA,
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE
+        Manifest.permission.READ_EXTERNAL_STORAGE,
     )
 
     private var isFirstVisitor = false
@@ -107,6 +117,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun shouldShowPermissionRationale(): Boolean {
+        val permissionList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) permissionListVersion33 else permissionList
         return permissionList.any { permission ->
             shouldShowRequestPermissionRationale(permission)
         }
