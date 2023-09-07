@@ -8,6 +8,6 @@ data class User (
     val userAddress: String = "",
     val userTransCode: String = "",
     val userFollowingNum: Int = 0,
-    val userFollowList: List<String>,
-    val userExperience: Int
+    val userFollowList: List<String> = emptyList(),
+    val userExperience: Int = 0
 )

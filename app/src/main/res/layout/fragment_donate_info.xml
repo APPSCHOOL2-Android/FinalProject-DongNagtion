@@ -324,6 +324,12 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             app:srcCompat="@drawable/ic_donation_24dp" />
+        <ImageButton
+            android:id="@+id/imageButton_donate_info_donation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@android:drawable/btn_star" />
 
         <Button
             android:id="@+id/button_donate_info_chatOrModify"

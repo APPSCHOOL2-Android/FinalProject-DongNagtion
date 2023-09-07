@@ -1,13 +1,23 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "likelion.project.dongnation"
     compileSdk = 33
+
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").inputStream())
+    val kakaoNativeAppKey = properties["KAKAO_NATIVE_APP_KEY"] ?: ""
+    val naverOauthClientId = properties["NAVER_OAUTH_CLIENT_ID"] ?: ""
+    val naverOauthClientSecret = properties["NAVER_OAUTH_CLIENT_SECRET"] ?: ""
+    val naverOauthClientName = properties["NAVER_OAUTH_CLIENT_NAME"] ?: ""
+
 
     defaultConfig {
         applicationId = "likelion.project.dongnation"
@@ -17,6 +27,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "$kakaoNativeAppKey")
+        buildConfigField("String", "NAVER_OAUTH_CLIENT_ID", "$naverOauthClientId")
+        buildConfigField("String", "NAVER_OAUTH_CLIENT_SECRET", "$naverOauthClientSecret")
+        buildConfigField("String", "NAVER_OAUTH_CLIENT_NAME", "$naverOauthClientName")
+        manifestPlaceholders["kakaoNativeAppKey"] = kakaoNativeAppKey
     }
 
     buildTypes {
@@ -37,6 +53,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -89,4 +106,10 @@ dependencies {
     implementation(Room.ROOM_CORUTINE)
     implementation(Room.ROOM_RUNTIME)
     kapt(Room.KAPT_COMPILE)
+
+    // KaKao
+    implementation(KakaoDeps.KAKAO)
+
+    // Naver
+    implementation(NaverDeps.NAVER)
 }

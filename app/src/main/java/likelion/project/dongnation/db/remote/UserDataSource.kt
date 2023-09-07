@@ -15,6 +15,13 @@ class UserDataSource {
         return querySnapshot.toObjects(User::class.java)
     }
 
+    suspend fun getUser(user: User): MutableList<User> {
+        val querySnapshot = db.collection("users")
+            .whereEqualTo("userId", user.userId)
+            .get().await()
+        return querySnapshot.toObjects(User::class.java)
+    }
+
     suspend fun saveUser(user: User) = withContext(Dispatchers.IO){
         db.collection("users").add(user)
     }
