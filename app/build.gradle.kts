@@ -14,6 +14,10 @@ android {
     val properties = Properties()
     properties.load(project.rootProject.file("local.properties").inputStream())
     val kakaoNativeAppKey = properties["KAKAO_NATIVE_APP_KEY"] ?: ""
+    val naverOauthClientId = properties["NAVER_OAUTH_CLIENT_ID"] ?: ""
+    val naverOauthClientSecret = properties["NAVER_OAUTH_CLIENT_SECRET"] ?: ""
+    val naverOauthClientName = properties["NAVER_OAUTH_CLIENT_NAME"] ?: ""
+
 
     defaultConfig {
         applicationId = "likelion.project.dongnation"
@@ -25,6 +29,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "$kakaoNativeAppKey")
+        buildConfigField("String", "NAVER_OAUTH_CLIENT_ID", "$naverOauthClientId")
+        buildConfigField("String", "NAVER_OAUTH_CLIENT_SECRET", "$naverOauthClientSecret")
+        buildConfigField("String", "NAVER_OAUTH_CLIENT_NAME", "$naverOauthClientName")
         manifestPlaceholders["kakaoNativeAppKey"] = kakaoNativeAppKey
     }
 
@@ -102,4 +109,7 @@ dependencies {
 
     // KaKao
     implementation(KakaoDeps.KAKAO)
+
+    // Naver
+    implementation(NaverDeps.NAVER)
 }
