@@ -36,6 +36,9 @@ class LoginFragment : Fragment() {
                 LoginViewModel.LOGIN_KAKAO_SUCCESS -> {
                     mainActivity.replaceFragment("HomeFragment", false, null)
                 }
+                LoginViewModel.LOGIN_NAVER_SUCCESS -> {
+                    mainActivity.replaceFragment("HomeFragment", false, null)
+                }
             }
         })
     }
@@ -44,6 +47,11 @@ class LoginFragment : Fragment() {
             buttonLoginKakao.run{
                 setOnClickListener {
                     loginViewModel.login(LoginViewModel.LOGIN_KAKAO, mainActivity)
+                }
+            }
+            buttonLoginNaver.run{
+                setOnClickListener {
+                    loginViewModel.login(LoginViewModel.LOGIN_NAVER, mainActivity)
                 }
             }
         }

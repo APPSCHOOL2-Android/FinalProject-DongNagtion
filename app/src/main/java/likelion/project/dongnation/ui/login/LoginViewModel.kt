@@ -8,6 +8,11 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
 import kotlinx.coroutines.runBlocking
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.UserRepository
@@ -23,7 +28,9 @@ class LoginViewModel : ViewModel() {
         when(loginType){
             LOGIN_KAKAO -> {
                 loginKAKAO(mainActivity)
-                Log.d("login", "normal $loginState")
+            }
+            LOGIN_NAVER -> {
+                loginNAVER(mainActivity)
             }
         }
     }
@@ -76,6 +83,52 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    private fun loginNAVER(mainActivity: MainActivity) {
+        val oauthLoginCallback = object : OAuthLoginCallback {
+            override fun onSuccess() {
+                // 네이버 로그인 인증 성공
+                val profileCallback = object : NidProfileCallback<NidProfileResponse> {
+                    // 네이버 프로필 요청 성공
+                    override fun onSuccess(response: NidProfileResponse) {
+                        // 사용자 규격 정보
+                        val userId = response.profile?.id.toString()
+                        val userName = response.profile?.name.toString()
+                        val userEmail = response.profile?.email.toString()
+                        val user = User(LOGIN_NAVER, userId, userName, userEmail)
+                        // 로그인
+                        runBlocking {
+                            loginState.value = saveWithDuplicateChecking(user)
+                        }
+                    }
+
+                    override fun onFailure(httpStatus: Int, message: String) {
+                        val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                        val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                    }
+
+                    override fun onError(errorCode: Int, message: String) {
+                        onFailure(errorCode, message)
+                    }
+                }
+
+                // 프로필 정보 요청
+                NidOAuthLogin().callProfileApi(profileCallback)
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+        }
+
+        // 로그인 요청
+        NaverIdLoginSDK.authenticate(mainActivity, oauthLoginCallback)
+    }
+
     private suspend fun saveWithDuplicateChecking(user: User): Int{
         val userList = userRepository.getUser(user)
         return if(userList.size != 0){
@@ -114,5 +167,8 @@ class LoginViewModel : ViewModel() {
         const val LOGIN_KAKAO = 1
         const val LOGIN_KAKAO_SUCCESS = 2
         const val LOGIN_KAKAO_FAILURE = 3
+        const val LOGIN_NAVER = 4
+        const val LOGIN_NAVER_SUCCESS = 5
+        const val LOGIN_NAVER_FAILURE = 6
     }
 }
