@@ -1,6 +1,5 @@
 package likelion.project.dongnation.ui.login
 
-import android.content.ContentValues
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -33,22 +32,11 @@ class LoginViewModel : ViewModel() {
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
             } else if (token != null) {
-                Log.i(ContentValues.TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-                val idTokenList = token.idToken?.split(".")
-                if (idTokenList != null) {
-                    // 사용자 규격 정보
-                    val idTokenPayload =
-                        Base64.decode(idTokenList[1], Base64.DEFAULT).toString(Charsets.UTF_8)
-                    val payloadJSONObject = JSONObject(idTokenPayload)
-                    val userName = payloadJSONObject["nickname"].toString()
-                    val userId = payloadJSONObject["sub"].toString()
-                    var customerEmail = try {
-                        payloadJSONObject["email"].toString()
-                    } catch (e: Exception){
-                        "사용자 제공 미동의"
+                val user= tokenToUserKAKAO(token)
+                runBlocking {
+                    if (user != null) {
+                        saveWithDuplicateChecking(user)
                     }
-                    val user = User(LOGIN_ATTEMPT_KAKAO, userId, userName, customerEmail)
-                    // 로그인
                 }
             }
         }
@@ -71,25 +59,11 @@ class LoginViewModel : ViewModel() {
                 }
                 // 카카오 로그인 성공
                 else if (token != null) {
-                    val idTokenList = token.idToken?.split(".")
-                    if (idTokenList != null) {
-                        // 사용자 규격 정보
-                        val idTokenPayload = Base64.decode(idTokenList[1], Base64.DEFAULT)
-                            .toString(Charsets.UTF_8)
-                        Log.i("login", idTokenPayload)
-                        val payloadJSONObject = JSONObject(idTokenPayload)
-                        val userName = payloadJSONObject["nickname"].toString()
-                        val userId = payloadJSONObject["sub"].toString()
-                        var customerEmail = try {
-                            payloadJSONObject["email"].toString()
-                        } catch (e: Exception){
-                            "사용자 제공 미동의"
-                        }
-                        val user = User(LOGIN_ATTEMPT_KAKAO, userId, userName, customerEmail)
-                        Log.d("login", "${user.userName}")
-                        // 로그인
-                        runBlocking {
-                            duplicateChecking(user)
+                    val user = tokenToUserKAKAO(token)
+                    // 로그인
+                    runBlocking {
+                        if (user != null) {
+                            saveWithDuplicateChecking(user)
                         }
                     }
                 }
@@ -99,7 +73,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    private suspend fun duplicateChecking(user: User): Int{
+    private suspend fun saveWithDuplicateChecking(user: User): Int{
         val userList = userRepository.getUser(user)
         return if(userList.size != 0){
             Log.d("login", "기존 유저 존재")
@@ -109,6 +83,27 @@ class LoginViewModel : ViewModel() {
             Log.d("login", "기존 유저 없음")
             userRepository.saveUser(user)
             LOGIN_SUCCESS_KAKAO
+        }
+    }
+
+    private fun tokenToUserKAKAO(token: OAuthToken): User? {
+        val idTokenList = token.idToken?.split(".")
+        if (idTokenList != null) {
+            // 사용자 규격 정보
+            val idTokenPayload = Base64.decode(idTokenList[1], Base64.DEFAULT)
+                .toString(Charsets.UTF_8)
+            Log.i("login", idTokenPayload)
+            val payloadJSONObject = JSONObject(idTokenPayload)
+            val userName = payloadJSONObject["nickname"].toString()
+            val userId = payloadJSONObject["sub"].toString()
+            var customerEmail = try {
+                payloadJSONObject["email"].toString()
+            } catch (e: Exception) {
+                "사용자 제공 미동의"
+            }
+            return User(LOGIN_ATTEMPT_KAKAO, userId, userName, customerEmail)
+        } else {
+            return null
         }
     }
 
