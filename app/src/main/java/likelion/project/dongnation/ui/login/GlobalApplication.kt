@@ -2,6 +2,9 @@ package likelion.project.dongnation.ui.login
 
 import android.app.Application
 import android.util.Log
+import com.google.firebase.FirebaseApp
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
 import com.kakao.sdk.common.KakaoSdk
 import likelion.project.dongnation.BuildConfig
 import java.util.Properties
