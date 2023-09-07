@@ -12,14 +12,14 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
     inner class HomeViewHolder(binding: ItemTalentlistBinding) : RecyclerView.ViewHolder(binding.root){
         var itemThumbnail : ImageView
         var itemTitle : TextView
-        var itemComment : TextView
+        var itemSubTitle : TextView
         var itemReview : TextView
         var itemCategory : Chip
 
         init {
             itemThumbnail = binding.imageViewItemThumbnail
             itemTitle = binding.textViewItemTitle
-            itemComment = binding.textViewItemComment
+            itemSubTitle = binding.textViewItemSubTitle
             itemReview = binding.textViewItemReview
             itemCategory = binding.chipItemCategory
 
