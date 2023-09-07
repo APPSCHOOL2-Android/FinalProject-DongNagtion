@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.transition.MaterialSharedAxis
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
+import likelion.project.dongnation.ui.donate.DonateInfoFragment
 import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
             USER_INFO_FRAGMENT -> UserInfoFragment()
             HOME_FRAGMENT -> HomeFragment()
             MAP_FRAGMENT -> MapFragment()
+            DONATE_INFO_FRAGMENT -> DonateInfoFragment()
             else -> Fragment()
         }
 
@@ -73,5 +75,6 @@ class MainActivity : AppCompatActivity() {
         val USER_INFO_FRAGMENT = "UserInfoFragment"
         val HOME_FRAGMENT = "HomeFragment"
         val MAP_FRAGMENT = "MapFragment"
+        val DONATE_INFO_FRAGMENT = "DonateInfoFragment"
     }
 }
