@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.ui.donate.DonateInfoFragment
+import likelion.project.dongnation.ui.board.BoardMainFragment
 import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             DONATE_INFO_FRAGMENT -> DonateInfoFragment()
             ONBOARDING_FRAGMENT -> OnboardingFragment()
             PERMISSION_FRAGMENT -> PermissionFragment()
+            BOARD_MAIN_FRAGMENT -> BoardMainFragment()
             else -> Fragment()
         }
 
@@ -155,5 +157,6 @@ class MainActivity : AppCompatActivity() {
         val DONATE_INFO_FRAGMENT = "DonateInfoFragment"
         val ONBOARDING_FRAGMENT = "OnboardingFragment"
         val PERMISSION_FRAGMENT = "PermissionFragment"
+        val BOARD_MAIN_FRAGMENT = "BoardMainFragment"
     }
 }
