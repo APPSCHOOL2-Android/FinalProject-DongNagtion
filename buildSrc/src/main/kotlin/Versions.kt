@@ -17,6 +17,8 @@ object Versions {
     const val GLIDE_VERSION = "4.15.1"
     const val KAKAO_VERSION = "2.15.0"
     const val NAVER_VERSION = "5.7.0"
+    const val NAVERMAP_VERSION = "3.17.0"
+    const val LOCATION_VERSION = "21.0.1"
     const val ROOM_VERSION = "2.5.2"
 }
 
@@ -69,6 +71,11 @@ object KakaoDeps {
 
 object NaverDeps {
     const val NAVER = "com.navercorp.nid:oauth-jdk8:${Versions.NAVER_VERSION}"
+}
+
+object MapDeps {
+    const val NAVERMAP = "com.naver.maps:map-sdk:${Versions.NAVERMAP_VERSION}"
+    const val LOCATION = "com.google.android.gms:play-services-location:${Versions.LOCATION_VERSION}"
 }
 
 object Room {

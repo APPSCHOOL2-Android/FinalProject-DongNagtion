@@ -10,7 +10,7 @@
         android:id="@+id/item_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="10dp"
         tools:ignore="MissingConstraints">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,7 +58,7 @@
                     android:textAppearance="@style/Typography.Bold20" />
 
                 <TextView
-                    android:id="@+id/textView_item_comment"
+                    android:id="@+id/textView_item_subTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"

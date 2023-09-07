@@ -52,6 +52,10 @@ dependencies {
     // Google
     implementation(GoogleDeps.MATERIAL)
 
+    // Map
+    implementation(MapDeps.NAVERMAP)
+    implementation(MapDeps.LOCATION)
+
     // Firebase
     implementation(platform(FirebaseDeps.FIREBASE_BOM))
     implementation(FirebaseDeps.FIREBASE_ANALYTICS_KTX)

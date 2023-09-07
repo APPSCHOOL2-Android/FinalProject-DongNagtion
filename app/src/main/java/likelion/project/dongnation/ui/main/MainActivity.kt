@@ -9,6 +9,7 @@ import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
+import likelion.project.dongnation.ui.map.MapFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFragment
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             LOGIN_FRAGMENT -> LoginFragment()
             USER_INFO_FRAGMENT -> UserInfoFragment()
             HOME_FRAGMENT -> HomeFragment()
+            MAP_FRAGMENT -> MapFragment()
             else -> Fragment()
         }
 
@@ -70,5 +72,6 @@ class MainActivity : AppCompatActivity() {
         val LOGIN_FRAGMENT = "LoginFragment"
         val USER_INFO_FRAGMENT = "UserInfoFragment"
         val HOME_FRAGMENT = "HomeFragment"
+        val MAP_FRAGMENT = "MapFragment"
     }
 }
