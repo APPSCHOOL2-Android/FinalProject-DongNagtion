@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="location_setting_selection_do">시/도/별을 \n선택해주세요</string>
+    <string name="location_setting_do">시/도/별</string>
+    <string name="location_setting_selection_city">시/군/구를 \n선택해주세요</string>
+    <string name="location_setting_city">시/군/구</string>
+    <string name="location_setting_selection_map">지도에서 \n위치를 \n선택해주세요</string>
+    <string name="location_setting_map">지도</string>
+    <string name="location_setting_previous">이전</string>
+    <string name="location_setting_next">다음</string>
+    <string name="location_setting_setting">설정</string>
+</resources>

@@ -21,6 +21,7 @@ import likelion.project.dongnation.ui.donate.DonateInfoFragment
 import likelion.project.dongnation.ui.board.BoardMainFragment
 import likelion.project.dongnation.ui.board.BoardWriteFragment
 import likelion.project.dongnation.ui.home.HomeFragment
+import likelion.project.dongnation.ui.locationsetting.LocationSettingFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
 import likelion.project.dongnation.ui.onboarding.OnboardingFragment
@@ -56,7 +57,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(activityMainBinding.root)
         observe()
-        navigateToPermissionOrOnboardingOrLogin()
+//        navigateToPermissionOrOnboardingOrLogin()
+        replaceFragment(LOCATION_SETTING_FRAGMENT, false, null)
     }
 
     fun replaceFragment(name:String, addToBackStack:Boolean, bundle:Bundle?){
@@ -81,6 +83,7 @@ class MainActivity : AppCompatActivity() {
             PERMISSION_FRAGMENT -> PermissionFragment()
             BOARD_MAIN_FRAGMENT -> BoardMainFragment()
             BOARD_WRITE_FRAGMENT -> BoardWriteFragment()
+            LOCATION_SETTING_FRAGMENT -> LocationSettingFragment()
             else -> Fragment()
         }
 
@@ -160,5 +163,6 @@ class MainActivity : AppCompatActivity() {
         val PERMISSION_FRAGMENT = "PermissionFragment"
         val BOARD_MAIN_FRAGMENT = "BoardMainFragment"
         val BOARD_WRITE_FRAGMENT = "BoardWriteFragment"
+        val LOCATION_SETTING_FRAGMENT = "LocationSettingFragment"
     }
 }

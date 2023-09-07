@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine_locationSetting_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine_locationSetting_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine_locationSetting_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout_locationSetting_dot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabBackground="@drawable/selector_tab_dot"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager_locationSetting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_locationSetting_previous"
+        app:layout_constraintEnd_toEndOf="@id/guideLine_locationSetting_end"
+        app:layout_constraintStart_toStartOf="@id/guideLine_locationSetting_start"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout_locationSetting_dot"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_locationSetting_previous"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_rect_green200_r15"
+        android:gravity="center"
+        android:text="@string/location_setting_previous"
+        android:textAppearance="@style/Typography.Medium20"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideLine_locationSetting_start" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_locationSetting_next"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/selector_button_enabled"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/location_setting_next"
+        android:textAppearance="@style/Typography.Medium20"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideLine_locationSetting_end" />
+</androidx.constraintlayout.widget.ConstraintLayout>
