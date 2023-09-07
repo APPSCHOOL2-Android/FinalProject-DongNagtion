@@ -176,7 +176,7 @@
                                 app:tint="@color/yellow" />
 
                             <TextView
-                                android:id="@+id/textView_donate_info_review"
+                                android:id="@+id/textView_donate_info_review_score"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -239,7 +239,62 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
+                <View
+                    android:id="@+id/view_donate_info_review_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="10dp"
+                    android:background="@color/gray300"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textView_donate_info_content" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="리뷰"
+                    android:textAppearance="@style/Typography.Bold16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_donate_info_review_line" />
+
+                <TextView
+                    android:id="@+id/textView_donate_info_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="더보기 >"
+                    android:textAppearance="@style/Typography.Regular16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_donate_info_review_line" />
+
+                <TextView
+                    android:id="@+id/textView_donate_info_review_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="(13)"
+                    android:textAppearance="@style/Typography.Regular16"
+                    app:layout_constraintStart_toEndOf="@+id/textView8"
+                    app:layout_constraintTop_toBottomOf="@+id/view_donate_info_review_line" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_donate_info_review"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="60dp" />
 
         </LinearLayout>
     </ScrollView>
@@ -247,20 +302,28 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_margin="10dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="10dp">
 
         <Button
             android:id="@+id/button_donate_info_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
+            android:layout_weight="2"
             android:text="삭제하기"
             android:textAppearance="@style/Typography.Bold24"
             android:visibility="gone" />
 
+        <ImageView
+            android:id="@+id/button_donate_info_donation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/ic_donation_24dp" />
         <ImageButton
             android:id="@+id/imageButton_donate_info_donation"
             android:layout_width="wrap_content"
@@ -272,8 +335,9 @@
             android:id="@+id/button_donate_info_chatOrModify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
+            android:layout_weight="2"
             android:text="채팅하기"
+            android:textAlignment="center"
             android:textAppearance="@style/Typography.Bold24" />
     </LinearLayout>
 
