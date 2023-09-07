@@ -6,10 +6,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import likelion.project.dongnation.databinding.ItemTalentlistBinding
+import likelion.project.dongnation.databinding.ItemDonationlistBinding
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
-    inner class HomeViewHolder(binding: ItemTalentlistBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class HomeViewHolder(binding: ItemDonationlistBinding) : RecyclerView.ViewHolder(binding.root){
         var itemThumbnail : ImageView
         var itemTitle : TextView
         var itemSubTitle : TextView
@@ -31,7 +31,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        val binding = ItemTalentlistBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemDonationlistBinding.inflate(LayoutInflater.from(parent.context))
         val homeViewHolder = HomeViewHolder(binding)
 
         binding.root.layoutParams = ViewGroup.LayoutParams(
