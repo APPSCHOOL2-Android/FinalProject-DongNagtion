@@ -21,6 +21,7 @@ import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
 import likelion.project.dongnation.ui.onboarding.OnboardFragment
+import likelion.project.dongnation.ui.permission.PermissionFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFragment
 
 class MainActivity : AppCompatActivity() {
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             HOME_FRAGMENT -> HomeFragment()
             MAP_FRAGMENT -> MapFragment()
             ONBOARDING_FRAGMENT -> OnboardFragment()
+            PERMISSION_FRAGMENT -> PermissionFragment()
             else -> Fragment()
         }
 
