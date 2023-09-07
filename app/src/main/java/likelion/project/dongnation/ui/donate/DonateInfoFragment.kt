@@ -34,6 +34,8 @@ class DonateInfoFragment : Fragment() {
             viewpager2DonateInfoThumbnail.adapter = DonateInfoFragmentStateAdapter(mainActivity)
 
             setupTabLayoutMediator()
+
+            recyclerViewDonateInfoReview.adapter = DonateAdapter()
         }
 
         return fragmentDonateInfoBinding.root
