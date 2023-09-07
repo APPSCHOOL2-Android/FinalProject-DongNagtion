@@ -7,8 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import likelion.project.dongnation.databinding.ItemDonationlistBinding
+import likelion.project.dongnation.ui.main.MainActivity
 
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class HomeAdapter(val mainActivity: MainActivity) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
     inner class HomeViewHolder(binding: ItemDonationlistBinding) : RecyclerView.ViewHolder(binding.root){
         var itemThumbnail : ImageView
         var itemTitle : TextView
@@ -25,7 +26,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
             // 재능 클릭 시 이벤트
             binding.root.setOnClickListener {
-
+                mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, null)
             }
         }
     }

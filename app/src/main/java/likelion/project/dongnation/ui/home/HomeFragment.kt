@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
                 Snackbar.make(fragmentHomeBinding.root, word, Snackbar.LENGTH_SHORT).show()
             }
 
-            recyclerviewHomeDonationAll.adapter = HomeAdapter()
+            recyclerviewHomeDonationAll.adapter = HomeAdapter(mainActivity)
         }
 
         return fragmentHomeBinding.root
