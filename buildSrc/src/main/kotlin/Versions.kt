@@ -20,6 +20,7 @@ object Versions {
     const val NAVERMAP_VERSION = "3.17.0"
     const val LOCATION_VERSION = "21.0.1"
     const val ROOM_VERSION = "2.5.2"
+    const val LIFECYCLE_SCOPE_VERSION = "2.4.0"
 }
 
 object AndroidXDeps {
@@ -28,6 +29,7 @@ object AndroidXDeps {
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT_VERSION}"
     const val SPLASH_SCREEN = "androidx.core:core-splashscreen:${Versions.SPLASH_SCREEN_VERSION}"
     const val VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.VIEWMODEL_VERSION}"
+    const val LIFECYCLE_SCOPE = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_SCOPE_VERSION}"
 }
 
 object GoogleDeps {

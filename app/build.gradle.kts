@@ -65,6 +65,7 @@ dependencies {
     implementation(AndroidXDeps.CONSTRAINT_LAYOUT)
     implementation(AndroidXDeps.VIEWMODEL)
     implementation(AndroidXDeps.SPLASH_SCREEN)
+    implementation(AndroidXDeps.LIFECYCLE_SCOPE)
 
     // Google
     implementation(GoogleDeps.MATERIAL)
