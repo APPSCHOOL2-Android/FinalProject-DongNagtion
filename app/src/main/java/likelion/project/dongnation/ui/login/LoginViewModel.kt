@@ -8,6 +8,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import kotlinx.coroutines.runBlocking
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.UserRepository
 import likelion.project.dongnation.ui.main.MainActivity
@@ -26,7 +27,7 @@ class LoginViewModel : ViewModel() {
     }
 
     // 카카오 로그인
-    private fun loginKAKAO(mainActivity: MainActivity) {
+    private fun loginKAKAO(mainActivity: MainActivity){
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -87,6 +88,9 @@ class LoginViewModel : ViewModel() {
                         val user = User(LOGIN_ATTEMPT_KAKAO, userId, userName, customerEmail)
                         Log.d("login", "${user.userName}")
                         // 로그인
+                        runBlocking {
+                            duplicateChecking(user)
+                        }
                     }
                 }
             }
@@ -95,7 +99,21 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    private suspend fun duplicateChecking(user: User): Int{
+        val userList = userRepository.getUser(user)
+        return if(userList.size != 0){
+            Log.d("login", "기존 유저 존재")
+            Log.d("login", "${userList[0].userId}")
+            LOGIN_SUCCESS_KAKAO
+        } else {
+            Log.d("login", "기존 유저 없음")
+            userRepository.saveUser(user)
+            LOGIN_SUCCESS_KAKAO
+        }
+    }
+
     companion object {
-        val LOGIN_ATTEMPT_KAKAO = 0
+        const val LOGIN_ATTEMPT_KAKAO = 0
+        const val LOGIN_SUCCESS_KAKAO = 0
     }
 }
