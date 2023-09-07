@@ -8,5 +8,7 @@ class UserRepository {
 
     suspend fun getAllUsers() = userDataSource.getAllUsers()
 
+    suspend fun getUser(user: User) = userDataSource.getUser(user)
+
     suspend fun saveUser(user: User) = userDataSource.saveUser(user)
 }
