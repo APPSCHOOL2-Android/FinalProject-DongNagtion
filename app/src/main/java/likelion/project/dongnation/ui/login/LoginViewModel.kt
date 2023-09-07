@@ -2,6 +2,7 @@ package likelion.project.dongnation.ui.login
 
 import android.util.Base64
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -16,11 +17,13 @@ import org.json.JSONObject
 class LoginViewModel : ViewModel() {
 
     private var userRepository = UserRepository()
+    var loginState = MutableLiveData<Int>()
 
     fun login(loginType: Int, mainActivity: MainActivity){
         when(loginType){
-            LOGIN_ATTEMPT_KAKAO -> {
+            LOGIN_KAKAO -> {
                 loginKAKAO(mainActivity)
+                Log.d("login", "normal $loginState")
             }
         }
     }
@@ -35,7 +38,7 @@ class LoginViewModel : ViewModel() {
                 val user= tokenToUserKAKAO(token)
                 runBlocking {
                     if (user != null) {
-                        saveWithDuplicateChecking(user)
+                        loginState.value = saveWithDuplicateChecking(user)
                     }
                 }
             }
@@ -63,13 +66,13 @@ class LoginViewModel : ViewModel() {
                     // 로그인
                     runBlocking {
                         if (user != null) {
-                            saveWithDuplicateChecking(user)
+                            loginState.value = saveWithDuplicateChecking(user)
                         }
                     }
                 }
             }
         } else {
-            // 카카오톡이 설치되어있지 않은 경우 SnackBar로 표시
+            loginState.value = LOGIN_KAKAO_FAILURE
         }
     }
 
@@ -78,11 +81,11 @@ class LoginViewModel : ViewModel() {
         return if(userList.size != 0){
             Log.d("login", "기존 유저 존재")
             Log.d("login", "${userList[0].userId}")
-            LOGIN_SUCCESS_KAKAO
+            LOGIN_KAKAO_SUCCESS
         } else {
             Log.d("login", "기존 유저 없음")
             userRepository.saveUser(user)
-            LOGIN_SUCCESS_KAKAO
+            LOGIN_KAKAO_SUCCESS
         }
     }
 
@@ -101,14 +104,15 @@ class LoginViewModel : ViewModel() {
             } catch (e: Exception) {
                 "사용자 제공 미동의"
             }
-            return User(LOGIN_ATTEMPT_KAKAO, userId, userName, customerEmail)
+            return User(LOGIN_KAKAO, userId, userName, customerEmail)
         } else {
             return null
         }
     }
 
     companion object {
-        const val LOGIN_ATTEMPT_KAKAO = 0
-        const val LOGIN_SUCCESS_KAKAO = 0
+        const val LOGIN_KAKAO = 1
+        const val LOGIN_KAKAO_SUCCESS = 2
+        const val LOGIN_KAKAO_FAILURE = 3
     }
 }
