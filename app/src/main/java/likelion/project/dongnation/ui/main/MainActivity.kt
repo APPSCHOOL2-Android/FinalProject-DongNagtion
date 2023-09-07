@@ -32,12 +32,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
 
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     val permissionListVersion33 = arrayOf(
+        Manifest.permission.READ_MEDIA_IMAGES,
         Manifest.permission.CAMERA,
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.READ_MEDIA_IMAGES,
     )
 
     val permissionList = arrayOf(
@@ -56,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         setContentView(activityMainBinding.root)
-        navigateToPermissionOrOnboardingOrLogin()
         observe()
+        navigateToPermissionOrOnboardingOrLogin()
     }
 
     fun replaceFragment(name:String, addToBackStack:Boolean, bundle:Bundle?){

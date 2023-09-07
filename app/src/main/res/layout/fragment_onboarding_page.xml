@@ -20,7 +20,8 @@
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideLine_onboardPage" />
+        app:layout_constraintTop_toTopOf="@+id/guideLine_onboardPage"
+        app:lottie_loop="true" />
 
     <ImageView
         android:id="@+id/imageView_onboarding_decription"
