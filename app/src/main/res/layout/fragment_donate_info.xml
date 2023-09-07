@@ -282,8 +282,6 @@
                     app:layout_constraintStart_toEndOf="@+id/textView8"
                     app:layout_constraintTop_toBottomOf="@+id/view_donate_info_review_line" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_donate_info_review"
                 android:layout_width="match_parent"
@@ -324,6 +322,13 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             app:srcCompat="@drawable/ic_donation_24dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton_donate_info_donation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@android:drawable/btn_star" />
 
         <Button
             android:id="@+id/button_donate_info_chatOrModify"
