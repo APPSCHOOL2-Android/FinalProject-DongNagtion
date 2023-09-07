@@ -8,4 +8,7 @@
     <string name="login_button_kakao">카카오 로그인</string>
     <string name="login_button_naver">네이버 로그인</string>
     <string name="login_button_google">구글 로그인</string>
+
+    <string name="next">다음</string>
+    <string name="start">시작하기</string>
 </resources>
