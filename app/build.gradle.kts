@@ -89,4 +89,7 @@ dependencies {
     implementation(Room.ROOM_CORUTINE)
     implementation(Room.ROOM_RUNTIME)
     kapt(Room.KAPT_COMPILE)
+
+    // KaKao
+    implementation(KakaoDeps.KAKAO)
 }
