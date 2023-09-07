@@ -36,6 +36,12 @@ class BoardMainFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context)
             }
 
+            floatingActionButtonBoardMain.run {
+                setOnClickListener {
+                    mainActivity.replaceFragment(MainActivity.BOARD_WRITE_FRAGMENT,true, null)
+                }
+            }
+
         }
 
         return fragmentBoardMainBinding.root

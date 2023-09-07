@@ -19,6 +19,7 @@ import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.ui.donate.DonateInfoFragment
 import likelion.project.dongnation.ui.board.BoardMainFragment
+import likelion.project.dongnation.ui.board.BoardWriteFragment
 import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
@@ -80,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             ONBOARDING_FRAGMENT -> OnboardingFragment()
             PERMISSION_FRAGMENT -> PermissionFragment()
             BOARD_MAIN_FRAGMENT -> BoardMainFragment()
+            BOARD_WRITE_FRAGMENT -> BoardWriteFragment()
             else -> Fragment()
         }
 
@@ -158,5 +160,6 @@ class MainActivity : AppCompatActivity() {
         val ONBOARDING_FRAGMENT = "OnboardingFragment"
         val PERMISSION_FRAGMENT = "PermissionFragment"
         val BOARD_MAIN_FRAGMENT = "BoardMainFragment"
+        val BOARD_WRITE_FRAGMENT = "BoardWriteFragment"
     }
 }
