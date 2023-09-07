@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,6 +48,14 @@
                 android:layout_margin="10dp"
                 android:text="너무 친절하게 대해주셔서 너무 좋았습니다! 실력도 엄청 좋으세요!"
                 android:textAppearance="@style/Typography.Medium16" />
+
+            <TextView
+                android:id="@+id/textView_item_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="1시간 전"
+                android:textAlignment="textEnd" />
         </LinearLayout>
 
         <ImageView
@@ -70,5 +79,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageView7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>
