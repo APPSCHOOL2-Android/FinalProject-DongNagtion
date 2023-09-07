@@ -1,13 +1,18 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-
 }
 
 android {
     namespace = "likelion.project.dongnation"
     compileSdk = 33
+
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").inputStream())
+    val kakaoNativeAppKey = properties["KAKAO_NATIVE_APP_KEY"] ?: ""
 
     defaultConfig {
         applicationId = "likelion.project.dongnation"
@@ -17,6 +22,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "$kakaoNativeAppKey")
     }
 
     buildTypes {
@@ -37,6 +44,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
