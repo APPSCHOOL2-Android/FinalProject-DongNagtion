@@ -281,6 +281,7 @@
                     android:textAppearance="@style/Typography.Regular16"
                     app:layout_constraintStart_toEndOf="@+id/textView8"
                     app:layout_constraintTop_toBottomOf="@+id/view_donate_info_review_line" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_donate_info_review"
