@@ -6,7 +6,7 @@ object Versions {
     const val MATERIAL_VERSION = "1.9.0"
     const val FIREBASE_BOM_VERSION = "32.2.2"
     const val FIREBASE_STORAGE_VERSION = "20.2.1"
-    const val FIREBASE_PLAY_VERSION = "20.6.0"
+    const val FIREBASE_PLAY_VERSION = "20.7.0"
     const val LOTTIE_VERSION = "5.2.0"
     const val SKELETON_VERSION = "0.5.0"
     const val JUNIT_VERSION = "4.13.2"

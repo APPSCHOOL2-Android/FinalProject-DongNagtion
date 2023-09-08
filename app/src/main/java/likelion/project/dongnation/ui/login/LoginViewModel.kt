@@ -4,6 +4,10 @@ import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -14,6 +18,7 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import kotlinx.coroutines.runBlocking
+import likelion.project.dongnation.BuildConfig
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.UserRepository
 import likelion.project.dongnation.ui.main.MainActivity
@@ -31,6 +36,9 @@ class LoginViewModel : ViewModel() {
             }
             LOGIN_NAVER -> {
                 loginNAVER(mainActivity)
+            }
+            LOGIN_GOOGLE -> {
+                loginGOOGLE(mainActivity)
             }
         }
     }
@@ -129,6 +137,11 @@ class LoginViewModel : ViewModel() {
         NaverIdLoginSDK.authenticate(mainActivity, oauthLoginCallback)
     }
 
+    private fun loginGOOGLE(mainActivity: MainActivity){
+        // 원탭 로그인 UI 호출
+        loginState.value = LOGIN_GOOGLE_ONE_TAP_REQUEST
+    }
+
     private suspend fun saveWithDuplicateChecking(user: User): Int{
         val userList = userRepository.getUser(user)
         return if(userList.size != 0){
@@ -170,5 +183,9 @@ class LoginViewModel : ViewModel() {
         const val LOGIN_NAVER = 4
         const val LOGIN_NAVER_SUCCESS = 5
         const val LOGIN_NAVER_FAILURE = 6
+        const val LOGIN_GOOGLE = 7
+        const val LOGIN_GOOGLE_SUCCESS = 8
+        const val LOGIN_GOOGLE_FAILURE = 9
+        const val LOGIN_GOOGLE_ONE_TAP_REQUEST = 10
     }
 }
