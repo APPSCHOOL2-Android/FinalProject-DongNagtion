@@ -21,6 +21,7 @@ object Versions {
     const val LOCATION_VERSION = "21.0.1"
     const val ROOM_VERSION = "2.5.2"
     const val LIFECYCLE_SCOPE_VERSION = "2.4.0"
+    const val RETROFIT_VERSION = "2.9.0"
 }
 
 object AndroidXDeps {
@@ -85,5 +86,10 @@ object Room {
     const val ROOM_CORUTINE = "androidx.room:room-ktx:${Versions.ROOM_VERSION}"
     const val ROOM_KAPT = "androidx.room:room-compiler:${Versions.ROOM_VERSION}"
     const val KAPT_COMPILE =  "androidx.room:room-compiler:${Versions.ROOM_VERSION}"
+}
+
+object RetrofitDeps {
+    const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT_VERSION}"
+    const val CONVERTER_GSON =  "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT_VERSION}"
 }
 

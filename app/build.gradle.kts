@@ -17,6 +17,8 @@ android {
     val naverOauthClientId = properties["NAVER_OAUTH_CLIENT_ID"] ?: ""
     val naverOauthClientSecret = properties["NAVER_OAUTH_CLIENT_SECRET"] ?: ""
     val naverOauthClientName = properties["NAVER_OAUTH_CLIENT_NAME"] ?: ""
+    val naverMapClientId = properties["NAVER_MAP_CLIENT_ID"] ?: ""
+    val naverMapClientSecret = properties["NAVER_MAP_CLIENT_SECRET"] ?: ""
 
 
     defaultConfig {
@@ -32,6 +34,9 @@ android {
         buildConfigField("String", "NAVER_OAUTH_CLIENT_ID", "$naverOauthClientId")
         buildConfigField("String", "NAVER_OAUTH_CLIENT_SECRET", "$naverOauthClientSecret")
         buildConfigField("String", "NAVER_OAUTH_CLIENT_NAME", "$naverOauthClientName")
+        buildConfigField("String", "NAVER_OAUTH_CLIENT_ID", "$naverOauthClientId")
+        buildConfigField("String", "NAVER_MAP_CLIENT_ID", "$naverMapClientId")
+        buildConfigField("String", "NAVER_MAP_CLIENT_SECRET", "$naverMapClientSecret")
         manifestPlaceholders["kakaoNativeAppKey"] = kakaoNativeAppKey
     }
 
@@ -113,4 +118,8 @@ dependencies {
 
     // Naver
     implementation(NaverDeps.NAVER)
+
+    // Retrofit2
+    implementation(RetrofitDeps.RETROFIT)
+    implementation(RetrofitDeps.CONVERTER_GSON)
 }
