@@ -1,6 +1,7 @@
 package likelion.project.dongnation.ui.locationsetting
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +71,7 @@ class LocationSettingPageFragment(listener: RegionPositionCallback?, arealistene
         }
         regionName = if (isNotExistCityName()) regionName?.split(" ")?.get(0)
             ?: "" else regionName
+        Log.d("test1", "${regionName}")
         openMapFragment()
         return binding.root
     }
@@ -132,60 +134,60 @@ class LocationSettingPageFragment(listener: RegionPositionCallback?, arealistene
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
-//        observe()
-//        initMapEvent()
+        observe()
+        initMapEvent()
     }
 
-//    private fun initMapEvent() {
-//        val marker = Marker()
-//        naverMap.setOnMapClickListener { point, coord ->
-//            marker.apply {
-//                position = LatLng(coord.latitude, coord.longitude)
-//                map = naverMap
-//                icon = MarkerIcons.BLACK
-//                iconTintColor =
-//                    requireContext().resources.getColor(R.color.green200)
-//                viewModel.getReverseGeocoding(coord.toReverseCoordsString())
-//            }
-//        }
-//    }
-//
-//    private fun observe() {
-//        viewModel.getGeocoding(regionName ?: "")
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                launch {
-//                    viewModel.uiState.collect {
-//                        if (it.isGeocodingInitialized && !it.isReverseGeocodingInittialized) {
-//                            moveMapCamera(it)
-//                        } else if (it.isReverseGeocodingInittialized) {
-//                            if (it.reverseGeocodingUI?.code == 0 && it.geocodingUI?.coords != "") {
-//                                arealistener?.setAreaName(
-//                                    it.reverseGeocodingUI.areaName,
-//                                    it.geocodingUI!!.coords,
-//                                )
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private fun initMapEvent() {
+        val marker = Marker()
+        naverMap.setOnMapClickListener { point, coord ->
+            marker.apply {
+                position = LatLng(coord.latitude, coord.longitude)
+                map = naverMap
+                icon = MarkerIcons.BLACK
+                iconTintColor =
+                    requireContext().resources.getColor(R.color.green200)
+                viewModel.getReverseGeocoding("${coord.longitude},${coord.latitude}")
+            }
+        }
+    }
 
-//    private fun moveMapCamera(uiState: UiState) {
-//        val latitude = uiState.geocodingUI?.y ?: "37.5666102"
-//        val longitude = uiState.geocodingUI?.x ?: "126.9783881"
-//        val coords = "${latitude},${longitude}"
-//        viewModel.getReverseGeocoding(coords)
-//        arealistener?.setAreaName(regionName ?: "", "${longitude},${latitude}")
-//        val cameraUpdate = CameraUpdate.scrollTo(
-//            LatLng(
-//                latitude.toDouble(),
-//                longitude.toDouble()
-//            )
-//        )
-//        naverMap.moveCamera(cameraUpdate)
-//    }
+    private fun observe() {
+        viewModel.getGeocoding(regionName ?: "")
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.uiState.collect {
+                        if (it.isGeocodingInitialized && !it.isReverseGeocodingInittialized) {
+                            moveMapCamera(it)
+                        } else if (it.isReverseGeocodingInittialized) {
+                            if (it.reverseGeocodingUI?.code == 0 && it.geocodingUI?.coords != "") {
+                                arealistener?.setAreaName(
+                                    it.reverseGeocodingUI.areaName,
+                                    it.geocodingUI!!.coords,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun moveMapCamera(uiState: UiState) {
+        val latitude = uiState.geocodingUI?.y ?: "37.5666102"
+        val longitude = uiState.geocodingUI?.x ?: "126.9783881"
+        val coords = "${longitude},${latitude}"
+        viewModel.getReverseGeocoding(coords)
+        arealistener?.setAreaName(regionName ?: "", "${longitude},${latitude}")
+        val cameraUpdate = CameraUpdate.scrollTo(
+            LatLng(
+                latitude.toDouble(),
+                longitude.toDouble()
+            )
+        )
+        naverMap.moveCamera(cameraUpdate)
+    }
 
     companion object {
         private const val NOT_EXIST_CITY_NAME = "없음"

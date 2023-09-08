@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.transition.MaterialSharedAxis
+import com.qure.create.location.LocationSettingFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -21,7 +22,6 @@ import likelion.project.dongnation.ui.donate.DonateInfoFragment
 import likelion.project.dongnation.ui.board.BoardMainFragment
 import likelion.project.dongnation.ui.board.BoardWriteFragment
 import likelion.project.dongnation.ui.home.HomeFragment
-import likelion.project.dongnation.ui.locationsetting.LocationSettingFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
 import likelion.project.dongnation.ui.onboarding.OnboardingFragment
