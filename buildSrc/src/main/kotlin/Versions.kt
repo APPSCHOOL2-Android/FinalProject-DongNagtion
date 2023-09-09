@@ -22,6 +22,7 @@ object Versions {
     const val ROOM_VERSION = "2.5.2"
     const val LIFECYCLE_SCOPE_VERSION = "2.4.0"
     const val RETROFIT_VERSION = "2.9.0"
+    const val Indicator_VERSION = "5.0"
 }
 
 object AndroidXDeps {
@@ -93,3 +94,6 @@ object RetrofitDeps {
     const val CONVERTER_GSON =  "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT_VERSION}"
 }
 
+object IndicatorDeps {
+    const val Indicator = "com.tbuonomo:dotsindicator:${Versions.Indicator_VERSION}"
+}

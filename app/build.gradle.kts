@@ -122,4 +122,7 @@ dependencies {
     // Retrofit2
     implementation(RetrofitDeps.RETROFIT)
     implementation(RetrofitDeps.CONVERTER_GSON)
+
+    // Indicator
+    implementation(IndicatorDeps.Indicator)
 }
