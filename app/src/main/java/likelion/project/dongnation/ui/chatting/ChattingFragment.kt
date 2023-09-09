@@ -30,6 +30,9 @@ class ChattingFragment : Fragment() {
         fragmentChattingBinding.apply {
             toolbarChatting.apply{
                 this.setNavigationIcon(R.drawable.ic_back_24dp)
+                this.setNavigationOnClickListener {
+                    mainActivity.removeFragment("ChattingFragment")
+                }
             }
         }
     }
