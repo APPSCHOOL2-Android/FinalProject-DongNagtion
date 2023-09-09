@@ -22,6 +22,7 @@ import likelion.project.dongnation.ui.board.BoardContentsFragment
 import likelion.project.dongnation.ui.donate.DonateInfoFragment
 import likelion.project.dongnation.ui.board.BoardMainFragment
 import likelion.project.dongnation.ui.board.BoardWriteFragment
+import likelion.project.dongnation.ui.gallery.GalleryFragment
 import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(activityMainBinding.root)
         observe()
 //        navigateToPermissionOrOnboardingOrLogin()
-        replaceFragment(LOCATION_SETTING_FRAGMENT, false, null)
+        replaceFragment(GALLERY_FRAGMENT, false, null)
     }
 
     fun replaceFragment(name:String, addToBackStack:Boolean, bundle:Bundle?){
@@ -90,6 +91,7 @@ class MainActivity : AppCompatActivity() {
             REVIEW_SHOW_FRAGMENT -> ReviewShowFragment()
             REVIEW_WRITE_FRAGMENT -> ReviewWriteFragment()
             BOARD_CONTENTS_FRAGMENT -> BoardContentsFragment()
+            GALLERY_FRAGMENT -> GalleryFragment()
             else -> Fragment()
         }
 
@@ -173,5 +175,6 @@ class MainActivity : AppCompatActivity() {
         val REVIEW_SHOW_FRAGMENT = "ReviewShowFragment"
         val REVIEW_WRITE_FRAGMENT = "ReviewWriteFragment"
         val BOARD_CONTENTS_FRAGMENT = "BoardContentsFragment"
+        val GALLERY_FRAGMENT = "GalleryFragment"
     }
 }
