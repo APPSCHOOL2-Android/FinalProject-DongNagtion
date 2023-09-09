@@ -21,6 +21,8 @@ class ChattingFragment : Fragment() {
         fragmentChattingBinding = FragmentChattingBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        setToolbar()
+
         return fragmentChattingBinding.root
     }
 

@@ -43,6 +43,12 @@ class DonateInfoFragment : Fragment() {
             textViewDonateInfoMore.setOnClickListener {
                 mainActivity.replaceFragment("ReviewShowFragment", true, null)
             }
+
+            buttonDonateInfoChatOrModify.run{
+                setOnClickListener {
+                    mainActivity.replaceFragment("ChattingFragment", true, null)
+                }
+            }
         }
 
         return fragmentDonateInfoBinding.root
