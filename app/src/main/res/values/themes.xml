@@ -15,4 +15,7 @@
         <item name="postSplashScreenTheme">@style/Theme.Dongnation</item>
     </style>
 
+    <style name="Theme.Dongnation.Toolbar">
+        <item name="colorPrimary">#FFFFFF</item>
+    </style>
 </resources>
