@@ -98,7 +98,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
         binding.apply {
             buttonLocationSettingNext.setOnClickListener {
                 if (currentItemPosition == 2) {
-//                    mainActivity.replaceFragment(mainActivity.HOME_FRAGMENT, false, null)
+                    mainActivity.replaceFragment(MainActivity.HOME_FRAGMENT, false, null)
                 }
                 viewPagerLocationSetting.run {
                     currentItem += PAGE_INCREMENT_VALUE
