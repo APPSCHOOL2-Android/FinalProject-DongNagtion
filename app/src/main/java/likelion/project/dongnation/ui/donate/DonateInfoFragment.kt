@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
 import likelion.project.dongnation.ui.main.MainActivity
+import likelion.project.dongnation.ui.review.ItemSpacingDecoration
 
 class DonateInfoFragment : Fragment() {
 
@@ -34,7 +35,10 @@ class DonateInfoFragment : Fragment() {
             viewpager2DonateInfoThumbnail.adapter = DonateInfoFragmentStateAdapter(mainActivity)
 
             setupTabLayoutMediator()
-            recyclerViewDonateInfoReview.adapter = DonateAdapter()
+            recyclerViewDonateInfoReview.run {
+                adapter = DonateAdapter()
+                addItemDecoration(ItemSpacingDecoration(20))
+            }
 
             textViewDonateInfoMore.setOnClickListener {
                 mainActivity.replaceFragment("ReviewShowFragment", true, null)
