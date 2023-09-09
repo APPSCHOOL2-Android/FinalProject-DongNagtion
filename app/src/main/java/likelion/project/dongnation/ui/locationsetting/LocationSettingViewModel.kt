@@ -7,17 +7,21 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.model.GeocodingUI
 import likelion.project.dongnation.model.ReverseGeocodingUI
+import likelion.project.dongnation.model.User
 import likelion.project.dongnation.model.toGeocodingUI
 import likelion.project.dongnation.model.toReverseGeocodingUI
 import likelion.project.dongnation.repository.MapRepository
+import likelion.project.dongnation.repository.UserRepository
 
 
 class LocationSettingViewModel : ViewModel() {
     private val mapRepository = MapRepository()
+    private val userRepository = UserRepository()
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState>
         get() = _uiState
@@ -42,7 +46,6 @@ class LocationSettingViewModel : ViewModel() {
     }
 
     fun getReverseGeocoding(coords: String) {
-        Log.d("test3", "${coords}")
         viewModelScope.launch {
             mapRepository.getReverseGeocoding(coords).collect { response ->
                 response.onSuccess { reverseGeocoding ->
@@ -62,6 +65,18 @@ class LocationSettingViewModel : ViewModel() {
             }
         }
     }
+
+    fun updateAddress(user: User) {
+        viewModelScope.launch {
+            userRepository.updateAddress(user).collect {
+                it.onSuccess {
+                    _uiState.update { it.copy(showMessage = "지역 설정 성공") }
+                }.onFailure {
+                    _uiState.update { it.copy(showMessage = "지역 설정 실패") }
+                }
+            }
+        }
+    }
 }
 
 data class UiState(
@@ -69,4 +84,5 @@ data class UiState(
     val reverseGeocodingUI: ReverseGeocodingUI? = null,
     val isGeocodingInitialized: Boolean = false,
     val isReverseGeocodingInittialized: Boolean = false,
+    val showMessage: String = "",
 )

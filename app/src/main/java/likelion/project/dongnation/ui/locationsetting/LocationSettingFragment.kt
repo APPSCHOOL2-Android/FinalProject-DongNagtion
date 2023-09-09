@@ -7,13 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentLocationSettingBinding
+import likelion.project.dongnation.model.User
 import likelion.project.dongnation.ui.locationsetting.AreaNameCallback
 import likelion.project.dongnation.ui.locationsetting.LocationSettingPageFragment
 import likelion.project.dongnation.ui.locationsetting.LocationSettingPagerAdapter
+import likelion.project.dongnation.ui.locationsetting.LocationSettingViewModel
 import likelion.project.dongnation.ui.locationsetting.Region
 import likelion.project.dongnation.ui.locationsetting.RegionPositionCallback
 import likelion.project.dongnation.ui.main.MainActivity
@@ -22,6 +29,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
 
     private lateinit var binding: FragmentLocationSettingBinding
     private lateinit var mainActivity: MainActivity
+    private lateinit var viewModel: LocationSettingViewModel
     lateinit var listener: RegionPositionCallback
     lateinit var arealistener: AreaNameCallback
 
@@ -41,10 +49,23 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
         arealistener = this
         binding = FragmentLocationSettingBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+        viewModel =
+            ViewModelProvider(this@LocationSettingFragment)[LocationSettingViewModel::class.java]
         adapter = LocationSettingPagerAdapter(this@LocationSettingFragment, getFragments())
         initViewPager()
         initEvent()
+        observe()
         return binding.root
+    }
+
+    private fun observe() {
+        lifecycleScope.launch {
+            viewModel.uiState.collectLatest {
+                if (it.showMessage.isNotEmpty()) {
+                    Snackbar.make(requireView(), it.showMessage, Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun initViewPager() {
@@ -98,6 +119,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
         binding.apply {
             buttonLocationSettingNext.setOnClickListener {
                 if (currentItemPosition == 2) {
+                    viewModel.updateAddress(User(userId = "2eqn9AfBVl9oXROMY2Wx", userAddress = areaName.filterNot { it.isDigit() }))
                     mainActivity.replaceFragment(MainActivity.HOME_FRAGMENT, false, null)
                 }
                 viewPagerLocationSetting.run {

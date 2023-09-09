@@ -3,6 +3,8 @@ package likelion.project.dongnation.db.remote
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import likelion.project.dongnation.model.User
@@ -24,5 +26,20 @@ class UserDataSource {
 
     suspend fun saveUser(user: User) = withContext(Dispatchers.IO){
         db.collection("users").add(user)
+    }
+
+    suspend fun updateAddress(user: User): Flow<Result<Boolean>> {
+        return flow {
+            runCatching {
+                db.collection("users")
+                    .document(user.userId)
+                    .update("userAddress", user.userAddress)
+                    .isComplete
+            }.onSuccess {
+                emit(Result.success(it))
+            }.onFailure {
+                emit(Result.failure(it))
+            }
+        }
     }
 }

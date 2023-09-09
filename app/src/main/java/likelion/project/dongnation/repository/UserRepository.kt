@@ -11,4 +11,6 @@ class UserRepository {
     suspend fun getUser(user: User) = userDataSource.getUser(user)
 
     suspend fun saveUser(user: User) = userDataSource.saveUser(user)
+
+    suspend fun updateAddress(user: User) = userDataSource.updateAddress(user)
 }
