@@ -17,13 +17,9 @@ android {
     val naverOauthClientId = properties["NAVER_OAUTH_CLIENT_ID"] ?: ""
     val naverOauthClientSecret = properties["NAVER_OAUTH_CLIENT_SECRET"] ?: ""
     val naverOauthClientName = properties["NAVER_OAUTH_CLIENT_NAME"] ?: ""
-<<<<<<< HEAD
     val naverMapClientId = properties["NAVER_MAP_CLIENT_ID"] ?: ""
     val naverMapClientSecret = properties["NAVER_MAP_CLIENT_SECRET"] ?: ""
-=======
     val googleOauthWebClientId = properties["GOOGLE_OAUTH_WEB_CLIENT_ID"] ?: ""
->>>>>>> 28a886c (Feat : 구글 원탭 로그인 구현 #4)
-
 
     defaultConfig {
         applicationId = "likelion.project.dongnation"
@@ -39,6 +35,9 @@ android {
         buildConfigField("String", "NAVER_OAUTH_CLIENT_SECRET", "$naverOauthClientSecret")
         buildConfigField("String", "NAVER_OAUTH_CLIENT_NAME", "$naverOauthClientName")
         buildConfigField("String", "GOOGLE_OAUTH_WEB_CLIENT_ID", "$googleOauthWebClientId")
+        buildConfigField("String", "NAVER_OAUTH_CLIENT_ID", "$naverOauthClientId")
+        buildConfigField("String", "NAVER_MAP_CLIENT_ID", "$naverMapClientId")
+        buildConfigField("String", "NAVER_MAP_CLIENT_SECRET", "$naverMapClientSecret")
         manifestPlaceholders["kakaoNativeAppKey"] = kakaoNativeAppKey
     }
 
