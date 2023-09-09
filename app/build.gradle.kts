@@ -35,7 +35,6 @@ android {
         buildConfigField("String", "NAVER_OAUTH_CLIENT_SECRET", "$naverOauthClientSecret")
         buildConfigField("String", "NAVER_OAUTH_CLIENT_NAME", "$naverOauthClientName")
         buildConfigField("String", "GOOGLE_OAUTH_WEB_CLIENT_ID", "$googleOauthWebClientId")
-        buildConfigField("String", "NAVER_OAUTH_CLIENT_ID", "$naverOauthClientId")
         buildConfigField("String", "NAVER_MAP_CLIENT_ID", "$naverMapClientId")
         buildConfigField("String", "NAVER_MAP_CLIENT_SECRET", "$naverMapClientSecret")
         manifestPlaceholders["kakaoNativeAppKey"] = kakaoNativeAppKey
