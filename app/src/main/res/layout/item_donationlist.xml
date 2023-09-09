@@ -6,92 +6,86 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/item_card"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView_item_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/shape_donate_image"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_logo_foreground" />
+
+        <TextView
+            android:id="@+id/textView_item_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_category"
+            android:paddingStart="25dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="5dp"
+            android:text="레슨"
+            android:textAppearance="@style/Typography.Bold13"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/imageView_item_thumbnail"
+            app:layout_constraintTop_toTopOf="@+id/imageView_item_thumbnail" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        tools:ignore="MissingConstraints">
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textView_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="영어 레슨"
+            android:textAppearance="@style/Typography.Bold20" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_item_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="5dp"
-                android:backgroundTint="@color/green200"
-                android:text="레슨"
-                android:textAppearance="@style/Typography.Bold13"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="@+id/imageView_item_thumbnail"
-                app:layout_constraintTop_toTopOf="@+id/imageView_item_thumbnail" />
+        <TextView
+            android:id="@+id/textView_item_subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="스피킹 위주 발음/강세/애티튜드"
+            android:textAppearance="@style/Typography.Regular15"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView_item_thumbnail"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_launcher_logo_foreground" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:padding="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:srcCompat="@drawable/ic_star_24dp"
+                app:tint="@color/yellow" />
 
-                <TextView
-                    android:id="@+id/textView_item_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="영어 레슨"
-                    android:textAppearance="@style/Typography.Bold20" />
+            <TextView
+                android:id="@+id/textView_item_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="4.8 (520)"
+                android:textAppearance="@style/Typography.Regular12"
+                android:textColor="@color/black" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView_item_subTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="스피킹 위주 발음/강세/애티튜드"
-                    android:textAppearance="@style/Typography.Regular15"
-                    android:textColor="?android:attr/textColorSecondary" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_star_24dp"
-                        app:tint="@color/yellow" />
-
-                    <TextView
-                        android:id="@+id/textView_item_review"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="4.8 (520)"
-                        android:textAppearance="@style/Typography.Regular12"
-                        android:textColor="?android:attr/textColorSecondary" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 </LinearLayout>
