@@ -15,14 +15,14 @@ class HomeAdapter(val mainActivity: MainActivity) : RecyclerView.Adapter<HomeAda
         var itemTitle : TextView
         var itemSubTitle : TextView
         var itemReview : TextView
-        var itemCategory : Chip
+        var itemCategory : TextView
 
         init {
             itemThumbnail = binding.imageViewItemThumbnail
             itemTitle = binding.textViewItemTitle
             itemSubTitle = binding.textViewItemSubTitle
             itemReview = binding.textViewItemReview
-            itemCategory = binding.chipItemCategory
+            itemCategory = binding.textViewItemCategory
 
             // 재능 클릭 시 이벤트
             binding.root.setOnClickListener {
