@@ -26,6 +26,7 @@ import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
 import likelion.project.dongnation.ui.onboarding.OnboardingFragment
 import likelion.project.dongnation.ui.permission.PermissionFragment
+import likelion.project.dongnation.ui.review.ReviewWriteFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFragment
 
 class MainActivity : AppCompatActivity() {
@@ -84,6 +85,7 @@ class MainActivity : AppCompatActivity() {
             BOARD_MAIN_FRAGMENT -> BoardMainFragment()
             BOARD_WRITE_FRAGMENT -> BoardWriteFragment()
             LOCATION_SETTING_FRAGMENT -> LocationSettingFragment()
+            REVIEW_WRITE_FRAGMENT -> ReviewWriteFragment()
             else -> Fragment()
         }
 
@@ -164,5 +166,6 @@ class MainActivity : AppCompatActivity() {
         val BOARD_MAIN_FRAGMENT = "BoardMainFragment"
         val BOARD_WRITE_FRAGMENT = "BoardWriteFragment"
         val LOCATION_SETTING_FRAGMENT = "LocationSettingFragment"
+        val REVIEW_WRITE_FRAGMENT = "ReviewWriteFragment"
     }
 }
