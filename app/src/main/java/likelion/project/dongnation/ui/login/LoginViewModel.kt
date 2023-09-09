@@ -1,13 +1,11 @@
 package likelion.project.dongnation.ui.login
 
+import android.net.wifi.hotspot2.pps.Credential
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.identity.SignInCredential
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -18,7 +16,6 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import kotlinx.coroutines.runBlocking
-import likelion.project.dongnation.BuildConfig
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.UserRepository
 import likelion.project.dongnation.ui.main.MainActivity
@@ -38,7 +35,7 @@ class LoginViewModel : ViewModel() {
                 loginNAVER(mainActivity)
             }
             LOGIN_GOOGLE -> {
-                loginGOOGLE(mainActivity)
+                loginGOOGLE()
             }
         }
     }
@@ -137,7 +134,7 @@ class LoginViewModel : ViewModel() {
         NaverIdLoginSDK.authenticate(mainActivity, oauthLoginCallback)
     }
 
-    private fun loginGOOGLE(mainActivity: MainActivity){
+    private fun loginGOOGLE(){
         // 원탭 로그인 UI 호출
         loginState.value = LOGIN_GOOGLE_ONE_TAP_REQUEST
     }
@@ -173,6 +170,19 @@ class LoginViewModel : ViewModel() {
             return User(LOGIN_KAKAO, userId, userName, customerEmail)
         } else {
             return null
+        }
+    }
+
+    fun signInCredentialToUserGOOGLE(credential: SignInCredential){
+        val userType = LoginViewModel.LOGIN_GOOGLE
+        val userId = credential.googleIdToken
+        val userDisplayName = credential.displayName
+        val userEmail = credential.id
+        if(userId != null && userDisplayName != null){
+            val user = User(userType, userId, userDisplayName, userEmail)
+            runBlocking {
+                loginState.value = saveWithDuplicateChecking(user)
+            }
         }
     }
 

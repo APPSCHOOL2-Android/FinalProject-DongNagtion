@@ -118,22 +118,18 @@ class LoginFragment : Fragment() {
                 try {
                     val credential = oneTapClient.getSignInCredentialFromIntent(data)
                     val idToken = credential.googleIdToken
-                    val username = credential.id
                     val password = credential.password
                     when {
                         idToken != null -> {
                             // Got an ID token from Google. Use it to authenticate
                             // with your backend.
-                            Log.d("login", "Got ID token. $idToken $username")
+                            Log.d("login", "Got ID token.")
+                            loginViewModel.signInCredentialToUserGOOGLE(credential)
                         }
                         password != null -> {
                             // Got a saved username and password. Use them to authenticate
                             // with your backend.
                             Log.d("login", "Got password.")
-                        }
-                        else -> {
-                            // Shouldn't happen.
-                            Log.d("login", "No ID token or password!")
                         }
                     }
                 } catch (e: ApiException) {
