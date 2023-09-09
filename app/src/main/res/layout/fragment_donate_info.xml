@@ -287,9 +287,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_donate_info_review"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="500dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
+                android:background="@color/gray100"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
             </androidx.recyclerview.widget.RecyclerView>
