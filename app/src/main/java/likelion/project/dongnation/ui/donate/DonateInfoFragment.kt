@@ -35,6 +35,10 @@ class DonateInfoFragment : Fragment() {
 
             setupTabLayoutMediator()
             recyclerViewDonateInfoReview.adapter = DonateAdapter()
+
+            textViewDonateInfoMore.setOnClickListener {
+                mainActivity.replaceFragment("ReviewShowFragment", true, null)
+            }
         }
 
         return fragmentDonateInfoBinding.root
