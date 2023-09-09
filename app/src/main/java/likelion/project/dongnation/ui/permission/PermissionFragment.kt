@@ -4,12 +4,15 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentPermissionBinding
 import likelion.project.dongnation.ui.main.MainActivity
@@ -66,7 +69,7 @@ class PermissionFragment : Fragment() {
 
     private fun requestPermission() {
         requestPermissions(
-            mainActivity.permissionList,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) mainActivity.permissionListVersion33 else mainActivity.permissionList,
             MainActivity.PERMISSION_REQUEST_ACCESS
         )
     }
@@ -83,9 +86,11 @@ class PermissionFragment : Fragment() {
                 grantResults.all { it == PackageManager.PERMISSION_GRANTED } -> {
                     mainActivity.replaceFragment(MainActivity.ONBOARDING_FRAGMENT, false, null)
                 }
+
                 mainActivity.shouldShowPermissionRationale() -> {
                     showPermissionRationDialog()
                 }
+
                 else -> {
                     requestPermission()
                 }

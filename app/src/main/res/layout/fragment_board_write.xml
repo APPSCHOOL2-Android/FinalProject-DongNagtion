@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.board.BoardWriteFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbarBoardWrite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:navigationIcon="@drawable/ic_back_24dp"
+        app:title="팁 게시글 작성"
+        app:titleTextAppearance="@style/Typography.Bold20" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            style="@style/Typography.Medium20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="사진 선택" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_camera">
+
+                <ImageButton
+                    android:id="@+id/imageButtonBoardWrite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_camera_24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/Typography.Regular10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="2dp"
+                    android:text="이미지 선택"
+                    android:textSize="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageButtonBoardWrite" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp">
+
+                <ImageView
+                    android:id="@+id/imageView1BoardWrite"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_baseline_clear_24"
+                    app:layout_constraintEnd_toEndOf="@id/imageView1BoardWrite"
+                    app:layout_constraintTop_toTopOf="@id/imageView1BoardWrite" />
+
+                <ImageView
+                    android:id="@+id/imageView2BoardWrite"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView1BoardWrite"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_baseline_clear_24"
+                    app:layout_constraintEnd_toEndOf="@id/imageView2BoardWrite"
+                    app:layout_constraintTop_toTopOf="@id/imageView2BoardWrite" />
+
+                <ImageView
+                    android:id="@+id/imageView3BoardWrite"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2BoardWrite"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_baseline_clear_24"
+                    app:layout_constraintEnd_toEndOf="@id/imageView3BoardWrite"
+                    app:layout_constraintTop_toTopOf="@id/imageView3BoardWrite" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editTextBoardWriteTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_text"
+            android:hint="제목을 입력해주세요."
+            android:maxLines="2"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/editTextBoardWrite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_text"
+            android:gravity="top|start"
+            android:hint="내용을 입력해주세요."
+            android:padding="10dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
