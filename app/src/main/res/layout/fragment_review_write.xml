@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.review.ReviewWriteFragment" >
+    tools:context=".ui.review.ReviewWriteFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_review_write"
@@ -13,207 +14,228 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:menu="@menu/menu_write"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back_24dp"
         app:title="리뷰 작성"
         app:titleTextAppearance="@style/Typography.Bold20" />
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:orientation="vertical">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_review_write">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_text"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageView_review_write_donate_thumbnail"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                app:srcCompat="@drawable/ic_launcher_logo_foreground" />
+            android:layout_margin="15dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@drawable/shape_text"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView_review_write_donate_title"
+                <ImageView
+                    android:id="@+id/imageView_review_write_donate_thumbnail"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    app:srcCompat="@drawable/ic_launcher_logo_foreground" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="재능 제목"
-                    android:textAppearance="@style/Typography.Bold16" />
-
-                <TextView
-                    android:id="@+id/textView_review_write_donate_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="재능 기부한 사용자"
-                    android:textAppearance="@style/Typography.Medium16" />
-
-                <TextView
-                    android:id="@+id/textView_review_write_donate_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="재능 카테고리"
-                    android:textAppearance="@style/Typography.Medium16" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:text="사진 선택"
-            android:textAppearance="@style/Typography.Medium16" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_camera"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/imageButtonBoardWrite"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white"
-                    android:src="@drawable/ic_camera_24dp" />
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <TextView
+                    <TextView
+                        android:id="@+id/textView_review_write_donate_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="재능 제목"
+                        android:textAppearance="@style/Typography.Bold16" />
+
+                    <TextView
+                        android:id="@+id/textView_review_write_donate_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="재능 기부한 사용자"
+                        android:textAppearance="@style/Typography.Medium16" />
+
+                    <TextView
+                        android:id="@+id/textView_review_write_donate_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="재능 카테고리"
+                        android:textAppearance="@style/Typography.Medium16" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="사진 선택"
+                android:textAppearance="@style/Typography.Medium16" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:padding="2dp"
-                    android:text="이미지 선택"
-                    android:textSize="8dp" />
+                    android:background="@drawable/shape_camera"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/imageButtonBoardWrite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/white"
+                        android:src="@drawable/ic_camera_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:padding="2dp"
+                        android:text="이미지 선택"
+                        android:textSize="8dp" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView1BoardWrite"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_baseline_clear_24"
+                        app:layout_constraintEnd_toEndOf="@id/imageView1BoardWrite"
+                        app:layout_constraintTop_toTopOf="@id/imageView1BoardWrite" />
+
+                    <ImageView
+                        android:id="@+id/imageView2BoardWrite"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/shape_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView1BoardWrite"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_baseline_clear_24"
+                        app:layout_constraintEnd_toEndOf="@id/imageView2BoardWrite"
+                        app:layout_constraintTop_toTopOf="@id/imageView2BoardWrite" />
+
+                    <ImageView
+                        android:id="@+id/imageView3BoardWrite"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/shape_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView2BoardWrite"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_baseline_clear_24"
+                        app:layout_constraintEnd_toEndOf="@id/imageView3BoardWrite"
+                        app:layout_constraintTop_toTopOf="@id/imageView3BoardWrite" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="리뷰 점수 작성"
+                android:textAppearance="@style/Typography.Medium16" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp">
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:progressTint="@color/yellow"
+                android:rating="2.5"
+                android:stepSize="0.5" />
 
-                <ImageView
-                    android:id="@+id/imageView1BoardWrite"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/shape_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="리뷰 내용 작성"
+                android:textAppearance="@style/Typography.Medium16" />
 
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_baseline_clear_24"
-                    app:layout_constraintEnd_toEndOf="@id/imageView1BoardWrite"
-                    app:layout_constraintTop_toTopOf="@id/imageView1BoardWrite" />
-
-                <ImageView
-                    android:id="@+id/imageView2BoardWrite"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/shape_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView1BoardWrite"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_baseline_clear_24"
-                    app:layout_constraintEnd_toEndOf="@id/imageView2BoardWrite"
-                    app:layout_constraintTop_toTopOf="@id/imageView2BoardWrite" />
-
-                <ImageView
-                    android:id="@+id/imageView3BoardWrite"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/shape_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2BoardWrite"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_baseline_clear_24"
-                    app:layout_constraintEnd_toEndOf="@id/imageView3BoardWrite"
-                    app:layout_constraintTop_toTopOf="@id/imageView3BoardWrite" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/editTextTextMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="내용을 입력해주세요."
+                android:inputType="textMultiLine"
+                android:lines="13"
+                android:padding="10dp"
+                android:textAppearance="@style/Typography.Medium16" />
 
         </LinearLayout>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:text="리뷰 점수 작성"
-            android:textAppearance="@style/Typography.Medium16" />
+    <Button
+        android:id="@+id/button_review_write_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="리뷰 저장하기"
+        android:textAppearance="@style/Typography.Bold20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:progressTint="@color/yellow"
-            android:rating="2.5"
-            android:stepSize="0.5" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:text="리뷰 내용 작성"
-            android:textAppearance="@style/Typography.Medium16" />
-
-        <EditText
-            android:id="@+id/editTextTextMultiLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_text"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="내용을 입력해주세요."
-            android:inputType="textMultiLine"
-            android:lines="13"
-            android:padding="10dp"
-            android:textAppearance="@style/Typography.Medium16" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
