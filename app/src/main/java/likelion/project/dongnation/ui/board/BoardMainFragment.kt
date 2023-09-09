@@ -60,6 +60,11 @@ class BoardMainFragment : Fragment() {
                 textViewTitle = itemBoardMainBinding.textViewTitle
                 textViewWriter = itemBoardMainBinding.textViewWriter
                 textViewDate = itemBoardMainBinding.textViewDate
+
+                // 게시판 클릭시
+                itemBoardMainBinding.root.setOnClickListener {
+                    mainActivity.replaceFragment(MainActivity.BOARD_CONTENTS_FRAGMENT, true, null)
+                }
             }
         }
 

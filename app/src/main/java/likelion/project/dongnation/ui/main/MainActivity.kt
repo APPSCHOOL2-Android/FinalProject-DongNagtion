@@ -18,6 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
+import likelion.project.dongnation.ui.board.BoardContentsFragment
 import likelion.project.dongnation.ui.donate.DonateInfoFragment
 import likelion.project.dongnation.ui.board.BoardMainFragment
 import likelion.project.dongnation.ui.board.BoardWriteFragment
@@ -88,6 +89,7 @@ class MainActivity : AppCompatActivity() {
             LOCATION_SETTING_FRAGMENT -> LocationSettingFragment()
             REVIEW_SHOW_FRAGMENT -> ReviewShowFragment()
             REVIEW_WRITE_FRAGMENT -> ReviewWriteFragment()
+            BOARD_CONTENTS_FRAGMENT -> BoardContentsFragment()
             else -> Fragment()
         }
 
@@ -170,5 +172,6 @@ class MainActivity : AppCompatActivity() {
         val LOCATION_SETTING_FRAGMENT = "LocationSettingFragment"
         val REVIEW_SHOW_FRAGMENT = "ReviewShowFragment"
         val REVIEW_WRITE_FRAGMENT = "ReviewWriteFragment"
+        val BOARD_CONTENTS_FRAGMENT = "BoardContentsFragment"
     }
 }
