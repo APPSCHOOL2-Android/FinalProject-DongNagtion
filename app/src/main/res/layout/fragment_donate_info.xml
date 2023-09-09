@@ -67,7 +67,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/textView_donate_info_subTitle"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewpager2_donate_info_thumbnail"
-                    app:srcCompat="@drawable/ic_launcher_logo_background" />
+                    app:srcCompat="@drawable/ic_launcher_logo_foreground" />
 
                 <TextView
                     android:id="@+id/textView_donate_info_title"
@@ -288,6 +288,8 @@
                 android:id="@+id/recyclerView_donate_info_review"
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
             </androidx.recyclerview.widget.RecyclerView>
