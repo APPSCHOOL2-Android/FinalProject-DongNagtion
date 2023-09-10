@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="region_size">110dp</dimen>
+    <dimen name="gallery_image_size">130dp</dimen>
+    <dimen name="gallery_image_interval">10dp</dimen>
 </resources>
