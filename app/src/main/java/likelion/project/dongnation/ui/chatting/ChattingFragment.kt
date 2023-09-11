@@ -29,8 +29,8 @@ class ChattingFragment : Fragment() {
     private fun setToolbar(){
         fragmentChattingBinding.apply {
             toolbarChatting.apply{
-                this.setNavigationIcon(R.drawable.ic_back_24dp)
-                this.setNavigationOnClickListener {
+                setNavigationIcon(R.drawable.ic_back_24dp)
+                setNavigationOnClickListener {
                     mainActivity.removeFragment("ChattingFragment")
                 }
                 title = "유저 아이디"

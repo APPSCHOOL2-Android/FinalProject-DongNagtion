@@ -72,6 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView_chatting_message2" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_chatting_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -83,7 +84,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:id="@+id/editTextTextMultiLine3"
+            android:id="@+id/editText_chatting_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
