@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottom_sheet_layout"
+    android:id="@+id/bottom_sheet_map"
     android:layout_width="match_parent"
     android:layout_height="300dp"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="50dp"
-    android:orientation="vertical"
-    android:padding="10dp"
     android:clickable="true"
     android:focusable="true"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="50dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView_donate_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="깔끔하게 세차해드립니다."
         android:textAppearance="@style/Typography.Bold20" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView_donate_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="홍길동"
@@ -35,42 +41,47 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView_donate_context"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:padding="10dp"
-        android:text="TextView" />
+        android:text="손 세차장 운전경력 10년차 베테랑입니다..." />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:id="@+id/imageView_donate_thumbnail1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/ic_launcher_logo" />
 
         <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:id="@+id/imageView_donate_thumbnail2"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/ic_launcher_logo" />
 
         <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:id="@+id/imageView_donate_thumbnail3"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/ic_launcher_logo" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_map_gotoDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="상세 화면"
         android:textAppearance="@style/Typography.Medium24" />
 
