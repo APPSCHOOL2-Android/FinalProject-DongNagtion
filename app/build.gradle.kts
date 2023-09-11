@@ -80,6 +80,8 @@ dependencies {
     // Map
     implementation(MapDeps.NAVERMAP)
     implementation(MapDeps.LOCATION)
+    implementation(MapDeps.OKHTTP)
+    implementation(MapDeps.JSON)
 
     // Firebase
     implementation(platform(FirebaseDeps.FIREBASE_BOM))

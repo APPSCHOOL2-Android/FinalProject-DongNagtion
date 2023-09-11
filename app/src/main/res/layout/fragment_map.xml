@@ -92,15 +92,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.naver.maps.map.widget.ZoomControlView
-            android:id="@+id/zoom"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/button_map_setLocation"
-            app:layout_constraintEnd_toEndOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/include1"
+        style="@style/Widget.Material3.BottomSheet"
+        layout="@layout/item_map_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="@string/bottom_sheet_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
