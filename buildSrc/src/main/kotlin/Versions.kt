@@ -80,6 +80,8 @@ object NaverDeps {
 object MapDeps {
     const val NAVERMAP = "com.naver.maps:map-sdk:${Versions.NAVERMAP_VERSION}"
     const val LOCATION = "com.google.android.gms:play-services-location:${Versions.LOCATION_VERSION}"
+    const val OKHTTP = "com.squareup.okhttp3:okhttp:4.9.1"
+    const val JSON = "org.json:json:20210307"
 }
 
 object Room {
