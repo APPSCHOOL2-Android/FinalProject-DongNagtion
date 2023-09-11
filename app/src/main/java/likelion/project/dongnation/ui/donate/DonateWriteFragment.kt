@@ -1,4 +1,4 @@
-package likelion.project.dongnation.ui.board
+package likelion.project.dongnation.ui.donate
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
