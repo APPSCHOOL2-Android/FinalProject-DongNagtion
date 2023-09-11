@@ -31,37 +31,37 @@
             android:text="게시글 유형 선택"
             android:textAppearance="@style/Typography.Medium16" />
 
-        <com.google.android.material.chip.ChipGroup
+        <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:checkedChip="@id/chip_donate_write_type_help_you">
+            android:checkedButton="@id/radioButton_donate_write_type_help_you"
+            android:orientation="horizontal">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_donate_write_type_help_me"
-                style="@style/Widget.Material3.Chip.Suggestion"
+            <RadioButton
+                android:id="@+id/radioButton_donate_write_type_help_me"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
+                android:layout_height="30dp"
+                android:background="@drawable/selector_radio_donate_category"
+                android:button="@null"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:text="도와주세요"
                 android:textAppearance="@style/Typography.Bold16"
-                android:textColor="@color/white"
-                app:checkedIconVisible="false"
-                app:chipBackgroundColor="@color/green100"
-                app:chipStrokeColor="@android:color/transparent" />
+                android:textColor="@color/white" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_donate_write_type_help_you"
-                style="@style/Widget.Material3.Chip.Suggestion"
+            <RadioButton
+                android:id="@+id/radioButton_donate_write_type_help_you"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
+                android:layout_height="30dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/selector_radio_donate_category"
+                android:button="@null"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:text="도와드릴게요"
                 android:textAppearance="@style/Typography.Bold16"
-                android:textColor="@color/white"
-                app:checkedIconVisible="false"
-                app:chipBackgroundColor="@color/green100"
-                app:chipStrokeColor="@android:color/transparent" />
-        </com.google.android.material.chip.ChipGroup>
+                android:textColor="@color/white" />
+        </RadioGroup>
 
         <TextView
             android:id="@+id/textView12"
