@@ -21,6 +21,7 @@ import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.ui.board.BoardContentsFragment
 import likelion.project.dongnation.ui.donate.DonateInfoFragment
 import likelion.project.dongnation.ui.board.BoardMainFragment
+import likelion.project.dongnation.ui.board.BoardModifyFragment
 import likelion.project.dongnation.ui.board.BoardWriteFragment
 import likelion.project.dongnation.ui.gallery.GalleryFragment
 import likelion.project.dongnation.ui.home.HomeFragment
@@ -92,6 +93,7 @@ class MainActivity : AppCompatActivity() {
             REVIEW_WRITE_FRAGMENT -> ReviewWriteFragment()
             BOARD_CONTENTS_FRAGMENT -> BoardContentsFragment()
             GALLERY_FRAGMENT -> GalleryFragment()
+            BOARD_MODIFY_FRAGMENT -> BoardModifyFragment()
             else -> Fragment()
         }
 
@@ -176,5 +178,6 @@ class MainActivity : AppCompatActivity() {
         val REVIEW_WRITE_FRAGMENT = "ReviewWriteFragment"
         val BOARD_CONTENTS_FRAGMENT = "BoardContentsFragment"
         val GALLERY_FRAGMENT = "GalleryFragment"
+        val BOARD_MODIFY_FRAGMENT = "BoardModifyFragment"
     }
 }
