@@ -1,6 +1,5 @@
 package likelion.project.dongnation.ui.login
 
-import android.net.wifi.hotspot2.pps.Credential
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -30,12 +29,15 @@ class LoginViewModel : ViewModel() {
         when(loginType){
             LOGIN_KAKAO -> {
                 loginKAKAO(mainActivity)
+                loginState.value = LOGIN_KAKAO
             }
             LOGIN_NAVER -> {
                 loginNAVER(mainActivity)
+                loginState.value = LOGIN_NAVER
             }
             LOGIN_GOOGLE -> {
                 loginGOOGLE()
+                loginState.value = LOGIN_GOOGLE
             }
         }
     }
@@ -46,11 +48,13 @@ class LoginViewModel : ViewModel() {
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
-            } else if (token != null) {
+                loginState.value = LOGIN_KAKAO_FAILURE
+            }
+            else if (token != null) {
                 val user= tokenToUserKAKAO(token)
                 runBlocking {
                     if (user != null) {
-                        loginState.value = saveWithDuplicateChecking(user)
+                        saveWithDuplicateChecking(user)
                     }
                 }
             }
@@ -78,7 +82,7 @@ class LoginViewModel : ViewModel() {
                     // 로그인
                     runBlocking {
                         if (user != null) {
-                            loginState.value = saveWithDuplicateChecking(user)
+                            saveWithDuplicateChecking(user)
                         }
                     }
                 }
@@ -102,7 +106,7 @@ class LoginViewModel : ViewModel() {
                         val user = User(LOGIN_NAVER, userId, userName, userEmail)
                         // 로그인
                         runBlocking {
-                            loginState.value = saveWithDuplicateChecking(user)
+                            saveWithDuplicateChecking(user)
                         }
                     }
 
@@ -139,16 +143,41 @@ class LoginViewModel : ViewModel() {
         loginState.value = LOGIN_GOOGLE_ONE_TAP_REQUEST
     }
 
-    private suspend fun saveWithDuplicateChecking(user: User): Int{
+    // 중복 검사 후 유저 정보를 데이터 베이스에 저장
+    private suspend fun saveWithDuplicateChecking(user: User){
         val userList = userRepository.getUser(user)
-        return if(userList.size != 0){
-            Log.d("login", "기존 유저 존재")
-            Log.d("login", "${userList[0].userId}")
-            LOGIN_KAKAO_SUCCESS
-        } else {
-            Log.d("login", "기존 유저 없음")
+        if(userList.size != 0){
+            // 로그인 상태를 각 플랫폼별 성공 상태로 변경
+            when(loginState.value){
+                LOGIN_KAKAO -> {
+                    loginState.value = LOGIN_KAKAO_SUCCESS
+                }
+                LOGIN_NAVER -> {
+                    loginState.value = LOGIN_NAVER_SUCCESS
+                }
+                LOGIN_GOOGLE -> {
+                    loginState.value = LOGIN_GOOGLE_SUCCESS
+                }
+            }
+            // 로그인에 성공한 유저 정보를 LiveData에 저장
+            loginUserInfo = user
+        }
+        else {
             userRepository.saveUser(user)
-            LOGIN_KAKAO_SUCCESS
+            // 로그인 상태를 각 플랫폼별 성공 상태로 변경
+            when(loginState.value){
+                LOGIN_KAKAO -> {
+                    loginState.value = LOGIN_KAKAO_SUCCESS
+                }
+                LOGIN_NAVER -> {
+                    loginState.value = LOGIN_NAVER_SUCCESS
+                }
+                LOGIN_GOOGLE -> {
+                    loginState.value = LOGIN_GOOGLE_SUCCESS
+                }
+            }
+            // 로그인에 성공한 유저 정보를 LiveData에 저장
+            loginUserInfo = user
         }
     }
 
@@ -174,14 +203,14 @@ class LoginViewModel : ViewModel() {
     }
 
     fun signInCredentialToUserGOOGLE(credential: SignInCredential){
-        val userType = LoginViewModel.LOGIN_GOOGLE
+        val userType = LOGIN_GOOGLE
         val userId = credential.googleIdToken
         val userDisplayName = credential.displayName
         val userEmail = credential.id
         if(userId != null && userDisplayName != null){
             val user = User(userType, userId, userDisplayName, userEmail)
             runBlocking {
-                loginState.value = saveWithDuplicateChecking(user)
+                saveWithDuplicateChecking(user)
             }
         }
     }
@@ -197,5 +226,7 @@ class LoginViewModel : ViewModel() {
         const val LOGIN_GOOGLE_SUCCESS = 8
         const val LOGIN_GOOGLE_FAILURE = 9
         const val LOGIN_GOOGLE_ONE_TAP_REQUEST = 10
+
+        var loginUserInfo = User()
     }
 }

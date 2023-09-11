@@ -50,6 +50,9 @@ class LoginFragment : Fragment() {
                 LoginViewModel.LOGIN_NAVER_SUCCESS -> {
                     mainActivity.replaceFragment("HomeFragment", false, null)
                 }
+                LoginViewModel.LOGIN_GOOGLE_SUCCESS -> {
+                    mainActivity.replaceFragment("HomeFragment", false, null)
+                }
             }
         })
     }
