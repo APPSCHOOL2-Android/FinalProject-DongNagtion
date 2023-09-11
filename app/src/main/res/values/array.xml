@@ -303,4 +303,19 @@
         <item>서귀포시</item>
         <item>제주시</item>
     </string-array>
+
+    <string-array name="array_donate_category">
+        <item>그림/디자인</item>
+        <item>상담</item>
+        <item>핸드메이드</item>
+        <item>문서작업</item>
+        <item>과외/레슨</item>
+        <item>IT/프로그래밍</item>
+        <item>사진/미디어</item>
+        <item>생활 서비스</item>
+        <item>마케팅</item>
+        <item>인테리어</item>
+        <item>번역/통역</item>
+        <item>기타</item>
+    </string-array>
 </resources>
