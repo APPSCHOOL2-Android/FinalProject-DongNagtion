@@ -46,12 +46,15 @@ class LoginFragment : Fragment() {
             when(it){
                 LoginViewModel.LOGIN_KAKAO_SUCCESS -> {
                     mainActivity.replaceFragment("HomeFragment", false, null)
+                    mainActivity.bottomNavigationBar()
                 }
                 LoginViewModel.LOGIN_NAVER_SUCCESS -> {
                     mainActivity.replaceFragment("HomeFragment", false, null)
+                    mainActivity.bottomNavigationBar()
                 }
                 LoginViewModel.LOGIN_GOOGLE_SUCCESS -> {
                     mainActivity.replaceFragment("HomeFragment", false, null)
+                    mainActivity.bottomNavigationBar()
                 }
             }
         })

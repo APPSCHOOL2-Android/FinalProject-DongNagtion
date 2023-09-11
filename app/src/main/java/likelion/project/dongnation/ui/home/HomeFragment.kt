@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.google.android.material.search.SearchView
 import com.google.android.material.snackbar.Snackbar
 import likelion.project.dongnation.R
+import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.databinding.FragmentHomeBinding
 import likelion.project.dongnation.ui.main.MainActivity
 

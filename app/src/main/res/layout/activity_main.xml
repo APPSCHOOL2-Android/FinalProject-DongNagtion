@@ -10,8 +10,29 @@
         android:id="@+id/fragmentContainerView_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white"
+        android:clickable="true"
+        app:itemActiveIndicatorStyle="@android:color/transparent"
+        app:itemBackground="@android:color/transparent"
+        app:itemIconSize="32dp"
+        app:itemIconTint="@color/selector_bottom_navigation"
+        app:itemRippleColor="@color/selector_no_ripple"
+        app:itemTextAppearanceActive="@style/Typography.Bold12"
+        app:itemTextAppearanceInactive="@style/Typography.Medium12"
+        app:itemTextColor="@color/selector_bottom_navigation"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_bottom_navigation_bar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

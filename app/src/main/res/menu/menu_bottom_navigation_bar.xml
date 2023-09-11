@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_bottom_donate"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_home_24dp"
+        android:title="재능기부" />
+    <item
+        android:id="@+id/item_bottom_chat"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_chat_24dp"
+        android:title="채팅" />
+    <item
+        android:id="@+id/item_bottom_tip"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_tips_24dp"
+        android:title="팁 게시판" />
+    <item
+        android:id="@+id/item_bottom_info"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_account_circle_48dp"
+        android:title="내 정보" />
+</menu>

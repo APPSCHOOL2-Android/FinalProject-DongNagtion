@@ -5,12 +5,16 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.transition.MaterialSharedAxis
 import com.qure.create.location.LocationSettingFragment
 import kotlinx.coroutines.CoroutineScope
@@ -65,8 +69,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(activityMainBinding.root)
         observe()
-//        navigateToPermissionOrOnboardingOrLogin()
-        replaceFragment(GALLERY_FRAGMENT, false, null)
+        navigateToPermissionOrOnboardingOrLogin()
+        bottomNavigationBar()
     }
 
     fun replaceFragment(name:String, addToBackStack:Boolean, bundle:Bundle?){
@@ -147,10 +151,13 @@ class MainActivity : AppCompatActivity() {
     private fun navigateToPermissionOrOnboardingOrLogin() {
         CoroutineScope(Dispatchers.Main).launch {
             if ((checkPermission() || shouldShowPermissionRationale()) && isFirstVisitor) {
+                activityMainBinding.bottomNavigation.visibility = View.GONE
                 replaceFragment(ONBOARDING_FRAGMENT, false, null)
             } else if (!isFirstVisitor) {
+                activityMainBinding.bottomNavigation.visibility = View.GONE
                 replaceFragment(LOGIN_FRAGMENT, false, null)
             } else {
+                activityMainBinding.bottomNavigation.visibility = View.GONE
                 replaceFragment(PERMISSION_FRAGMENT, false, null)
             }
             delay(500)
@@ -169,6 +176,29 @@ class MainActivity : AppCompatActivity() {
 
     fun removeFragment(name: String){
         supportFragmentManager.popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    fun bottomNavigationBar() {
+        activityMainBinding.run {
+            bottomNavigation.run {
+                visibility = View.VISIBLE
+                setOnItemSelectedListener(
+                    object : NavigationBarView.OnItemSelectedListener {
+                        override fun onNavigationItemSelected(item: MenuItem): Boolean {
+                            val fragment = when (item.itemId) {
+                                R.id.item_bottom_donate -> HOME_FRAGMENT
+                                R.id.item_bottom_chat -> CHATTING_FRAGMENT
+                                R.id.item_bottom_tip -> BOARD_MAIN_FRAGMENT
+                                R.id.item_bottom_info -> USER_INFO_FRAGMENT
+                                else -> { HOME_FRAGMENT }
+                            }
+                            replaceFragment(fragment, false, null)
+                            return true
+                        }
+                    }
+                )
+            }
+        }
     }
 
     companion object {
