@@ -33,6 +33,7 @@ class ChattingFragment : Fragment() {
                 this.setNavigationOnClickListener {
                     mainActivity.removeFragment("ChattingFragment")
                 }
+                title = "유저 아이디"
             }
         }
     }

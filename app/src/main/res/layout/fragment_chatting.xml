@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.chatting.ChattingFragment" >
+    android:background="@color/gray50"
+    tools:context=".ui.chatting.ChattingFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_chatting"
@@ -13,4 +15,60 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/Theme.Dongnation.Toolbar" />
+
+    <TextView
+        android:id="@+id/textView_chatting_message1"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_rect_green200_r15"
+        android:drawablePadding="10dp"
+        android:padding="10dp"
+        android:text="안녕하세요:)\n혹시 세차 예약 가능할까요?"
+        android:textAlignment="textEnd"
+        android:textAppearance="@style/Typography.Medium16"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_chatting" />
+
+    <TextView
+        android:id="@+id/textView_chatting_message2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/bg_rect_white_r15"
+        android:padding="10dp"
+        android:text="네 안녕하세요~\n세차 가능하고\n원하시는 시간대랑 장소 말씀해주시면 됩니다~"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/Typography.Medium16"
+        app:layout_constraintStart_toEndOf="@+id/imageView_chatting_profile2"
+        app:layout_constraintTop_toTopOf="@+id/imageView_chatting_profile2" />
+
+    <ImageView
+        android:id="@+id/imageView_chatting_profile2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/shape_oval_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_chatting_message1" />
+
+    <TextView
+        android:id="@+id/textView_chatting_date1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="09.04"
+        app:layout_constraintStart_toStartOf="@+id/textView_chatting_message1"
+        app:layout_constraintTop_toBottomOf="@+id/textView_chatting_message1" />
+
+    <TextView
+        android:id="@+id/textView_chatting_date2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="09.04"
+        app:layout_constraintEnd_toEndOf="@+id/textView_chatting_message2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_chatting_message2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
