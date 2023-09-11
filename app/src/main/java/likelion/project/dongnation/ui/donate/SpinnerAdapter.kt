@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import likelion.project.dongnation.databinding.ItemSpinnerBinding
 
-class SpinnerAdapter(context: Context, resource: Int, private val items: List<String>) :
+class SpinnerAdapter(context: Context, resource: Int, private val items: Array<String>) :
     ArrayAdapter<String>(context, resource, items) {
 
     private val inflater: LayoutInflater =

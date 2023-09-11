@@ -305,6 +305,7 @@
     </string-array>
 
     <string-array name="array_donate_category">
+        <item>카테고리 선택</item>
         <item>그림/디자인</item>
         <item>상담</item>
         <item>핸드메이드</item>
