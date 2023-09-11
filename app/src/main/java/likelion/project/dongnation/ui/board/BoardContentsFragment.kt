@@ -48,6 +48,11 @@ class BoardContentsFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context)
             }
 
+            // 게시글 수정 이미지 클릭
+            imageViewBoardContentsEdit.setOnClickListener {
+                mainActivity.replaceFragment(MainActivity.BOARD_MODIFY_FRAGMENT, true, null)
+            }
+
         }
 
         return fragmentBoardContentsBinding.root
