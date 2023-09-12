@@ -43,7 +43,7 @@ import likelion.project.dongnation.ui.userInfo.UserInfoFollowingFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFragment
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var activityMainBinding: ActivityMainBinding
+    lateinit var activityMainBinding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
 
 

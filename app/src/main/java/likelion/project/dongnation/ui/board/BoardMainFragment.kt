@@ -27,6 +27,10 @@ class BoardMainFragment : Fragment() {
         fragmentBoardMainBinding.run {
 
             searchViewBoarMainSearch.run {
+
+                // 바텀 네비게이션 보이게하기
+                mainActivity.activityMainBinding.bottomNavigation.visibility = View.VISIBLE
+
                 queryHint = "팁 게시글 검색"
                 isSubmitButtonEnabled = true
             }
