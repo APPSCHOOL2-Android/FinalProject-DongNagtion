@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import likelion.project.dongnation.databinding.FragmentUserInfoFollowingBinding
 import likelion.project.dongnation.databinding.ItemFollowingListBinding
 import likelion.project.dongnation.ui.main.MainActivity
+import likelion.project.dongnation.ui.review.ItemSpacingDecoration
 
 class UserInfoFollowingFragment : Fragment() {
 
@@ -25,7 +26,10 @@ class UserInfoFollowingFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         fragmentUserInfoFollowingBinding.run {
-            recyclerViewFollowing.adapter = UserInfoFollowingAdapter()
+            recyclerViewFollowing.run {
+                adapter = UserInfoFollowingAdapter()
+                addItemDecoration(ItemSpacingDecoration(100))
+            }
 
             // 바텀 네비게이션 바 안보이게 설정
             // mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
@@ -68,7 +72,7 @@ class UserInfoFollowingFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            val itemCount = 0
+            val itemCount = 5
 
             if (itemCount == 0) {
                 fragmentUserInfoFollowingBinding.layoutFollowing.visibility = View.VISIBLE
