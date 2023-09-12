@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
@@ -87,6 +87,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
             chipGroupMap.setOnCheckedChangeListener { group, checkedId ->
                 when(checkedId) {
+                    R.id.chip_map_all -> showAllMarkers()
+                    R.id.chip_map_up -> showMarkers(Color.MAGENTA)
+                    R.id.chip_map_down -> showMarkers(Color.BLUE)
                 }
             }
 
@@ -102,6 +105,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
         mapFragment.getMapAsync(this)
+        mapFragment.getMapAsync {
+            val locationButtonView = fragmentMapBinding.mapLocationButton
+            locationButtonView.map = naverMap
+        }
         locationSource = FusedLocationSource(this,5000)
     }
 
@@ -117,6 +124,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
+        val currentLocation = getLatLng("서울시 은평구 녹번동")
+        val cameraPosition = CameraPosition(LatLng(currentLocation.latitude, currentLocation.longitude), 14.0)
+        naverMap.cameraPosition = cameraPosition
         naverMap.run {
             uiSettings.run {
                 setLogoMargin(75, 20, 20, 50)
@@ -126,21 +136,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 isZoomControlEnabled = true
             }
             locationTrackingMode = LocationTrackingMode.Follow
+
+            setOnMapDoubleTapListener { pointF, latLng ->  true }
+            setOnMapTwoFingerTapListener { pointF, latLng -> true }
         }
 
         addMarkersFromDB(naverMap, markerList)
 
         fragmentMapBinding.buttonMapSetLocation.setOnClickListener {
-            val currentLocation = locationSource.lastLocation!!
-            val cameraUpdate = CameraUpdate.scrollTo(LatLng(currentLocation.latitude, currentLocation.longitude))
-            naverMap.moveCamera(cameraUpdate)
+            naverMap.cameraPosition = cameraPosition
         }
     }
 
     fun getMarkerDataFromDB(): List<MarkerData> {
         val markerDataList = mutableListOf<MarkerData>()
         for (i in 1..1) {
-            val type = "도와드릴게요"
+            val type = "도와주세요"
             val address = "서울특별시 은평구 녹번동 278-1"
             val captionText = "마커 $i"
             val title = "재능기부 $i"
@@ -162,9 +173,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             val longitude = getLatLng(markerData.address).longitude
 
             marker.run {
-                if(markerData.type == "도와드릴게요") {
+                if(markerData.type == "도와주세요") {
                     iconTintColor = Color.MAGENTA
-                } else if(markerData.type == "도와줄게요") {
+                } else if(markerData.type == "도와드릴게요") {
                     iconTintColor = Color.BLUE
                 }
                 position = LatLng(latitude, longitude)
@@ -176,7 +187,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
                     naverMap.setOnMapClickListener { _, _ ->
                         if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                            // BottomSheet가 확장된 상태에서 지도 클릭하면 축소합니다.
                             sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                         }
                     }
@@ -212,6 +222,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             return AddressLatLng(latitude, longitude)
         }
         return AddressLatLng(0.0, 0.0)
+    }
+
+    fun showMarkers(color: Int) {
+        for(marker in markerList) {
+            marker.isVisible = marker.iconTintColor == color
+        }
+    }
+
+    fun showAllMarkers() {
+        for(marker in markerList) {
+            marker.isVisible = true
+        }
     }
 
 }
