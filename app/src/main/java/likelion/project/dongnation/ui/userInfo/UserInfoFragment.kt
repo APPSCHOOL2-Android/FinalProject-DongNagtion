@@ -25,6 +25,11 @@ class UserInfoFragment : Fragment() {
         fragmentUserInfoBinding.run {
             toolbarUserInfo.title = "내 정보"
 
+            // 이웃 팔로잉
+            layoutInfoFollow.setOnClickListener {
+                mainActivity.replaceFragment("UserInfoFollowingFragment", true, null)
+            }
+
             // 게시판 작성 글
             layoutInfoMyBoard.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.USER_INFO_BOARD_FRAGMENT, true, null)
