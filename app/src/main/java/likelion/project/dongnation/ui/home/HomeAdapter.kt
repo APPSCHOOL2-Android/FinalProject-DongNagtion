@@ -14,6 +14,8 @@ import likelion.project.dongnation.ui.main.MainActivity
 import kotlin.math.round
 
 class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donations>) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+
+    var rate: Double = 0.0
     inner class HomeViewHolder(binding: ItemDonationlistBinding) : RecyclerView.ViewHolder(binding.root){
         var itemThumbnail : ImageView
         var itemTitle : TextView
@@ -31,7 +33,8 @@ class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donat
             // 재능 클릭 시 이벤트
             binding.root.setOnClickListener {
                 var bundle = Bundle()
-                bundle.putString("donateKey", "${donates[bindingAdapterPosition].donationIdx}")
+                bundle.putParcelable("donation", donates[bindingAdapterPosition])
+                bundle.putDouble("rate", rate)
                 mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
             }
         }
@@ -56,7 +59,9 @@ class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donat
         holder.itemTitle.text = donates[position].donationTitle
         holder.itemSubTitle.text = donates[position].donationSubtitle
 
-        holder.itemReview.text = "${getRateAverage(donates[position].donationReview)} (${donates[position].donationReview.size})"
+        rate = getRateAverage(donates[position].donationReview)
+
+        holder.itemReview.text = "$rate (${donates[position].donationReview.size})"
     }
 
     private fun getRateAverage(reviews : List<Review>) : Double{
