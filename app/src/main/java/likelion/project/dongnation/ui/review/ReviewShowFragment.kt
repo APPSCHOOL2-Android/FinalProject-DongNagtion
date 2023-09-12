@@ -1,13 +1,14 @@
 package likelion.project.dongnation.ui.review
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.divider.MaterialDividerItemDecoration
 import likelion.project.dongnation.databinding.FragmentReviewShowBinding
-import likelion.project.dongnation.ui.donate.DonateAdapter
+import likelion.project.dongnation.model.Review
+import likelion.project.dongnation.ui.donate.DonateReviewAdapter
 import likelion.project.dongnation.ui.main.MainActivity
 
 class ReviewShowFragment : Fragment() {
@@ -22,9 +23,15 @@ class ReviewShowFragment : Fragment() {
         fragmentReviewShowBinding = FragmentReviewShowBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        val reviews = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelableArrayList("reviews", Review::class.java)!!
+        } else {
+            arguments?.getParcelableArrayList("reviews")!!
+        }
+
         fragmentReviewShowBinding.run {
             recyclerViewReviewShowList.run {
-                adapter = DonateAdapter()
+                adapter = DonateReviewAdapter(reviews, reviews.size)
                 addItemDecoration(ItemSpacingDecoration(20))
             }
         }
