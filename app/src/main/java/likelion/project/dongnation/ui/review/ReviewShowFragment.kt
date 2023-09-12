@@ -30,6 +30,13 @@ class ReviewShowFragment : Fragment() {
         }
 
         fragmentReviewShowBinding.run {
+
+            toolbarReviewShow.run {
+                setNavigationOnClickListener {
+                    mainActivity.removeFragment("ReviewShowFragment")
+                }
+            }
+
             recyclerViewReviewShowList.run {
                 adapter = DonateReviewAdapter(reviews, reviews.size)
                 addItemDecoration(ItemSpacingDecoration(20))
