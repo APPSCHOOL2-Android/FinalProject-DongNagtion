@@ -25,9 +25,20 @@ class HomeFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         fragmentHomeBinding.run {
+
+            toolbarHome.run {
+                setNavigationOnClickListener {
+                    mainActivity.replaceFragment("MapFragment", true, null)
+                }
+            }
+
             buttonHomeSearch.setOnClickListener {
                 val word = editTextHomeSearch.text.toString()
                 Snackbar.make(fragmentHomeBinding.root, word, Snackbar.LENGTH_SHORT).show()
+            }
+
+            floatingActionButtonHome.setOnClickListener {
+                mainActivity.replaceFragment("DonateWriteFragment", true, null)
             }
 
             recyclerviewHomeDonationAll.adapter = HomeAdapter(mainActivity)
