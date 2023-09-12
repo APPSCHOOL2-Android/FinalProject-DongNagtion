@@ -1,6 +1,5 @@
 package likelion.project.dongnation.ui.chatting
 
-import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -8,15 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentChattingBinding
 import likelion.project.dongnation.databinding.ItemChattingMessageCounterpartBinding
 import likelion.project.dongnation.databinding.ItemChattingMessageOneselfBinding
 import likelion.project.dongnation.ui.main.MainActivity
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.Date
 
 class ChattingFragment : Fragment() {
@@ -70,6 +66,7 @@ class ChattingFragment : Fragment() {
         val itemChattingMessageOneselfBinding = ItemChattingMessageOneselfBinding.inflate(inflater)
         itemChattingMessageOneselfBinding.run {
             textViewItemChattingMessage.text = inputMessage
+            textViewItemChattingDate.text = getDate()
         }
         val message = itemChattingMessageOneselfBinding.root
         message.gravity = Gravity.END
@@ -81,9 +78,20 @@ class ChattingFragment : Fragment() {
         val itemChattingMessageCounterpartBinding = ItemChattingMessageCounterpartBinding.inflate(inflater)
         itemChattingMessageCounterpartBinding.run{
             textViewItemChattingMessage.text = inputMessage
+            textViewItemChattingDate.text = getDate()
         }
         val message = itemChattingMessageCounterpartBinding.root
         message.gravity = Gravity.START
         return message
+    }
+
+    // 현재 날짜 생성 및 반환
+    private fun getDate(): String {
+        // 현재 날짜와 시간
+        val currentDate = Date()
+        // 형식 변경
+        val chattingDataFormat = SimpleDateFormat("MM.dd")
+
+        return chattingDataFormat.format(currentDate)
     }
 }
