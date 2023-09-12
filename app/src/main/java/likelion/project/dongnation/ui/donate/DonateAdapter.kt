@@ -6,17 +6,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import likelion.project.dongnation.databinding.ItemReviewListBinding
+import likelion.project.dongnation.model.Review
 
-class DonateAdapter : RecyclerView.Adapter<DonateAdapter.DonateViewHolder>() {
+class DonateAdapter(val reviews: List<Review>) : RecyclerView.Adapter<DonateAdapter.DonateViewHolder>() {
     inner class DonateViewHolder(binding: ItemReviewListBinding) : RecyclerView.ViewHolder(binding.root){
         var itemimg : ImageView
-        var itemTitle : TextView
+        var itemWriter : TextView
         var itemContent : TextView
         var itemScore : TextView
 
         init {
             itemimg = binding.imageViewItemImg
-            itemTitle = binding.textViewItemTitle
+            itemWriter = binding.textViewItemWriter
             itemContent = binding.textViewItemContent
             itemScore = binding.textViewItemScore
         }
@@ -34,9 +35,11 @@ class DonateAdapter : RecyclerView.Adapter<DonateAdapter.DonateViewHolder>() {
         return donateViewHolder
     }
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = minOf(reviews.size, 3)
 
     override fun onBindViewHolder(holder: DonateViewHolder, position: Int) {
-
+        holder.itemWriter.text = reviews[position].reviewWriter
+        holder.itemScore.text = reviews[position].reviewRate
+        holder.itemContent.text = reviews[position].reviewContent
     }
 }

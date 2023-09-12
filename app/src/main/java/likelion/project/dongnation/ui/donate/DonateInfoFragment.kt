@@ -1,5 +1,7 @@
 package likelion.project.dongnation.ui.donate
 
+import android.animation.ObjectAnimator
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
+import likelion.project.dongnation.model.Donations
 import likelion.project.dongnation.ui.main.MainActivity
 import likelion.project.dongnation.ui.review.ItemSpacingDecoration
 
@@ -27,17 +30,36 @@ class DonateInfoFragment : Fragment() {
         fragmentDonateInfoBinding = FragmentDonateInfoBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        val donate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("donation", Donations::class.java)!!
+        } else {
+            arguments?.getParcelable("donation")!!
+        }
+        val rate = arguments?.getDouble("rate")!!
+
         fragmentDonateInfoBinding.run {
             imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
             imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
             imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
 
-            viewpager2DonateInfoThumbnail.adapter = DonateInfoFragmentStateAdapter(mainActivity)
+            buttonDonateInfoBack.setOnClickListener {
+                mainActivity.removeFragment("DonateInfoFragment")
+            }
 
+            viewpager2DonateInfoThumbnail.adapter = DonateInfoFragmentStateAdapter(mainActivity)
             setupTabLayoutMediator()
+
+            textViewDonateInfoTitle.text = donate.donationTitle
+            textViewDonateInfoSubTitle.text = donate.donationSubtitle
+            textViewDonateInfoCategory.text = donate.donationCategory
+            textViewDonateInfoReviewScore.text = rate.toString()
+            textViewDonateInfoContent.text = donate.donationContent
+            textViewDonateInfoReviewNumber.text = donate.donationReview.size.toString()
+
             recyclerViewDonateInfoReview.run {
-                adapter = DonateAdapter()
+                adapter = DonateAdapter(donate.donationReview)
                 addItemDecoration(ItemSpacingDecoration(20))
+                isNestedScrollingEnabled = false
             }
 
             textViewDonateInfoMore.setOnClickListener {
