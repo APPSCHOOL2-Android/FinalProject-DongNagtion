@@ -70,9 +70,8 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         setContentView(activityMainBinding.root)
-        replaceFragment(MAP_FRAGMENT, false, null)
-//        observe()
-//        navigateToPermissionOrOnboardingOrLogin()
+        observe()
+        navigateToPermissionOrOnboardingOrLogin()
         bottomNavigationBar()
     }
 

@@ -88,16 +88,25 @@
 
         <Button
             android:id="@+id/button_map_setLocation"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="40dp"
+            android:text="우리 동네 가기"
+            android:textAppearance="@style/Typography.Medium24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.naver.maps.map.widget.LocationButtonView
+            android:id="@+id/map_locationButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="40dp"
-            android:text="내 위치로"
-            android:textAppearance="@style/Typography.Medium24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/button_map_setLocation"
+            app:layout_constraintEnd_toStartOf="@+id/button_map_setLocation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button_map_setLocation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
