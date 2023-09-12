@@ -25,16 +25,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <Button
-                    android:id="@+id/button_donate_info_back"
-                    style="?attr/materialIconButtonFilledTonalStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
-                    app:icon="@drawable/ic_back_24dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewpager2_donate_info_thumbnail"
                     android:layout_width="match_parent"
@@ -45,71 +35,128 @@
 
                 </androidx.viewpager2.widget.ViewPager2>
 
+                <Button
+                    android:id="@+id/button_donate_info_back"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    app:icon="@drawable/ic_back_24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout_donate_info_dot"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    app:tabBackground="@drawable/selector_tab_dot"
                     app:layout_constraintBottom_toBottomOf="@id/viewpager2_donate_info_thumbnail"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:tabBackground="@drawable/selector_tab_dot"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp">
 
                 </com.google.android.material.tabs.TabLayout>
 
-                <ImageView
-                    android:id="@+id/imageView_donate_info_proflie"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                <LinearLayout
+                    android:id="@+id/linearLayout6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
-                    android:background="@drawable/shape_oval_profile"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView_donate_info_subTitle"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewpager2_donate_info_thumbnail"
-                    app:srcCompat="@drawable/ic_launcher_logo_foreground" />
+                    app:layout_constraintTop_toBottomOf="@+id/tabLayout_donate_info_dot">
 
-                <TextView
-                    android:id="@+id/textView_donate_info_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="보컬 레슨"
-                    android:textAppearance="@style/Typography.Bold24"
-                    app:layout_constraintStart_toEndOf="@+id/imageView_donate_info_proflie"
-                    app:layout_constraintTop_toBottomOf="@+id/viewpager2_donate_info_thumbnail" />
+                    <ImageView
+                        android:id="@+id/imageView_donate_info_proflie"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/shape_oval_profile"
+                        app:srcCompat="@drawable/ic_launcher_logo_foreground" />
 
-                <TextView
-                    android:id="@+id/textView_donate_info_lacation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="서울특별시 강남구"
-                    android:textAppearance="@style/Typography.Regular16"
-                    app:layout_constraintStart_toEndOf="@+id/imageView_donate_info_proflie"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_donate_info_title" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <HorizontalScrollView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/textView_donate_info_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:singleLine="true"
+                                    android:text=" 보컬 레슨"
+                                    android:textAppearance="@style/Typography.Bold24" />
+                            </HorizontalScrollView>
+
+                            <TextView
+                                android:id="@+id/textView_donate_info_user_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:text="홍길동"
+                                android:textAppearance="@style/Typography.Medium16" />
+
+                            <Button
+                                android:id="@+id/button_donate_info_like"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:text="좋아요" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:tint="@color/gray500"
+                                app:srcCompat="@drawable/ic_location_24dp" />
+
+                            <TextView
+                                android:id="@+id/textView_donate_info_lacation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="서울특별시 강남구"
+                                android:textAppearance="@style/Typography.Regular16"
+                                android:textColor="@color/gray500" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView_donate_info_subTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="10dp"
                     android:text="생목, 고음불가 200% 해결"
                     android:textAppearance="@style/Typography.Regular15"
-                    app:layout_constraintStart_toEndOf="@+id/imageView_donate_info_proflie"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_donate_info_lacation" />
-
-                <Button
-                    android:id="@+id/button_donate_info_like"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:text="좋아요"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewpager2_donate_info_thumbnail" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
