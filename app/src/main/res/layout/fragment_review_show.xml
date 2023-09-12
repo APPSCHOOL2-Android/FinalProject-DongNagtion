@@ -8,7 +8,7 @@
     tools:context=".ui.review.ReviewShowFragment" >
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbar"
+        android:id="@+id/toolbar_review_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
