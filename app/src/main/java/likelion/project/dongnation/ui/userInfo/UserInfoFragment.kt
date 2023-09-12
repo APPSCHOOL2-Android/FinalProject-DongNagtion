@@ -24,6 +24,12 @@ class UserInfoFragment : Fragment() {
 
         fragmentUserInfoBinding.run {
             toolbarUserInfo.title = "내 정보"
+
+            // 게시판 작성 글
+            layoutInfoMyBoard.setOnClickListener {
+                mainActivity.replaceFragment(MainActivity.USER_INFO_BOARD_FRAGMENT, true, null)
+            }
+
         }
 
         return fragmentUserInfoBinding.root
