@@ -1,5 +1,6 @@
 package likelion.project.dongnation.ui.home
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -7,9 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import likelion.project.dongnation.databinding.ItemDonationlistBinding
+import likelion.project.dongnation.model.Donations
+import likelion.project.dongnation.model.Review
 import likelion.project.dongnation.ui.main.MainActivity
+import kotlin.math.round
 
-class HomeAdapter(val mainActivity: MainActivity) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donations>) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
     inner class HomeViewHolder(binding: ItemDonationlistBinding) : RecyclerView.ViewHolder(binding.root){
         var itemThumbnail : ImageView
         var itemTitle : TextView
@@ -26,7 +30,9 @@ class HomeAdapter(val mainActivity: MainActivity) : RecyclerView.Adapter<HomeAda
 
             // 재능 클릭 시 이벤트
             binding.root.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, null)
+                var bundle = Bundle()
+                bundle.putString("donateKey", "${donates[bindingAdapterPosition].donationIdx}")
+                mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
             }
         }
     }
@@ -43,9 +49,23 @@ class HomeAdapter(val mainActivity: MainActivity) : RecyclerView.Adapter<HomeAda
         return homeViewHolder
     }
 
-    override fun getItemCount(): Int = 10
+    override fun getItemCount(): Int = donates.size
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
+        holder.itemCategory.text = donates[position].donationCategory
+        holder.itemTitle.text = donates[position].donationTitle
+        holder.itemSubTitle.text = donates[position].donationSubtitle
 
+        holder.itemReview.text = "${getRateAverage(donates[position].donationReview)} (${donates[position].donationReview.size})"
+    }
+
+    private fun getRateAverage(reviews : List<Review>) : Double{
+        var total = 0.0
+
+        for (review in reviews){
+            total += review.reviewRate.toFloat()
+        }
+
+        return round((total / reviews.size) * 10) / 10
     }
 }

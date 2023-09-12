@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.search.SearchView
 import com.google.android.material.snackbar.Snackbar
 import likelion.project.dongnation.R
@@ -16,6 +17,7 @@ class HomeFragment : Fragment() {
 
     lateinit var fragmentHomeBinding: FragmentHomeBinding
     lateinit var mainActivity: MainActivity
+    lateinit var viewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +25,16 @@ class HomeFragment : Fragment() {
     ): View? {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+
+        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
+        viewModel.run {
+            donatesLiveData.observe(viewLifecycleOwner){ donates ->
+                fragmentHomeBinding.recyclerviewHomeDonationAll.adapter = HomeAdapter(mainActivity, donates)
+            }
+
+            loadDonations()
+        }
 
         fragmentHomeBinding.run {
 
@@ -40,8 +52,6 @@ class HomeFragment : Fragment() {
             floatingActionButtonHome.setOnClickListener {
                 mainActivity.replaceFragment("DonateWriteFragment", true, null)
             }
-
-            recyclerviewHomeDonationAll.adapter = HomeAdapter(mainActivity)
         }
 
         return fragmentHomeBinding.root
