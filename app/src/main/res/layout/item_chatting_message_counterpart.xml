@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imageView_item_chatting_profile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/shape_oval_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_item_chatting_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_rect_white_r15"
+            android:maxWidth="256dp"
+            android:padding="10dp"
+            android:text="네 안녕하세요~\n세차 가능하고\n원하시는 시간대랑 장소 말씀해주시면 됩니다~"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/Typography.Medium16"
+            app:layout_constraintStart_toEndOf="@+id/imageView_item_chatting_profile"
+            app:layout_constraintTop_toTopOf="@+id/imageView_item_chatting_profile" />
+
+        <TextView
+            android:id="@+id/textView_item_chatting_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="09.04"
+            app:layout_constraintEnd_toEndOf="@+id/textView_item_chatting_message"
+            app:layout_constraintTop_toBottomOf="@+id/textView_item_chatting_message" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
