@@ -18,4 +18,11 @@
     <style name="Theme.Dongnation.Toolbar">
         <item name="colorPrimary">#FFFFFF</item>
     </style>
+
+    <style name="ChipChoice" parent="@style/Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_back_state</item>
+        <item name="android:textColor">@color/chip_text_state</item>
+        <item name="checkedIcon">@drawable/ic_check_24dp</item>
+        <item name="checkedIconTint">@color/white</item>
+    </style>
 </resources>
