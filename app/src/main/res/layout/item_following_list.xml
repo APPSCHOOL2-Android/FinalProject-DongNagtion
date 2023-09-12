@@ -7,66 +7,72 @@
 
     <ImageView
         android:id="@+id/imageView_item_following_profile"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:background="@drawable/shape_oval_profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_logo_foreground" />
 
-    <TextView
-        android:id="@+id/textView_item_following_user_id"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="유저 아이디"
-        android:textAppearance="@style/Typography.Medium20"
-        app:layout_constraintBottom_toTopOf="@+id/imageView_item_following_experience"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView_item_following_profile"
-        app:layout_constraintTop_toBottomOf="@+id/textView_item_following_category" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView_item_following_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:background="@drawable/shape_category"
-        android:backgroundTint="@color/green100"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:text="보컬"
-        android:textAppearance="@style/Typography.Regular13"
-        app:layout_constraintStart_toEndOf="@+id/imageView_item_following_profile"
-        app:layout_constraintTop_toTopOf="@+id/imageView_item_following_profile" />
+        <TextView
+            android:id="@+id/textView_item_following_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_category"
+            android:backgroundTint="@color/green100"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="보컬"
+            android:textAppearance="@style/Typography.Regular13" />
 
-    <ImageView
-        android:id="@+id/imageView_item_following_experience"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_item_following_profile"
-        app:layout_constraintStart_toEndOf="@+id/imageView_item_following_profile"
-        app:srcCompat="@drawable/ic_leaf_24dp" />
+        <TextView
+            android:id="@+id/textView_item_following_user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="유저 아이디"
+            android:textAppearance="@style/Typography.Medium20" />
 
-    <TextView
-        android:id="@+id/textView_item_following_experience"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="65"
-        android:textAppearance="@style/Typography.Regular14"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_item_following_experience"
-        app:layout_constraintStart_toEndOf="@+id/imageView_item_following_experience"
-        app:layout_constraintTop_toTopOf="@+id/imageView_item_following_experience" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView_item_following_experience"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_leaf_24dp" />
+
+            <TextView
+                android:id="@+id/textView_item_following_experience"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="65"
+                android:textAppearance="@style/Typography.Regular14" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_item_following_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="45dp"
         android:text="삭제"
         android:textAppearance="@style/Typography.Medium16"
         app:layout_constraintBottom_toBottomOf="@+id/imageView_item_following_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView_item_following_profile" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
