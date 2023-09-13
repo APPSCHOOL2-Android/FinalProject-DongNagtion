@@ -2,7 +2,6 @@ package likelion.project.dongnation.ui.donate
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +13,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
 import likelion.project.dongnation.model.Donations
-import likelion.project.dongnation.ui.home.HomeAdapter
-import likelion.project.dongnation.ui.home.HomeViewModel
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import likelion.project.dongnation.ui.review.ItemSpacingDecoration
@@ -74,6 +71,10 @@ class DonateInfoFragment : Fragment() {
             buttonDonateInfoChat.setOnClickListener {
                 mainActivity.replaceFragment("ChattingFragment", true, null)
             }
+
+            buttonDonateInfoDonation.setOnClickListener {
+
+            }
         }
 
         return fragmentDonateInfoBinding.root
@@ -99,7 +100,7 @@ class DonateInfoFragment : Fragment() {
         ) {tab, position -> }.attach()
     }
 
-    fun initDonateInfo(){
+    private fun initDonateInfo(){
         fragmentDonateInfoBinding.run {
             textViewDonateInfoTitle.text = donate.donationTitle
             textViewDonateInfoSubTitle.text = donate.donationSubtitle
@@ -136,6 +137,16 @@ class DonateInfoFragment : Fragment() {
                 buttonDonateInfoChat.visibility = View.GONE
                 buttonDonateInfoDelete.visibility = View.VISIBLE
                 buttonDonateInfoModify.visibility = View.VISIBLE
+
+                buttonDonateInfoModify.setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putParcelable("donate", donate)
+                    mainActivity.replaceFragment("DonateModifyFragment", true, bundle)
+                }
+
+                buttonDonateInfoDelete.setOnClickListener {
+
+                }
             }
         }
     }
