@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import likelion.project.dongnation.model.ChattingRoom
+import likelion.project.dongnation.model.Message
 import likelion.project.dongnation.model.User
 
 class ChattingRoomDataSource {
@@ -33,7 +34,7 @@ class ChattingRoomDataSource {
         return querySnapshot.toObjects(ChattingRoom::class.java)
     }
 
-    suspend fun getChattingRooms(user: User): List<ChattingRoom> {
+    suspend fun getChattingRoom(user: User): List<ChattingRoom> {
         val chattingRoomList1 = getChattingRoomsAsUser1(user)
         val chattingRoomList2 = getChattingRoomsAsUser2(user)
         return chattingRoomList1 + chattingRoomList2

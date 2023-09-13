@@ -9,7 +9,7 @@ class ChattingRoomRepository {
 
     suspend fun getAllChattingRooms() = chattingRoomDataSource.getAllChattingRooms()
 
-    suspend fun getChattingRooms(user: User) = chattingRoomDataSource.getChattingRooms(user)
+    suspend fun getChattingRooms(user: User) = chattingRoomDataSource.getChattingRoom(user)
 
     suspend fun addChattingRoom(chattingRoom: ChattingRoom) = chattingRoomDataSource.addChattingRooms(chattingRoom)
 }
