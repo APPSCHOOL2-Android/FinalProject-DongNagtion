@@ -64,4 +64,9 @@ class ChattingRoomDataSource {
     suspend fun addChattingRoom(chattingRoom: ChattingRoom) = withContext(Dispatchers.IO){
         db.collection("chattingRooms").add(chattingRoom)
     }
+
+    // 두 명의 유저가 소속된 채팅방의 메시지
+    suspend fun getMessages(user1: User, user2: User): ArrayList<Message>{
+        return getChattingRoom(user1, user2).chattingRoomMessages
+    }
 }
