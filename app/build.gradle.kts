@@ -73,6 +73,7 @@ dependencies {
     implementation(AndroidXDeps.VIEWMODEL)
     implementation(AndroidXDeps.SPLASH_SCREEN)
     implementation(AndroidXDeps.LIFECYCLE_SCOPE)
+    implementation(AndroidXDeps.FRAGMENT)
 
     // Google
     implementation(GoogleDeps.MATERIAL)

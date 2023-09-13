@@ -23,6 +23,7 @@ object Versions {
     const val LIFECYCLE_SCOPE_VERSION = "2.4.0"
     const val RETROFIT_VERSION = "2.9.0"
     const val Indicator_VERSION = "5.0"
+    const val FRAGMENT_VERSION = "1.6.1"
 }
 
 object AndroidXDeps {
@@ -32,6 +33,7 @@ object AndroidXDeps {
     const val SPLASH_SCREEN = "androidx.core:core-splashscreen:${Versions.SPLASH_SCREEN_VERSION}"
     const val VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.VIEWMODEL_VERSION}"
     const val LIFECYCLE_SCOPE = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_SCOPE_VERSION}"
+    const val FRAGMENT = "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_VERSION}"
 }
 
 object GoogleDeps {

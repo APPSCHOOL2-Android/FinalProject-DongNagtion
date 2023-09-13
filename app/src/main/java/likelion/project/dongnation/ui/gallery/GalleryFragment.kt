@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.database.getStringOrNull
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -65,7 +66,12 @@ class GalleryFragment : Fragment(), GalleryAdapter.OnItemClickListener {
             setOnMenuItemClickListener {
                 if (it.itemId == R.id.item_image_selection) {
 
+                    mainActivity.supportFragmentManager.setFragmentResult("images", bundleOf(
+                        "imageList" to selectedImages.toTypedArray()
+                    ))
+
                 }
+                mainActivity.supportFragmentManager.popBackStack()
                 true
             }
         }
