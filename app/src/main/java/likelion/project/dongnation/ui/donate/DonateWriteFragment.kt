@@ -62,6 +62,8 @@ class DonateWriteFragment : Fragment() {
 
                     val donate = Donations(title, subTitle, type, userId, category, content)
                     viewModel.addDonate(donate)
+
+                    mainActivity.removeFragment("DonateWriteFragment")
                 }
             }
         }
