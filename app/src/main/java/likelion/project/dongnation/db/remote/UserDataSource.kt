@@ -57,4 +57,13 @@ class UserDataSource {
             }
         }
     }
+
+    suspend fun getUserForId(id : String): User? {
+        val querySnapshot = db.collection("users")
+            .whereEqualTo("userId", id)
+            .get().await()
+        val users = querySnapshot.toObjects(User::class.java)
+
+        return if (users.isNotEmpty()) users[0] else null
+    }
 }
