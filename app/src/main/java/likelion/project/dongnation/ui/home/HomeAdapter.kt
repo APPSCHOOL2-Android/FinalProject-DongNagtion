@@ -67,8 +67,12 @@ class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donat
     private fun getRateAverage(reviews : List<Review>) : Double{
         var total = 0.0
 
-        for (review in reviews){
-            total += review.reviewRate.toFloat()
+        if (reviews.isEmpty()){
+            return total
+        } else {
+            for (review in reviews){
+                total += review.reviewRate.toFloat()
+            }
         }
 
         return round((total / reviews.size) * 10) / 10

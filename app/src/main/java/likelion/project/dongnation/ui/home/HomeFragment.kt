@@ -1,16 +1,21 @@
 package likelion.project.dongnation.ui.home
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.search.SearchView
 import com.google.android.material.snackbar.Snackbar
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.databinding.FragmentHomeBinding
+import likelion.project.dongnation.repository.DonateRepository
 import likelion.project.dongnation.ui.main.MainActivity
 
 class HomeFragment : Fragment() {
@@ -48,8 +53,14 @@ class HomeFragment : Fragment() {
             }
 
             buttonHomeSearch.setOnClickListener {
-                val word = editTextHomeSearch.text.toString()
-                Snackbar.make(fragmentHomeBinding.root, word, Snackbar.LENGTH_SHORT).show()
+                searchResult()
+                hideKeyboard(it)
+            }
+
+            editTextHomeSearch.setOnEditorActionListener { v, actionId, event ->
+                searchResult()
+                hideKeyboard(v)
+                true
             }
 
             floatingActionButtonHome.setOnClickListener {
@@ -58,5 +69,32 @@ class HomeFragment : Fragment() {
         }
 
         return fragmentHomeBinding.root
+    }
+
+    fun searchResult(){
+        val word = fragmentHomeBinding.editTextHomeSearch.text.toString()
+
+        if (word == ""){
+            Snackbar.make(fragmentHomeBinding.root, "검색어를 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+        } else {
+            viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
+            viewModel.run {
+                searchLiveData.observe(viewLifecycleOwner){ search ->
+                    Log.d("searchLiveData", "$search")
+                    fragmentHomeBinding.recyclerviewHomeDonationAll.run {
+                        adapter = HomeAdapter(mainActivity, search)
+                        adapter!!.notifyDataSetChanged()
+                    }
+                }
+
+                searchDonate(word)
+            }
+        }
+    }
+
+    fun hideKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
