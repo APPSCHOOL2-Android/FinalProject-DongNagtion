@@ -5,16 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.model.Donations
-import likelion.project.dongnation.repository.HomeRepository
+import likelion.project.dongnation.repository.DonateRepository
 
 class HomeViewModel : ViewModel() {
-    private val homeRepository = HomeRepository()
+    private val donateRepository = DonateRepository()
 
     val donatesLiveData = MutableLiveData<MutableList<Donations>>()
 
     fun loadDonations(){
         viewModelScope.launch {
-            val donates = homeRepository.getAllDonate()
+            val donates = donateRepository.getAllDonate()
             donatesLiveData.postValue(donates)
         }
     }
