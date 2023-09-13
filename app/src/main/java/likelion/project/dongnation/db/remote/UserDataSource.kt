@@ -42,4 +42,19 @@ class UserDataSource {
             }
         }
     }
+
+    suspend fun updateTransferCode(user: User): Flow<Result<Boolean>> {
+        return flow {
+            runCatching {
+                db.collection("users")
+                    .document(user.userId)
+                    .update("userTransCode", user.userTransCode)
+                    .isComplete
+            }.onSuccess {
+                emit(Result.success(it))
+            }.onFailure {
+                emit(Result.failure(it))
+            }
+        }
+    }
 }

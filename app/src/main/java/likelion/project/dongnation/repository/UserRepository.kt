@@ -13,4 +13,7 @@ class UserRepository {
     suspend fun saveUser(user: User) = userDataSource.saveUser(user)
 
     suspend fun updateAddress(user: User) = userDataSource.updateAddress(user)
+
+    suspend fun updateTransferCode(user: User) = userDataSource.updateTransferCode(user)
+
 }
