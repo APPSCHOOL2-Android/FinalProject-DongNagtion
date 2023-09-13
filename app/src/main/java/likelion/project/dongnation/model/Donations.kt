@@ -5,7 +5,6 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class Donations(
-    var donationIdx: String = "",
     val donationTitle: String = "",
     val donationSubtitle: String = "",
     val donationType: String = "",
@@ -23,14 +22,12 @@ data class Donations(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readString() ?: "",
         parcel.createStringArrayList() ?: emptyList(),
         parcel.readParcelable(Timestamp::class.java.classLoader) ?: Timestamp.now(),
         parcel.createTypedArrayList(Review.CREATOR) ?: emptyList()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(donationIdx)
         parcel.writeString(donationTitle)
         parcel.writeString(donationSubtitle)
         parcel.writeString(donationType)
@@ -39,7 +36,6 @@ data class Donations(
         parcel.writeString(donationContent)
         parcel.writeStringList(donationImg)
         parcel.writeParcelable(donationTimeStamp, flags)
-        parcel.writeTypedList(donationReview)
     }
 
     override fun describeContents(): Int {
