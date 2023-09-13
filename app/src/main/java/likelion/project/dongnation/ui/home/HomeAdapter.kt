@@ -33,8 +33,7 @@ class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donat
             // 재능 클릭 시 이벤트
             binding.root.setOnClickListener {
                 var bundle = Bundle()
-                bundle.putParcelable("donation", donates[bindingAdapterPosition])
-                bundle.putDouble("rate", rate)
+                bundle.putString("donationIdx", donates[bindingAdapterPosition].donationIdx)
                 mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
             }
         }

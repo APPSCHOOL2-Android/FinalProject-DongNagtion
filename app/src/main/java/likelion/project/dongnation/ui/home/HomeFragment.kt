@@ -84,7 +84,6 @@ class HomeFragment : Fragment() {
 
             viewModel.run {
                 searchLiveData.observe(viewLifecycleOwner){ search ->
-                    Log.d("searchLiveData", "$search")
                     fragmentHomeBinding.recyclerviewHomeDonationAll.run {
                         adapter = HomeAdapter(mainActivity, search)
                         adapter!!.notifyDataSetChanged()

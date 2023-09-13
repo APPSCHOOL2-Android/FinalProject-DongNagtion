@@ -16,4 +16,7 @@ class UserRepository {
 
     suspend fun updateTransferCode(user: User) = userDataSource.updateTransferCode(user)
 
+    suspend fun getUserForId(userId : String) = userDataSource.getUserForId(userId)
+
+    suspend fun addUserExperience(userId: String) = userDataSource.addUserExperience(userId)
 }

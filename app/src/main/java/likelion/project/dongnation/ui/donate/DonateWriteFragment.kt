@@ -47,12 +47,13 @@ class DonateWriteFragment : Fragment() {
                 mainActivity.replaceFragment("GalleryFragment", true, null)
             }
 
+            val title = editTextDonateWriteTitle.text.toString()
+            val subTitle = editTextDonateWriteSubTitle.text.toString()
+            val content = editTextDonateWriteContent.text.toString()
+            val selectCategory = spinnerDonateWriteCategory.selectedItemPosition
+
             buttonDonateWriteSave.setOnClickListener {
-                if(donateValidation()){
-                    val title = editTextDonateWriteTitle.text.toString()
-                    val subTitle = editTextDonateWriteSubTitle.text.toString()
-                    val content = editTextDonateWriteContent.text.toString()
-                    val category = category[spinnerDonateWriteCategory.selectedItemPosition]
+                if(donateValidation(title, subTitle, content, selectCategory)){
                     val userId = LoginViewModel.loginUserInfo.userId
                     val type = if(radioGroupDonateWriteType.checkedRadioButtonId == R.id.radioButton_donate_write_type_help_me){
                         "도와주세요"
@@ -60,7 +61,7 @@ class DonateWriteFragment : Fragment() {
                         "도와드릴게요"
                     }
 
-                    val donate = Donations(title, subTitle, type, userId, category, content)
+                    val donate = Donations(title, subTitle, type, userId, category[selectCategory], content)
                     viewModel.addDonate(donate)
 
                     mainActivity.removeFragment("DonateWriteFragment")
@@ -72,31 +73,19 @@ class DonateWriteFragment : Fragment() {
     }
 
     // 데이터 유효성 검사
-    fun donateValidation() : Boolean{
-        fragmentDonateWriteBinding.run {
-            val categoryPosition = spinnerDonateWriteCategory.selectedItemPosition
-            val titleText = editTextDonateWriteTitle.text.toString()
-            val subTitleText = editTextDonateWriteSubTitle.text.toString()
-            val contentText = editTextDonateWriteContent.text.toString()
-
-            val snackBarText = when {
-                categoryPosition == 0 -> "카테고리를 선택해주세요."
-                titleText.isEmpty() -> "제목을 입력해주세요."
-                subTitleText.isEmpty() -> "대표 문구를 입력해주세요."
-                contentText.isEmpty() -> "내용을 입력해주세요."
-                else -> "재능 기부 글이 저장되었습니다."
-            }
-
-            val snackBar = Snackbar.make(requireView(), snackBarText, Snackbar.LENGTH_SHORT)
-            snackBar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
-
-            snackBar.show()
-
-            if (snackBarText == "재능 기부 글이 저장되었습니다."){
-                return true
-            }
-
-            return false
+    fun donateValidation(title: String, subTitle: String, content: String, selectCategory: Int): Boolean{
+        val snackBarText = when {
+            selectCategory == 0 -> "카테고리를 선택해주세요."
+            title.isEmpty() -> "제목을 입력해주세요."
+            subTitle.isEmpty() -> "대표 문구를 입력해주세요."
+            content.isEmpty() -> "내용을 입력해주세요."
+            else -> "재능 기부 글이 저장되었습니다."
         }
+
+        val snackBar = Snackbar.make(requireView(), snackBarText, Snackbar.LENGTH_SHORT)
+        snackBar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
+        snackBar.show()
+
+        return snackBarText == "재능 기부 글이 저장되었습니다."
     }
 }
