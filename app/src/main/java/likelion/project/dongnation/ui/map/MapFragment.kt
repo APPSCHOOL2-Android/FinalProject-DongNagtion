@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.LocationTrackingMode
@@ -74,7 +77,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
                     override fun onQueryTextChange(newText: String?): Boolean {
                         if (newText.isNullOrBlank()) {
-
                             thread {
                                 val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                                 imm.hideSoftInputFromWindow(view?.windowToken, 0)
@@ -99,7 +101,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initMapView() {
-        val fm = mainActivity.supportFragmentManager
+        val fm = childFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
             ?: MapFragment.newInstance().also {
                 fm.beginTransaction().add(R.id.map, it).commit()
@@ -123,6 +125,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
+        locationSource = FusedLocationSource(this,5000)
         naverMap.locationSource = locationSource
         val currentLocation = getLatLng("서울시 은평구 녹번동")
         val cameraPosition = CameraPosition(LatLng(currentLocation.latitude, currentLocation.longitude), 14.0)
@@ -148,68 +151,80 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    fun getMarkerDataFromDB(): List<MarkerData> {
+    fun getMarkerDataFromDB(onSuccess: (List<MarkerData>) -> Unit) {
         val markerDataList = mutableListOf<MarkerData>()
-        for (i in 1..1) {
-            val type = "도와주세요"
-            val address = "서울특별시 은평구 녹번동 278-1"
-            val captionText = "마커 $i"
-            val title = "재능기부 $i"
-            val content = "재능내용 $i"
-            val name = "$i 길동"
+        val db = Firebase.firestore
+        val donationCollection = db.collection("Donations")
 
-            markerDataList.add(MarkerData(type, address, captionText, title, content, name))
-        }
-        return markerDataList
-    }
+        donationCollection.get().addOnSuccessListener { result1 ->
+            for (document1 in result1) {
+                val type = document1["donationType"] as String
+                val title = document1["donationTitle"] as String
+                val content = document1["donationContent"] as String
+                val userId = document1["donationUser"] as String
 
-
-    fun addMarkersFromDB(naverMap: NaverMap, markerList: MutableList<Marker>) {
-        val markerDataList = getMarkerDataFromDB()
-
-        for (markerData in markerDataList) {
-            val marker = Marker()
-            val latitude = getLatLng(markerData.address).latitude
-            val longitude = getLatLng(markerData.address).longitude
-
-            marker.run {
-                if(markerData.type == "도와주세요") {
-                    iconTintColor = Color.MAGENTA
-                } else if(markerData.type == "도와드릴게요") {
-                    iconTintColor = Color.BLUE
-                }
-                position = LatLng(latitude, longitude)
-                captionText = markerData.captionText
-                onClickListener = Overlay.OnClickListener {
-                    val sheetBehavior = BottomSheetBehavior.from(fragmentMapBinding.include1.bottomSheetMap)
-                    sheetBehavior.isHideable = false
-                    sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-                    naverMap.setOnMapClickListener { _, _ ->
-                        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                db.collection("users").whereEqualTo("userId", userId).get().addOnSuccessListener { result2 ->
+                    for (document2 in result2) {
+                        val userName = document2["userName"] as String
+                        var userAddress = ""
+                        if(userAddress == "") {
+                            userAddress = "서울특별시 은평구 서오릉로 46"
+                        } else {
+                            userAddress = document2["userAddress"] as String
                         }
+                        markerDataList.add(MarkerData(type, userAddress, userName, title, content))
                     }
 
-                    fragmentMapBinding.include1.run {
-                        textViewDonateTitle.text = markerData.title
-                        textViewDonateName.text = markerData.name
-                        textViewDonateContext.text = markerData.content
-
-                        imageViewDonateThumbnail1.setImageResource(R.mipmap.ic_launcher_logo)
-                        imageViewDonateThumbnail2.setImageResource(R.mipmap.ic_launcher_logo)
-                        imageViewDonateThumbnail3.setImageResource(R.mipmap.ic_launcher_logo)
-
-                        buttonMapGotoDetail.setOnClickListener {
-                            mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, null)
-                        }
-                    }
-                    false
+                    onSuccess(markerDataList)
                 }
-                map = naverMap
             }
-            markerList.add(marker)
         }
+    }
+    fun addMarkersFromDB(naverMap: NaverMap, markerList: MutableList<Marker>) {
+        getMarkerDataFromDB { markerDataList ->
+            for (markerData in markerDataList) {
+                val marker = Marker()
+                val latitude = getLatLng(markerData.address).latitude
+                val longitude = getLatLng(markerData.address).longitude
+                marker.run {
+                    if(markerData.type == "도와주세요") {
+                        iconTintColor = Color.MAGENTA
+                    } else if(markerData.type == "도와드릴게요") {
+                        iconTintColor = Color.BLUE
+                    }
+                    position = LatLng(latitude, longitude)
+                    onClickListener = Overlay.OnClickListener {
+                        val sheetBehavior = BottomSheetBehavior.from(fragmentMapBinding.include1.bottomSheetMap)
+                        sheetBehavior.isHideable = false
+                        sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+                        naverMap.setOnMapClickListener { _, _ ->
+                            if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                            }
+                        }
+
+                        fragmentMapBinding.include1.run {
+                            textViewDonateTitle.text = markerData.title
+                            textViewDonateName.text = markerData.name
+                            textViewDonateContext.text = markerData.content
+
+                            imageViewDonateThumbnail1.setImageResource(R.mipmap.ic_launcher_logo)
+                            imageViewDonateThumbnail2.setImageResource(R.mipmap.ic_launcher_logo)
+                            imageViewDonateThumbnail3.setImageResource(R.mipmap.ic_launcher_logo)
+
+                            buttonMapGotoDetail.setOnClickListener {
+                                mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, null)
+                            }
+                        }
+                        false
+                    }
+                    map = naverMap
+                }
+                markerList.add(marker)
+            }
+        }
+
     }
 
     fun getLatLng(address: String): AddressLatLng{

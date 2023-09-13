@@ -8,8 +8,7 @@ data class AddressLatLng(
 data class MarkerData(
     val type: String,
     val address: String,
-    val captionText: String,
+    var name: String,
     val title: String,
-    val content: String,
-    val name: String
+    val content: String
 )
