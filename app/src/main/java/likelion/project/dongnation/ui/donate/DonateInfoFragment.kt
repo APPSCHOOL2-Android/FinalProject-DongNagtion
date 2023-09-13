@@ -8,11 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
 import likelion.project.dongnation.model.Donations
+import likelion.project.dongnation.ui.home.HomeAdapter
+import likelion.project.dongnation.ui.home.HomeViewModel
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import likelion.project.dongnation.ui.review.ItemSpacingDecoration
 
@@ -22,6 +26,8 @@ class DonateInfoFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     val imgList = ArrayList<String>()
+    lateinit var donate: Donations
+    private var rate = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,12 +36,12 @@ class DonateInfoFragment : Fragment() {
         fragmentDonateInfoBinding = FragmentDonateInfoBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        val donate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        donate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable("donation", Donations::class.java)!!
         } else {
             arguments?.getParcelable("donation")!!
         }
-        val rate = arguments?.getDouble("rate")!!
+        rate = arguments?.getDouble("rate")!!
 
         fragmentDonateInfoBinding.run {
             imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
@@ -49,12 +55,9 @@ class DonateInfoFragment : Fragment() {
             viewpager2DonateInfoThumbnail.adapter = DonateInfoFragmentStateAdapter(mainActivity)
             setupTabLayoutMediator()
 
-            textViewDonateInfoTitle.text = donate.donationTitle
-            textViewDonateInfoSubTitle.text = donate.donationSubtitle
-            textViewDonateInfoCategory.text = donate.donationCategory
-            textViewDonateInfoReviewScore.text = rate.toString()
-            textViewDonateInfoContent.text = donate.donationContent
-            textViewDonateInfoReviewNumber.text = "(${donate.donationReview.size})"
+            initDonateInfo()
+            initUserInfo()
+            buttonSetting()
 
             recyclerViewDonateInfoReview.run {
                 adapter = DonateReviewAdapter(donate.donationReview, minOf(donate.donationReview.size, 3))
@@ -68,10 +71,8 @@ class DonateInfoFragment : Fragment() {
                 mainActivity.replaceFragment("ReviewShowFragment", true, bundle)
             }
 
-            buttonDonateInfoChatOrModify.run{
-                setOnClickListener {
-                    mainActivity.replaceFragment("ChattingFragment", true, null)
-                }
+            buttonDonateInfoChat.setOnClickListener {
+                mainActivity.replaceFragment("ChattingFragment", true, null)
             }
         }
 
@@ -91,10 +92,51 @@ class DonateInfoFragment : Fragment() {
         }
     }
 
-    fun setupTabLayoutMediator(){
+    private fun setupTabLayoutMediator(){
         TabLayoutMediator(
             fragmentDonateInfoBinding.tabLayoutDonateInfoDot,
             fragmentDonateInfoBinding.viewpager2DonateInfoThumbnail
         ) {tab, position -> }.attach()
+    }
+
+    fun initDonateInfo(){
+        fragmentDonateInfoBinding.run {
+            textViewDonateInfoTitle.text = donate.donationTitle
+            textViewDonateInfoSubTitle.text = donate.donationSubtitle
+            textViewDonateInfoCategory.text = donate.donationCategory
+            textViewDonateInfoReviewScore.text = rate.toString()
+            textViewDonateInfoContent.text = donate.donationContent
+            textViewDonateInfoReviewNumber.text = "(${donate.donationReview.size})"
+        }
+    }
+
+    private fun initUserInfo(){
+        val viewModel = ViewModelProvider(this)[DonateViewModel::class.java]
+
+        viewModel.run {
+            userLiveData.observe(viewLifecycleOwner){ user ->
+                fragmentDonateInfoBinding.run {
+                    textViewDonateInfoUserName.text = user.userName
+                    textViewDonateInfoLacation.text = user.userAddress
+                    textViewDonateInfoExperience.text = user.userExperience.toString()
+                }
+            }
+
+            findUserInfo(donate.donationUser)
+        }
+    }
+
+    private fun buttonSetting(){
+        fragmentDonateInfoBinding.run {
+            if (donate.donationType == "도와주세요"){
+                buttonDonateInfoDonation.visibility = View.GONE
+            }
+            if (donate.donationUser == LoginViewModel.loginUserInfo.userId){
+                buttonDonateInfoDonation.visibility = View.GONE
+                buttonDonateInfoChat.visibility = View.GONE
+                buttonDonateInfoDelete.visibility = View.VISIBLE
+                buttonDonateInfoModify.visibility = View.VISIBLE
+            }
+        }
     }
 }
