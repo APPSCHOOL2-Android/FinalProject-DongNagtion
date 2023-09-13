@@ -1,16 +1,21 @@
 package likelion.project.dongnation.ui.home
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.search.SearchView
 import com.google.android.material.snackbar.Snackbar
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.databinding.FragmentHomeBinding
+import likelion.project.dongnation.repository.DonateRepository
 import likelion.project.dongnation.ui.main.MainActivity
 
 class HomeFragment : Fragment() {
@@ -45,8 +50,12 @@ class HomeFragment : Fragment() {
             }
 
             buttonHomeSearch.setOnClickListener {
-                val word = editTextHomeSearch.text.toString()
-                Snackbar.make(fragmentHomeBinding.root, word, Snackbar.LENGTH_SHORT).show()
+                searchResult()
+            }
+
+            editTextHomeSearch.setOnEditorActionListener { v, actionId, event ->
+                searchResult()
+                true
             }
 
             floatingActionButtonHome.setOnClickListener {
