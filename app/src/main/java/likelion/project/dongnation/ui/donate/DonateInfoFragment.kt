@@ -28,27 +28,29 @@ class DonateInfoFragment : Fragment() {
     private var donateIdx = ""
     private var rate = 0.0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        rate = arguments?.getDouble("rate")!!
-        donateIdx = arguments?.getString("donationIdx")!!
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         fragmentDonateInfoBinding = FragmentDonateInfoBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+        viewModel = ViewModelProvider(this)[DonateViewModel::class.java]
 
-        getDonationInfo(donateIdx)
+        rate = arguments?.getDouble("rate")!!
+        donateIdx = arguments?.getString("donationIdx")!!
 
-        fragmentDonateInfoBinding.run {
-            imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
-            imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
-            imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
+        initViews()
+        viewModel.findDonateInfo(donateIdx)
 
+        return fragmentDonateInfoBinding.root
+    }
+
+    private fun initViews() {
+        imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
+        imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
+        imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
+
+        fragmentDonateInfoBinding.apply {
             buttonDonateInfoBack.setOnClickListener {
                 mainActivity.removeFragment("DonateInfoFragment")
             }
@@ -65,7 +67,22 @@ class DonateInfoFragment : Fragment() {
             }
         }
 
-        return fragmentDonateInfoBinding.root
+        viewModel.run {
+            donateLiveData.observe(viewLifecycleOwner) { donateInfo ->
+                setDonationInfoViews(donateInfo)
+                findUserInfo(donateInfo.donationUser)
+            }
+
+            userLiveData.observe(viewLifecycleOwner) { user ->
+                if (user != null) {
+                    fragmentDonateInfoBinding.run {
+                        textViewDonateInfoUserName.text = user.userName
+                        textViewDonateInfoLacation.text = user.userAddress
+                        textViewDonateInfoExperience.text = user.userExperience.toString()
+                    }
+                }
+            }
+        }
     }
 
     inner class DonateInfoFragmentStateAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity) {
@@ -88,78 +105,40 @@ class DonateInfoFragment : Fragment() {
         ) {tab, position -> }.attach()
     }
 
-    private fun getDonationInfo(idx : String){
-        viewModel = ViewModelProvider(this)[DonateViewModel::class.java]
-        viewModel.run {
-            donateLiveData.observe(viewLifecycleOwner){ donateInfo ->
-
-                initUserInfo(donateInfo)
-                initDonateInfo(donateInfo)
-                buttonSetting(donateInfo)
-
-                fragmentDonateInfoBinding.run {
-                    buttonDonateInfoLike.setOnClickListener {
-                        viewModel.addUserExperience(donateInfo.donationUser)
-
-                        it.isClickable = false
-                        it.setBackgroundColor(ContextCompat.getColor(mainActivity, R.color.green100))
-
-                        viewModel.experienceLiveData.observe(viewLifecycleOwner){ experience ->
-                            fragmentDonateInfoBinding.textViewDonateInfoExperience.text = experience.toString()
-                        }
-                    }
-
-                    recyclerViewDonateInfoReview.run {
-                        adapter = DonateReviewAdapter(donateInfo.donationReview, minOf(donateInfo.donationReview.size, 3))
-                        addItemDecoration(ItemSpacingDecoration(20))
-                        isNestedScrollingEnabled = false
-                    }
-
-                    textViewDonateInfoMore.setOnClickListener {
-                        val bundle = Bundle()
-                        bundle.putParcelableArrayList("reviews", ArrayList(donateInfo.donationReview))
-                        mainActivity.replaceFragment("ReviewShowFragment", true, bundle)
-                    }
+    private fun setDonationInfoViews(donateInfo: Donations) {
+        fragmentDonateInfoBinding.apply {
+            buttonDonateInfoLike.setOnClickListener {
+                viewModel.addUserExperience(donateInfo.donationUser)
+                it.isClickable = false
+                it.setBackgroundColor(ContextCompat.getColor(mainActivity, R.color.green100))
+                viewModel.experienceLiveData.observe(viewLifecycleOwner) { experience ->
+                    textViewDonateInfoExperience.text = experience.toString()
                 }
             }
 
-            findDonateInfo(idx)
-        }
-    }
+            recyclerViewDonateInfoReview.run {
+                adapter = DonateReviewAdapter(donateInfo.donationReview, minOf(donateInfo.donationReview.size, 3))
+                addItemDecoration(ItemSpacingDecoration(20))
+                isNestedScrollingEnabled = false
+            }
 
-    private fun initDonateInfo(donate : Donations){
-        fragmentDonateInfoBinding.run {
-            textViewDonateInfoTitle.text = donate.donationTitle
-            textViewDonateInfoSubTitle.text = donate.donationSubtitle
-            textViewDonateInfoCategory.text = donate.donationCategory
+            textViewDonateInfoMore.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putParcelableArrayList("reviews", ArrayList(donateInfo.donationReview))
+                mainActivity.replaceFragment("ReviewShowFragment", true, bundle)
+            }
+
+            textViewDonateInfoTitle.text = donateInfo.donationTitle
+            textViewDonateInfoSubTitle.text = donateInfo.donationSubtitle
+            textViewDonateInfoCategory.text = donateInfo.donationCategory
             textViewDonateInfoReviewScore.text = rate.toString()
-            textViewDonateInfoContent.text = donate.donationContent
-            textViewDonateInfoReviewNumber.text = "(${donate.donationReview.size})"
-        }
-    }
+            textViewDonateInfoContent.text = donateInfo.donationContent
+            textViewDonateInfoReviewNumber.text = "(${donateInfo.donationReview.size})"
 
-    private fun initUserInfo(donate : Donations){
-        viewModel.run {
-            userLiveData.observe(viewLifecycleOwner) { user ->
-                if (user != null) {
-                    fragmentDonateInfoBinding.run {
-                        textViewDonateInfoUserName.text = user.userName
-                        textViewDonateInfoLacation.text = user.userAddress
-                        textViewDonateInfoExperience.text = user.userExperience.toString()
-                    }
-                }
-            }
-
-            findUserInfo(donate.donationUser)
-        }
-    }
-
-    private fun buttonSetting(donate : Donations){
-        fragmentDonateInfoBinding.run {
-            if (donate.donationType == "도와주세요"){
+            if (donateInfo.donationType == "도와주세요") {
                 buttonDonateInfoDonation.visibility = View.GONE
             }
-            if (donate.donationUser == LoginViewModel.loginUserInfo.userId){
+            if (donateInfo.donationUser == LoginViewModel.loginUserInfo.userId) {
                 buttonDonateInfoDonation.visibility = View.GONE
                 buttonDonateInfoChat.visibility = View.GONE
                 buttonDonateInfoDelete.visibility = View.VISIBLE
@@ -167,7 +146,7 @@ class DonateInfoFragment : Fragment() {
 
                 buttonDonateInfoModify.setOnClickListener {
                     val bundle = Bundle()
-                    bundle.putParcelable("donate", donate)
+                    bundle.putParcelable("donate", donateInfo)
                     mainActivity.replaceFragment("DonateModifyFragment", true, bundle)
                 }
 
