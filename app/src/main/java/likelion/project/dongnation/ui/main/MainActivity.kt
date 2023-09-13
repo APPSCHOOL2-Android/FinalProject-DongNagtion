@@ -38,6 +38,7 @@ import likelion.project.dongnation.ui.onboarding.OnboardingFragment
 import likelion.project.dongnation.ui.permission.PermissionFragment
 import likelion.project.dongnation.ui.review.ReviewShowFragment
 import likelion.project.dongnation.ui.review.ReviewWriteFragment
+import likelion.project.dongnation.ui.transfer.TransferFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoBoardFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFollowingFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFragment
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         setContentView(activityMainBinding.root)
-        replaceFragment(MAP_FRAGMENT, false, null)
+        replaceFragment(HOME_FRAGMENT, false, null)
 //        observe()
 //        navigateToPermissionOrOnboardingOrLogin()
         bottomNavigationBar()
@@ -108,6 +109,7 @@ class MainActivity : AppCompatActivity() {
             CHATTING_FRAGMENT -> ChattingFragment()
             USER_INFO_BOARD_FRAGMENT -> UserInfoBoardFragment()
             USER_INFO_FOLLOWING_FRAGMENT -> UserInfoFollowingFragment()
+            TRANSFER_FRAGMENT -> TransferFragment()
             else -> Fragment()
         }
 
@@ -227,5 +229,6 @@ class MainActivity : AppCompatActivity() {
         val CHATTING_FRAGMENT = "ChattingFragment"
         val USER_INFO_BOARD_FRAGMENT = "UserInfoBoardFragment"
         val USER_INFO_FOLLOWING_FRAGMENT = "UserInfoFollowingFragment"
+        val TRANSFER_FRAGMENT = "TransferFragment"
     }
 }
