@@ -39,8 +39,11 @@ class HomeFragment : Fragment() {
         fragmentHomeBinding.run {
 
             toolbarHome.run {
-                setNavigationOnClickListener {
-                    mainActivity.replaceFragment("MapFragment", true, null)
+                setOnMenuItemClickListener {
+                    when(it.itemId) {
+                        R.id.item_map -> mainActivity.replaceFragment("MapFragment", true, null)
+                    }
+                    false
                 }
             }
 
