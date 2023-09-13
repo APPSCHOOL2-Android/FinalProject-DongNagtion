@@ -51,10 +51,12 @@ class HomeFragment : Fragment() {
 
             buttonHomeSearch.setOnClickListener {
                 searchResult()
+                hideKeyboard(it)
             }
 
             editTextHomeSearch.setOnEditorActionListener { v, actionId, event ->
                 searchResult()
+                hideKeyboard(v)
                 true
             }
 
@@ -64,5 +66,32 @@ class HomeFragment : Fragment() {
         }
 
         return fragmentHomeBinding.root
+    }
+
+    fun searchResult(){
+        val word = fragmentHomeBinding.editTextHomeSearch.text.toString()
+
+        if (word == ""){
+            Snackbar.make(fragmentHomeBinding.root, "검색어를 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+        } else {
+            viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
+            viewModel.run {
+                searchLiveData.observe(viewLifecycleOwner){ search ->
+                    Log.d("searchLiveData", "$search")
+                    fragmentHomeBinding.recyclerviewHomeDonationAll.run {
+                        adapter = HomeAdapter(mainActivity, search)
+                        adapter!!.notifyDataSetChanged()
+                    }
+                }
+
+                searchDonate(word)
+            }
+        }
+    }
+
+    fun hideKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
