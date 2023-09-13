@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class Donations(
+    val donationIdx : String = "",
     val donationTitle: String = "",
     val donationSubtitle: String = "",
     val donationType: String = "",
@@ -16,6 +17,7 @@ data class Donations(
     val donationReview: List<Review> = emptyList()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
