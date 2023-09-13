@@ -15,6 +15,7 @@ class DonateViewModel : ViewModel() {
     private val userRepository = UserRepository()
 
     val userLiveData = MutableLiveData<User>()
+    val experienceLiveData = MutableLiveData<Int>()
 
     fun addDonate(donate : Donations){
         viewModelScope.launch(Dispatchers.IO) {
@@ -26,6 +27,13 @@ class DonateViewModel : ViewModel() {
         viewModelScope.launch {
             val user = userRepository.getUserForId(userId)
             userLiveData.postValue(user)
+        }
+    }
+
+    fun addUserExperience(userId: String){
+        viewModelScope.launch {
+            val experience = userRepository.addUserExperience(userId)
+            experienceLiveData.postValue(experience)
         }
     }
 }

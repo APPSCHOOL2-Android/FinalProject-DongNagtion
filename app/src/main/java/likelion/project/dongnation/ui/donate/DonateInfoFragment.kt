@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -22,8 +23,11 @@ class DonateInfoFragment : Fragment() {
     lateinit var fragmentDonateInfoBinding: FragmentDonateInfoBinding
     lateinit var mainActivity: MainActivity
 
+    lateinit var viewModel: DonateViewModel
+
     val imgList = ArrayList<String>()
     lateinit var donate: Donations
+    private var userExperience = 0
     private var rate = 0.0
 
     override fun onCreateView(
@@ -40,6 +44,8 @@ class DonateInfoFragment : Fragment() {
         }
         rate = arguments?.getDouble("rate")!!
 
+        viewModel = ViewModelProvider(this)[DonateViewModel::class.java]
+
         fragmentDonateInfoBinding.run {
             imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
             imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
@@ -55,6 +61,17 @@ class DonateInfoFragment : Fragment() {
             initDonateInfo()
             initUserInfo()
             buttonSetting()
+
+            buttonDonateInfoLike.setOnClickListener {
+                viewModel.addUserExperience(donate.donationUser)
+
+                it.isClickable = false
+                it.setBackgroundColor(ContextCompat.getColor(mainActivity, R.color.green100))
+
+                viewModel.experienceLiveData.observe(viewLifecycleOwner){ experience ->
+                    fragmentDonateInfoBinding.textViewDonateInfoExperience.text = experience.toString()
+                }
+            }
 
             recyclerViewDonateInfoReview.run {
                 adapter = DonateReviewAdapter(donate.donationReview, minOf(donate.donationReview.size, 3))
@@ -112,10 +129,8 @@ class DonateInfoFragment : Fragment() {
     }
 
     private fun initUserInfo(){
-        val viewModel = ViewModelProvider(this)[DonateViewModel::class.java]
-
         viewModel.run {
-            userLiveData.observe(viewLifecycleOwner){ user ->
+            userLiveData.observe(viewLifecycleOwner) { user ->
                 fragmentDonateInfoBinding.run {
                     textViewDonateInfoUserName.text = user.userName
                     textViewDonateInfoLacation.text = user.userAddress

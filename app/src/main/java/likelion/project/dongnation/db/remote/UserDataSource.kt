@@ -1,8 +1,12 @@
 package likelion.project.dongnation.db.remote
 
+import android.util.Log
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -65,5 +69,26 @@ class UserDataSource {
         val users = querySnapshot.toObjects(User::class.java)
 
         return if (users.isNotEmpty()) users[0] else null
+    }
+
+    suspend fun addUserExperience(id: String): Int = coroutineScope {
+        val querySnapshot = db.collection("users")
+            .whereEqualTo("userId", id)
+            .get()
+            .await()
+
+        if (!querySnapshot.isEmpty) {
+            val documentId = querySnapshot.documents[0].id
+            val userExperience = querySnapshot.documents[0].get("userExperience") as Long + 1
+
+            val documentReference = db.collection("users").document(documentId)
+            val updates = hashMapOf("userExperience" to userExperience)
+
+            documentReference.update(updates as Map<String, Any>).await()
+
+            return@coroutineScope userExperience.toInt()
+        } else {
+            return@coroutineScope 0
+        }
     }
 }
