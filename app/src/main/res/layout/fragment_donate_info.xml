@@ -100,7 +100,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
-                                    android:text=" 보컬 레슨"
                                     android:textAppearance="@style/Typography.Bold24" />
                             </HorizontalScrollView>
 
@@ -111,7 +110,6 @@
                                 android:layout_gravity="center"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="홍길동"
                                 android:textAppearance="@style/Typography.Medium16" />
 
                             <Button
@@ -138,7 +136,6 @@
                                 android:id="@+id/textView_donate_info_lacation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="서울특별시 강남구"
                                 android:textAppearance="@style/Typography.Regular16"
                                 android:textColor="@color/gray500" />
                         </LinearLayout>
@@ -153,7 +150,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="60dp"
                     android:layout_marginTop="10dp"
-                    android:text="생목, 고음불가 200% 해결"
                     android:textAppearance="@style/Typography.Regular15"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
@@ -189,7 +185,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="3dp"
-                            android:text="레슨"
                             android:textAlignment="center"
                             android:textAppearance="@style/Typography.Bold14" />
 
@@ -229,7 +224,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="5.0"
                                 android:textAlignment="center"
                                 android:textAppearance="@style/Typography.Bold14" />
                         </LinearLayout>
@@ -269,7 +263,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="65"
                                 android:textAlignment="center"
                                 android:textAppearance="@style/Typography.Bold14" />
                         </LinearLayout>
@@ -282,7 +275,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="고음불가 해결해드립니다."
                     android:textAppearance="@style/Typography.Regular16"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
