@@ -39,7 +39,7 @@ class ChattingRoomDataSource {
         return chattingRoomList1 + chattingRoomList2
     }
 
-    suspend fun addChattingRooms(user1: User, user2: User, chattingRoom: ChattingRoom) = withContext(Dispatchers.IO){
+    suspend fun addChattingRooms(chattingRoom: ChattingRoom) = withContext(Dispatchers.IO){
         db.collection("chattingRooms").add(chattingRoom)
     }
 }
