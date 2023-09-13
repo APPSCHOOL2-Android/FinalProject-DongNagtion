@@ -16,6 +16,7 @@ import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.databinding.FragmentHomeBinding
 import likelion.project.dongnation.repository.DonateRepository
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class HomeFragment : Fragment() {
@@ -51,6 +52,8 @@ class HomeFragment : Fragment() {
                     false
                 }
             }
+            
+            textViewHomeLocation.text = LoginViewModel.loginUserInfo.userAddress
 
             buttonHomeSearch.setOnClickListener {
                 searchResult()
