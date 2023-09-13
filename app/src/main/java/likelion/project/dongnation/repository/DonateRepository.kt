@@ -25,15 +25,31 @@ class DonateRepository {
         return donationsList
     }
 
+    suspend fun getOneDonate(idx : String): Donations {
+        val querySnapshot = db.collection("Donations")
+            .whereEqualTo("donationIdx", idx)
+            .get()
+            .await()
+
+        return querySnapshot.documents.firstOrNull()?.toObject(Donations::class.java)!!
+    }
+
     suspend fun addDonate(donate : Donations){
         db.collection("Donations")
             .add(donate)
             .addOnSuccessListener { documentReference ->
-            // 데이터 추가 성공
+                val newDonateId = documentReference.id
+                db.collection("Donations")
+                    .document(newDonateId)
+                    .update("donationIdx", newDonateId)
             }
 
             .addOnFailureListener { e ->
                 // 데이터 추가 실패
             }
+    }
+
+    suspend fun modifyDonate(donations: Donations){
+
     }
 }
