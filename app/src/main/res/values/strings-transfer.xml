@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_bottom_scroll">아래로 스크롤하기</string>
+    <string name="transfer_cancel">취소</string>
+    <string name="transfer_registration">등록</string>
+    <string name="transfer_hint_input_code">송금 코드를 입력해주세요</string>
+    <string name="transfer_dialog_title">송금 코드를 등록해주세요</string>
+</resources>
