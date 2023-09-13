@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.donate.DonateWriteFragment" >
+    tools:context=".ui.donate.DonateWriteFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_donate_write"
@@ -14,220 +14,239 @@
         android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back_24dp"
         app:title="재능 기부 작성"
         app:titleTextAppearance="@style/Typography.Bold20" />
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="게시글 유형 선택"
-            android:textAppearance="@style/Typography.Medium16" />
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkedButton="@id/radioButton_donate_write_type_help_you"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radioButton_donate_write_type_help_me"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:background="@drawable/selector_radio_donate_category"
-                android:button="@null"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="도와주세요"
-                android:textAppearance="@style/Typography.Bold16"
-                android:textColor="@color/white" />
-
-            <RadioButton
-                android:id="@+id/radioButton_donate_write_type_help_you"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginStart="5dp"
-                android:background="@drawable/selector_radio_donate_category"
-                android:button="@null"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="도와드릴게요"
-                android:textAppearance="@style/Typography.Bold16"
-                android:textColor="@color/white" />
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="재능 카테고리 선택"
-            android:textAppearance="@style/Typography.Medium16" />
-
-        <Spinner
-            android:id="@+id/spinner_donate_write_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_spinner"
-            android:padding="10dp" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:text="사진 선택"
-            android:textAppearance="@style/Typography.Medium16" />
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_donate_write">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="게시글 유형 선택"
+                android:textAppearance="@style/Typography.Medium16" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup_donate_write_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkedButton="@id/radioButton_donate_write_type_help_you"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton_donate_write_type_help_me"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@drawable/selector_radio_donate_category"
+                    android:button="@null"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="도와주세요"
+                    android:textAppearance="@style/Typography.Bold16"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/radioButton_donate_write_type_help_you"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/selector_radio_donate_category"
+                    android:button="@null"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="도와드릴게요"
+                    android:textAppearance="@style/Typography.Bold16"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="재능 카테고리 선택"
+                android:textAppearance="@style/Typography.Medium16" />
+
+            <Spinner
+                android:id="@+id/spinner_donate_write_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_spinner"
+                android:padding="10dp" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="사진 선택"
+                android:textAppearance="@style/Typography.Medium16" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_camera"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imageButtonBoardWrite"
+                <LinearLayout
+                    android:id="@+id/linearLayout_donate_write_choice_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white"
-                    android:src="@drawable/ic_camera_24dp" />
+                    android:background="@drawable/shape_camera"
+                    android:orientation="vertical">
 
-                <TextView
+                    <ImageButton
+                        android:id="@+id/imageButtonBoardWrite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/white"
+                        android:src="@drawable/ic_camera_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:padding="2dp"
+                        android:text="이미지 선택"
+                        android:textSize="8dp" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:padding="2dp"
-                    android:text="이미지 선택"
-                    android:textSize="8dp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView1_donate_write"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_baseline_clear_24"
+                        app:layout_constraintEnd_toEndOf="@id/imageView1_donate_write"
+                        app:layout_constraintTop_toTopOf="@id/imageView1_donate_write" />
+
+                    <ImageView
+                        android:id="@+id/imageView2_donate_write"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/shape_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView1_donate_write"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_baseline_clear_24"
+                        app:layout_constraintEnd_toEndOf="@id/imageView2_donate_write"
+                        app:layout_constraintTop_toTopOf="@id/imageView2_donate_write" />
+
+                    <ImageView
+                        android:id="@+id/imageView3_donate_write"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/shape_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView2_donate_write"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_baseline_clear_24"
+                        app:layout_constraintEnd_toEndOf="@id/imageView3_donate_write"
+                        app:layout_constraintTop_toTopOf="@id/imageView3_donate_write" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp">
+            <EditText
+                android:id="@+id/editText_donate_write_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_text"
+                android:ems="10"
+                android:hint="제목을 입력해주세요."
+                android:inputType="text"
+                android:padding="10dp"
+                android:textAppearance="@style/Typography.Medium16" />
 
-                <ImageView
-                    android:id="@+id/imageView1_donate_write"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/shape_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/editText_donate_write_sub_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_text"
+                android:ems="10"
+                android:hint="대표 문구를 입력해주세요."
+                android:inputType="text"
+                android:padding="10dp"
+                android:textAppearance="@style/Typography.Medium16" />
 
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_baseline_clear_24"
-                    app:layout_constraintEnd_toEndOf="@id/imageView1_donate_write"
-                    app:layout_constraintTop_toTopOf="@id/imageView1_donate_write" />
-
-                <ImageView
-                    android:id="@+id/imageView2_donate_write"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/shape_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView1_donate_write"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_baseline_clear_24"
-                    app:layout_constraintEnd_toEndOf="@id/imageView2_donate_write"
-                    app:layout_constraintTop_toTopOf="@id/imageView2_donate_write" />
-
-                <ImageView
-                    android:id="@+id/imageView3_donate_write"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/shape_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2_donate_write"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_baseline_clear_24"
-                    app:layout_constraintEnd_toEndOf="@id/imageView3_donate_write"
-                    app:layout_constraintTop_toTopOf="@id/imageView3_donate_write" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/editText_donate_write_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_text"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="내용을 입력해주세요."
+                android:inputType="textMultiLine"
+                android:lines="13"
+                android:padding="10dp"
+                android:textAppearance="@style/Typography.Medium16" />
 
         </LinearLayout>
+    </ScrollView>
 
-        <EditText
-            android:id="@+id/editText_donate_write_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/shape_text"
-            android:ems="10"
-            android:hint="제목을 입력해주세요."
-            android:inputType="text"
-            android:padding="10dp"
-            android:textAppearance="@style/Typography.Medium16" />
+    <Button
+        android:id="@+id/button_donate_write_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="저장하기"
+        android:textAppearance="@style/Typography.Bold20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <EditText
-            android:id="@+id/editText_donate_write_sub_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/shape_text"
-            android:ems="10"
-            android:hint="대표 문구를 입력해주세요."
-            android:inputType="text"
-            android:padding="10dp"
-            android:textAppearance="@style/Typography.Medium16" />
-
-        <EditText
-            android:id="@+id/editText_donate_write_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/shape_text"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="내용을 입력해주세요."
-            android:inputType="textMultiLine"
-            android:lines="8"
-            android:padding="10dp"
-            android:textAppearance="@style/Typography.Medium16" />
-
-        <Button
-            android:id="@+id/button_donate_write_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="저장하기"
-            android:textAppearance="@style/Typography.Bold20" />
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
