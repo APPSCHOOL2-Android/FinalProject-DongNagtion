@@ -121,6 +121,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
                 if (currentItemPosition == 2) {
                     viewModel.updateAddress(User(userId = "2eqn9AfBVl9oXROMY2Wx", userAddress = areaName.filterNot { it.isDigit() }))
                     mainActivity.replaceFragment(MainActivity.HOME_FRAGMENT, false, null)
+                    mainActivity.activityMainBinding.bottomNavigation.visibility = View.VISIBLE
                 }
                 viewPagerLocationSetting.run {
                     currentItem += PAGE_INCREMENT_VALUE
