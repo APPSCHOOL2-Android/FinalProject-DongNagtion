@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import likelion.project.dongnation.databinding.ItemDonationlistBinding
 import likelion.project.dongnation.model.Donations
@@ -61,6 +62,12 @@ class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donat
         rate = getRateAverage(donates[position].donationReview)
 
         holder.itemReview.text = "$rate (${donates[position].donationReview.size})"
+
+        if (donates[position].donationImg.isNotEmpty()){
+            Glide.with(holder.itemThumbnail)
+                .load(donates[position].donationImg[0])
+                .into(holder.itemThumbnail)
+        }
     }
 
     private fun getRateAverage(reviews : List<Review>) : Double{
