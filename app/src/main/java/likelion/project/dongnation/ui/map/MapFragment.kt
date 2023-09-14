@@ -16,11 +16,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
@@ -28,6 +30,7 @@ import com.naver.maps.map.NaverMapSdk
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
+import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.FusedLocationSource
 import likelion.project.dongnation.BuildConfig
 import likelion.project.dongnation.R
@@ -48,6 +51,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         Manifest.permission.ACCESS_FINE_LOCATION
     )
     var markerList: MutableList<Marker> = mutableListOf()
+    var markerDataList: MutableList<MarkerData> = mutableListOf()
+    val imgList = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +75,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         if (!query.isNullOrBlank()) {
+                            searchMarker(query.toString())
                             return true
                         }
                         return false
@@ -95,9 +101,69 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
+            imageViewMapBack.setOnClickListener {
+                mainActivity.removeFragment("MapFragment")
+            }
+
         }
 
         return fragmentMapBinding.root
+    }
+
+    private fun searchMarker(query: String) {
+
+        for (markerData in markerDataList) {
+            if (markerData.title.contains(query, ignoreCase = true)) {
+                val marker = Marker()
+                val latitude = getLatLng(markerData.address).latitude
+                val longitude = getLatLng(markerData.address).longitude
+                marker.run {
+                    isHideCollidedSymbols = true
+                    iconTintColor = Color.GREEN
+                    position = LatLng(latitude, longitude)
+                    onClickListener = Overlay.OnClickListener {
+                        val sheetBehavior = BottomSheetBehavior.from(fragmentMapBinding.include1.bottomSheetMap)
+                        sheetBehavior.isHideable = false
+                        sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+                        naverMap.setOnMapClickListener { _, _ ->
+                            if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                            }
+                        }
+
+                        fragmentMapBinding.include1.run {
+                            textViewDonateTitle.text = markerData.title
+                            textViewDonateName.text = markerData.name
+                            textViewDonateContext.text = markerData.content
+
+                            if (markerData.img != null) {
+                                for (image in markerData.img) {
+                                    imgList.add(image)
+                                }
+
+                                if (imgList.size >= 1) {
+                                    Glide.with(requireContext())
+                                        .load(imgList[0]) // 이미지 URL
+                                        .placeholder(R.mipmap.ic_launcher_logo)
+                                        .error(R.mipmap.ic_launcher_logo)
+                                        .into(imageViewDonateThumbnail1)
+                                }
+                            }
+
+                            buttonMapGotoDetail.setOnClickListener {
+                                val bundle = Bundle()
+                                bundle.putString("donationIdx", markerData.idx)
+                                mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
+                            }
+                        }
+                        false
+                    }
+                    map = naverMap
+                }
+                markerList.add(marker)
+            }
+        }
     }
 
     private fun initMapView() {
@@ -144,49 +210,59 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             setOnMapTwoFingerTapListener { pointF, latLng -> true }
         }
 
-        addMarkersFromDB(naverMap, markerList)
-
         fragmentMapBinding.buttonMapSetLocation.setOnClickListener {
+            val cameraUpdate = CameraUpdate.zoomTo(13.0)
             naverMap.cameraPosition = cameraPosition
+            naverMap.moveCamera(cameraUpdate)
         }
+
+        addMarkersFromDB(naverMap, markerList)
     }
 
     fun getMarkerDataFromDB(onSuccess: (List<MarkerData>) -> Unit) {
-        val markerDataList = mutableListOf<MarkerData>()
         val db = Firebase.firestore
         val donationCollection = db.collection("Donations")
 
         donationCollection.get().addOnSuccessListener { result1 ->
+            markerDataList.clear()
+
             for (document1 in result1) {
+                val idx = document1["donationIdx"] as String
                 val type = document1["donationType"] as String
                 val title = document1["donationTitle"] as String
                 val content = document1["donationContent"] as String
                 val userId = document1["donationUser"] as String
+                val img = document1["donationImg"] as MutableList<String>
 
                 db.collection("users").whereEqualTo("userId", userId).get().addOnSuccessListener { result2 ->
                     for (document2 in result2) {
                         val userName = document2["userName"] as String
-                        var userAddress = ""
+                        var userAddress = document2["userAddress"] as String
                         if(userAddress == "") {
-                            userAddress = "서울특별시 은평구 서오릉로 46"
+                            userAddress = "서울특별시 은평구 녹번동 278-1"
                         } else {
                             userAddress = document2["userAddress"] as String
+                            Log.d("테스트e", userAddress)
                         }
-                        markerDataList.add(MarkerData(type, userAddress, userName, title, content))
-                    }
+                        markerDataList.add(MarkerData(idx, type, userAddress, userName, title, content, img))
 
-                    onSuccess(markerDataList)
+                        Log.d("테스트d", markerDataList.size.toString())
+                        onSuccess(markerDataList)
+                    }
                 }
             }
         }
     }
     fun addMarkersFromDB(naverMap: NaverMap, markerList: MutableList<Marker>) {
+        markerList.clear()
+
         getMarkerDataFromDB { markerDataList ->
             for (markerData in markerDataList) {
                 val marker = Marker()
                 val latitude = getLatLng(markerData.address).latitude
                 val longitude = getLatLng(markerData.address).longitude
                 marker.run {
+                    isHideCollidedSymbols = true
                     if(markerData.type == "도와주세요") {
                         iconTintColor = Color.MAGENTA
                     } else if(markerData.type == "도와드릴게요") {
@@ -209,12 +285,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             textViewDonateName.text = markerData.name
                             textViewDonateContext.text = markerData.content
 
-                            imageViewDonateThumbnail1.setImageResource(R.mipmap.ic_launcher_logo)
-                            imageViewDonateThumbnail2.setImageResource(R.mipmap.ic_launcher_logo)
-                            imageViewDonateThumbnail3.setImageResource(R.mipmap.ic_launcher_logo)
+                            if (markerData.img != null) {
+                                for (image in markerData.img) {
+                                    imgList.add(image)
+                                }
+
+                                if (imgList.size >= 1) {
+                                    Glide.with(requireContext())
+                                        .load(imgList[0]) // 이미지 URL
+                                        .placeholder(R.mipmap.ic_launcher_logo)
+                                        .error(R.mipmap.ic_launcher_logo)
+                                        .into(imageViewDonateThumbnail1)
+                                }
+                            }
 
                             buttonMapGotoDetail.setOnClickListener {
-                                mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, null)
+                                val bundle = Bundle()
+                                bundle.putString("donationIdx", markerData.idx)
+                                mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
                             }
                         }
                         false
@@ -222,9 +310,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     map = naverMap
                 }
                 markerList.add(marker)
+                Log.d("테스트", markerList.size.toString())
             }
         }
-
     }
 
     fun getLatLng(address: String): AddressLatLng{

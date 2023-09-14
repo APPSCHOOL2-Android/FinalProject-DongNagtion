@@ -7,6 +7,7 @@
     tools:context=".ui.map.MapFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,7 +21,7 @@
             android:id="@+id/button_map_searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="60dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:backgroundTint="@color/gray250"
@@ -32,7 +33,7 @@
             android:id="@+id/searchView_map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="60dp"
             android:layout_marginEnd="20dp"
             app:iconifiedByDefault="false"
             app:layout_constraintBottom_toBottomOf="@+id/button_map_searchView"
@@ -107,6 +108,17 @@
             app:layout_constraintEnd_toStartOf="@+id/button_map_setLocation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/button_map_setLocation" />
+
+        <ImageView
+            android:id="@+id/imageView_map_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_back_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/button_map_searchView"
+            app:layout_constraintEnd_toStartOf="@+id/button_map_searchView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button_map_searchView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
