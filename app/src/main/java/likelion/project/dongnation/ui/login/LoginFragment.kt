@@ -9,12 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
-import kotlinx.coroutines.async
 import likelion.project.dongnation.BuildConfig
 import likelion.project.dongnation.databinding.FragmentLoginBinding
 import likelion.project.dongnation.ui.main.MainActivity
@@ -44,15 +42,24 @@ class LoginFragment : Fragment() {
     private fun replace(){
         loginViewModel.loginState.observe(viewLifecycleOwner, Observer {
             when(it){
-                LoginViewModel.LOGIN_KAKAO_SUCCESS -> {
+                LoginViewModel.LOGIN_KAKAO_SUCCESS_INIT -> {
+                    mainActivity.replaceFragment("LocationSettingFragment", false, null)
+                }
+                LoginViewModel.LOGIN_NAVER_SUCCESS_INIT -> {
+                    mainActivity.replaceFragment("LocationSettingFragment", false, null)
+                }
+                LoginViewModel.LOGIN_GOOGLE_SUCCESS_INIT -> {
+                    mainActivity.replaceFragment("LocationSettingFragment", false, null)
+                }
+                LoginViewModel.LOGIN_KAKAO_SUCCESS_EXIST -> {
                     mainActivity.replaceFragment("HomeFragment", false, null)
                     mainActivity.bottomNavigationBar()
                 }
-                LoginViewModel.LOGIN_NAVER_SUCCESS -> {
+                LoginViewModel.LOGIN_NAVER_SUCCESS_EXIST -> {
                     mainActivity.replaceFragment("HomeFragment", false, null)
                     mainActivity.bottomNavigationBar()
                 }
-                LoginViewModel.LOGIN_GOOGLE_SUCCESS -> {
+                LoginViewModel.LOGIN_GOOGLE_SUCCESS_EXIST -> {
                     mainActivity.replaceFragment("HomeFragment", false, null)
                     mainActivity.bottomNavigationBar()
                 }
