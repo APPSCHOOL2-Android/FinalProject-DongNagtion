@@ -68,6 +68,8 @@ class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donat
             Glide.with(holder.itemThumbnail)
                 .load(donates[position].donationImg[0])
                 .into(holder.itemThumbnail)
+
+            holder.itemThumbnail.clipToOutline = true
         }
     }
 
