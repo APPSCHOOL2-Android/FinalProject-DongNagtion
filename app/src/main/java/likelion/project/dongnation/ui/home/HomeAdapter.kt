@@ -11,6 +11,7 @@ import com.google.android.material.chip.Chip
 import likelion.project.dongnation.databinding.ItemDonationlistBinding
 import likelion.project.dongnation.model.Donations
 import likelion.project.dongnation.model.Review
+import likelion.project.dongnation.ui.donate.DonateInfoFragment
 import likelion.project.dongnation.ui.main.MainActivity
 import kotlin.math.round
 
@@ -59,7 +60,7 @@ class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donat
         holder.itemTitle.text = donates[position].donationTitle
         holder.itemSubTitle.text = donates[position].donationSubtitle
 
-        rate = getRateAverage(donates[position].donationReview)
+        rate = DonateInfoFragment().getRateAverage(donates[position].donationReview)
 
         holder.itemReview.text = "$rate (${donates[position].donationReview.size})"
 
@@ -70,17 +71,5 @@ class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donat
         }
     }
 
-    private fun getRateAverage(reviews : List<Review>) : Double{
-        var total = 0.0
 
-        if (reviews.isEmpty()){
-            return total
-        } else {
-            for (review in reviews){
-                total += review.reviewRate.toFloat()
-            }
-        }
-
-        return round((total / reviews.size) * 10) / 10
-    }
 }

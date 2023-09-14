@@ -1,6 +1,8 @@
 package likelion.project.dongnation.ui.donate
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +15,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
 import likelion.project.dongnation.model.Donations
+import likelion.project.dongnation.model.Review
+import likelion.project.dongnation.ui.home.HomeAdapter
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import likelion.project.dongnation.ui.review.ItemSpacingDecoration
+import kotlin.math.round
 
 class DonateInfoFragment : Fragment() {
 
@@ -26,7 +31,6 @@ class DonateInfoFragment : Fragment() {
 
     val imgList = ArrayList<String>()
     private var donateIdx = ""
-    private var rate = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +40,6 @@ class DonateInfoFragment : Fragment() {
         mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(this)[DonateViewModel::class.java]
 
-        rate = arguments?.getDouble("rate")!!
         donateIdx = arguments?.getString("donationIdx")!!
 
         initViews()
@@ -72,6 +75,11 @@ class DonateInfoFragment : Fragment() {
                         textViewDonateInfoUserName.text = user.userName
                         textViewDonateInfoLacation.text = user.userAddress
                         textViewDonateInfoExperience.text = user.userExperience.toString()
+
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.postDelayed({
+                            fragmentDonateInfoBinding.progressBarDonateInfo.visibility = View.GONE
+                        }, 500) // 1초(1000 밀리초) 후에 실행
                     }
                 }
             }
@@ -124,7 +132,7 @@ class DonateInfoFragment : Fragment() {
             textViewDonateInfoTitle.text = donateInfo.donationTitle
             textViewDonateInfoSubTitle.text = donateInfo.donationSubtitle
             textViewDonateInfoCategory.text = donateInfo.donationCategory
-            textViewDonateInfoReviewScore.text = rate.toString()
+            textViewDonateInfoReviewScore.text = getRateAverage(donateInfo.donationReview).toString()
             textViewDonateInfoContent.text = donateInfo.donationContent
             textViewDonateInfoReviewNumber.text = "(${donateInfo.donationReview.size})"
 
@@ -137,9 +145,6 @@ class DonateInfoFragment : Fragment() {
             viewpager2DonateInfoThumbnail.adapter = DonateInfoFragmentStateAdapter(mainActivity)
             setupTabLayoutMediator()
 
-            if (donateInfo.donationType == "도와주세요") {
-                buttonDonateInfoDonation.visibility = View.GONE
-            }
             if (donateInfo.donationUser == LoginViewModel.loginUserInfo.userId) {
                 buttonDonateInfoDonation.visibility = View.GONE
                 buttonDonateInfoChat.visibility = View.GONE
@@ -155,7 +160,31 @@ class DonateInfoFragment : Fragment() {
                 buttonDonateInfoDelete.setOnClickListener {
 
                 }
+            } else {
+                buttonDonateInfoChat.visibility = View.VISIBLE
+                buttonDonateInfoDelete.visibility = View.GONE
+                buttonDonateInfoModify.visibility = View.GONE
+
+                if (donateInfo.donationType == "도와주세요") {
+                    buttonDonateInfoDonation.visibility = View.GONE
+                } else {
+                    buttonDonateInfoDonation.visibility = View.VISIBLE
+                }
             }
         }
+    }
+
+    fun getRateAverage(reviews : List<Review>) : Double{
+        var total = 0.0
+
+        if (reviews.isEmpty()){
+            return total
+        } else {
+            for (review in reviews){
+                total += review.reviewRate.toFloat()
+            }
+        }
+
+        return round((total / reviews.size) * 10) / 10
     }
 }
