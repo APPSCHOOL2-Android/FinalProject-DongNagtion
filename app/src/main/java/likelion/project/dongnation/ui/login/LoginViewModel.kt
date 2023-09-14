@@ -150,13 +150,13 @@ class LoginViewModel : ViewModel() {
             // 로그인 상태를 각 플랫폼별 성공 상태로 변경
             when(loginState.value){
                 LOGIN_KAKAO -> {
-                    loginState.value = LOGIN_KAKAO_SUCCESS
+                    loginState.value = LOGIN_KAKAO_SUCCESS_EXIST
                 }
                 LOGIN_NAVER -> {
-                    loginState.value = LOGIN_NAVER_SUCCESS
+                    loginState.value = LOGIN_NAVER_SUCCESS_EXIST
                 }
                 LOGIN_GOOGLE -> {
-                    loginState.value = LOGIN_GOOGLE_SUCCESS
+                    loginState.value = LOGIN_GOOGLE_SUCCESS_EXIST
                 }
             }
             // 로그인에 성공한 유저 정보를 LiveData에 저장
@@ -167,13 +167,13 @@ class LoginViewModel : ViewModel() {
             // 로그인 상태를 각 플랫폼별 성공 상태로 변경
             when(loginState.value){
                 LOGIN_KAKAO -> {
-                    loginState.value = LOGIN_KAKAO_SUCCESS
+                    loginState.value = LOGIN_KAKAO_SUCCESS_INIT
                 }
                 LOGIN_NAVER -> {
-                    loginState.value = LOGIN_NAVER_SUCCESS
+                    loginState.value = LOGIN_NAVER_SUCCESS_INIT
                 }
                 LOGIN_GOOGLE -> {
-                    loginState.value = LOGIN_GOOGLE_SUCCESS
+                    loginState.value = LOGIN_GOOGLE_SUCCESS_INIT
                 }
             }
             // 로그인에 성공한 유저 정보를 LiveData에 저장
@@ -217,13 +217,16 @@ class LoginViewModel : ViewModel() {
 
     companion object {
         const val LOGIN_KAKAO = 1
-        const val LOGIN_KAKAO_SUCCESS = 2
+        const val LOGIN_KAKAO_SUCCESS_INIT = 20
+        const val LOGIN_KAKAO_SUCCESS_EXIST = 21
         const val LOGIN_KAKAO_FAILURE = 3
         const val LOGIN_NAVER = 4
-        const val LOGIN_NAVER_SUCCESS = 5
+        const val LOGIN_NAVER_SUCCESS_INIT = 50
+        const val LOGIN_NAVER_SUCCESS_EXIST = 51
         const val LOGIN_NAVER_FAILURE = 6
         const val LOGIN_GOOGLE = 7
-        const val LOGIN_GOOGLE_SUCCESS = 8
+        const val LOGIN_GOOGLE_SUCCESS_INIT = 80
+        const val LOGIN_GOOGLE_SUCCESS_EXIST = 81
         const val LOGIN_GOOGLE_FAILURE = 9
         const val LOGIN_GOOGLE_ONE_TAP_REQUEST = 10
 
