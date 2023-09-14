@@ -5,14 +5,14 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class Donations(
-    val donationIdx : String = "",
+    val donationIdx: String = "",
     val donationTitle: String = "",
     val donationSubtitle: String = "",
     val donationType: String = "",
     val donationUser: String = "",
     val donationCategory: String = "",
     val donationContent: String = "",
-    val donationImg: List<String> = emptyList(),
+    val donationImg: MutableList<String> = mutableListOf(),
     val donationTimeStamp: Timestamp = Timestamp.now(),
     val donationReview: List<Review> = emptyList()
 ) : Parcelable {
@@ -24,9 +24,8 @@ data class Donations(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.createStringArrayList() ?: emptyList(),
+        (parcel.createStringArrayList() ?: mutableListOf<String>()).toMutableList(),
         parcel.readParcelable(Timestamp::class.java.classLoader) ?: Timestamp.now(),
-        parcel.createTypedArrayList(Review.CREATOR) ?: emptyList()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

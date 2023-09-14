@@ -42,6 +42,10 @@ import likelion.project.dongnation.ui.transfer.TransferFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoBoardFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFollowingFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFragment
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
@@ -204,6 +208,36 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 )
+            }
+        }
+    }
+
+    // 시간/날짜를 원하는 형식으로 변경하는 함수
+    fun formatTimeDifference(tipDate: Date): String {
+        val currentDate = Date()
+        val timeDifference = currentDate.time - tipDate.time
+        val timeDifferenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(timeDifference)
+        val timeDifferenceInMinutes = TimeUnit.MILLISECONDS.toMinutes(timeDifference)
+        val timeDifferenceInHours = TimeUnit.MILLISECONDS.toHours(timeDifference)
+        val timeDifferenceInDays = TimeUnit.MILLISECONDS.toDays(timeDifference)
+
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        return when {
+            timeDifferenceInSeconds < 60 -> {
+                "${timeDifferenceInSeconds}초 전"
+            }
+            timeDifferenceInMinutes < 60 -> {
+                "${timeDifferenceInMinutes}분 전"
+            }
+            timeDifferenceInHours < 24 -> {
+                "${timeDifferenceInHours}시간 전"
+            }
+            timeDifferenceInDays <= 30 -> {
+                "${timeDifferenceInDays}일 전"
+            }
+            else -> {
+                dateFormat.format(tipDate)
             }
         }
     }
