@@ -54,6 +54,11 @@ class TransferFragment : Fragment() {
         setOnTransferCliclListener(guide2, scrollView, guide3)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mainActivity.bottomNavigationBar()
+    }
+
     private fun setOnTransferCliclListener(
         guide2: ImageView,
         scrollView: NestedScrollView,

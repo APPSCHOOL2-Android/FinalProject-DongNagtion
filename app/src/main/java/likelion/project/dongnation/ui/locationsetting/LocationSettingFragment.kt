@@ -58,6 +58,11 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mainActivity.bottomNavigationBar()
+    }
+
     private fun observe() {
         lifecycleScope.launch {
             viewModel.uiState.collectLatest {
