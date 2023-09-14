@@ -2,7 +2,7 @@ package likelion.project.dongnation.model
 
 
 data class ChattingRoom (
-    val chattingRoomUserId1: String = "",
-    val chattingRoomUserId2: String = "",
+    val chattingRoomUserId: String = "",
+    val chattingRoomUserIdCounterpart: String = "",
     val chattingRoomMessages: ArrayList<Message> = ArrayList()
 )

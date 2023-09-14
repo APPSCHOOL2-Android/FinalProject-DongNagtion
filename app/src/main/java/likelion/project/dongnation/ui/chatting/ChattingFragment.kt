@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.lifecycle.ViewModelProvider
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentChattingBinding
 import likelion.project.dongnation.databinding.ItemChattingMessageCounterpartBinding
 import likelion.project.dongnation.databinding.ItemChattingMessageOneselfBinding
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -18,6 +20,7 @@ import java.util.Date
 class ChattingFragment : Fragment() {
 
     private lateinit var fragmentChattingBinding: FragmentChattingBinding
+    private lateinit var chattingViewModel: ChattingViewModel
     private lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
@@ -25,6 +28,7 @@ class ChattingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         fragmentChattingBinding = FragmentChattingBinding.inflate(inflater)
+        chattingViewModel = ViewModelProvider(this)[ChattingViewModel::class.java]
         mainActivity = activity as MainActivity
 
         setToolbar()
@@ -49,11 +53,15 @@ class ChattingFragment : Fragment() {
             textInputLayoutChattingMessage.apply {
                 setEndIconOnClickListener {
                     val newTextView1 = makeMessageOneself(inflater, editTextChattingMessage.text.toString())
-                    val newTextView2 = makeMessageCounterpart(inflater, editTextChattingMessage.text.toString())
-                    constraintLayoutChatting.apply {
-                        scrollViewChatting.apply {
-                            linearLayoutChatting.addView(newTextView1)
-                            linearLayoutChatting.addView(newTextView2)
+                    chattingViewModel.sendingState.observe(viewLifecycleOwner) {
+                        when(it){
+                            ChattingViewModel.SEND_MESSAGE_COMPLETE -> {
+                                constraintLayoutChatting.apply {
+                                    scrollViewChatting.apply {
+                                        linearLayoutChatting.addView(newTextView1)
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -68,6 +76,7 @@ class ChattingFragment : Fragment() {
             textViewItemChattingMessage.text = inputMessage
             textViewItemChattingDate.text = getDate()
         }
+        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, "user2Tmp", inputMessage, getDate())
         val message = itemChattingMessageOneselfBinding.root
         message.gravity = Gravity.END
         return message

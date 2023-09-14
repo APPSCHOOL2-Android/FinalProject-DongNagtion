@@ -18,41 +18,22 @@ class ChattingRoomDataSource {
         return querySnapshot.toObjects(ChattingRoom::class.java)
     }
 
-    // 기부 유저로 소속된 모든 채팅방
-    private suspend fun getChattingRoomsAsUser1(user: User): MutableList<ChattingRoom> {
+    // 유저 본인이 소속된 모든 채팅방
+    suspend fun getChattingRooms(user: User): MutableList<ChattingRoom> {
         val querySnapshot = db.collection("chattingRooms")
-            .whereEqualTo("chattingRoomUserId1", user.userId)
+            .whereEqualTo("chattingRoomUserId", user.userId)
             .get().await()
         return querySnapshot.toObjects(ChattingRoom::class.java)
-    }
-
-    // 수혜 유저로 소속된 모든 채팅방
-    private suspend fun getChattingRoomsAsUser2(user: User): MutableList<ChattingRoom> {
-        val querySnapshot = db.collection("chattingRooms")
-            .whereEqualTo("chattingRoomUserId2", user.userId)
-            .get().await()
-        return querySnapshot.toObjects(ChattingRoom::class.java)
-    }
-
-    // 해당 유저가 소속된 모든 채팅방
-    suspend fun getChattingRooms(user: User): List<ChattingRoom> {
-        val chattingRoomList1 = getChattingRoomsAsUser1(user)
-        val chattingRoomList2 = getChattingRoomsAsUser2(user)
-        return chattingRoomList1 + chattingRoomList2
     }
 
     // 두 명의 유저가 소속된 채팅방
-    suspend fun getChattingRoom(user1: User, user2: User): ChattingRoom {
-        val chattingRoomList1 = getChattingRooms(user1)
+    suspend fun getChattingRoom(user: User, userCounterpart: User): ChattingRoom {
+        val chattingRoomList1 = getChattingRooms(user)
         var chattingRoomResult = ChattingRoom()
 
         for(chattingRoom in chattingRoomList1){
-            if(chattingRoom.chattingRoomUserId1 == user1.userId
-                && chattingRoom.chattingRoomUserId2 == user2.userId){
-                chattingRoomResult = chattingRoom
-                break
-            } else if(chattingRoom.chattingRoomUserId2 == user1.userId
-                && chattingRoom.chattingRoomUserId1 == user2.userId){
+            if(chattingRoom.chattingRoomUserId == user.userId
+                && chattingRoom.chattingRoomUserIdCounterpart == userCounterpart.userId) {
                 chattingRoomResult = chattingRoom
                 break
             }
@@ -66,7 +47,48 @@ class ChattingRoomDataSource {
     }
 
     // 두 명의 유저가 소속된 채팅방의 메시지
-    suspend fun getMessages(user1: User, user2: User): ArrayList<Message>{
-        return getChattingRoom(user1, user2).chattingRoomMessages
+    suspend fun getMessages(user: User, userCounterpart: User): ArrayList<Message>{
+        return getChattingRoom(user, userCounterpart).chattingRoomMessages
+    }
+
+    // 메시지 데이터 베이스 저장
+    suspend fun sendMessage(user: User, userCounterpart: User, message: Message) = withContext(Dispatchers.IO){
+        // 발송 유저의 데이터 베이스 저장
+        val messageList = getMessages(user, userCounterpart)
+        messageList.add(message)
+        db.collection("chattingRooms")
+            .whereEqualTo("userId", user.userId)
+            .whereEqualTo("userIdCounterpart", userCounterpart.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    val filePath = it.documents[0].reference.path
+                    db.document(filePath).update("chattingRoomMessages", messageList)
+                }
+                else {
+                    val newChattingRoom = ChattingRoom(user.userId, userCounterpart.userId)
+                    newChattingRoom.chattingRoomMessages.add(message)
+                    db.collection("chattingRoms").add(newChattingRoom)
+                }
+            }
+
+        // 상대 유저의 데이터 베이스 저장
+        val messageListCounterpart = getMessages(userCounterpart, user)
+        messageListCounterpart.add(message)
+        db.collection("chattingRooms")
+            .whereEqualTo("userId", userCounterpart.userId)
+            .whereEqualTo("userIdCounterpart", user.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    val filePath = it.documents[0].reference.path
+                    db.document(filePath).update("chattingRoomMessages", messageList)
+                }
+                else {
+                    val newChattingRoom = ChattingRoom(userCounterpart.userId, user.userId)
+                    newChattingRoom.chattingRoomMessages.add(message)
+                    db.collection("chattingRoms").add(newChattingRoom)
+                }
+            }
     }
 }
