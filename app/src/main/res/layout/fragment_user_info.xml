@@ -81,7 +81,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="이웃 팔로잉"
+                            android:text="이웃 팔로워"
                             android:textAlignment="center"
                             android:textAppearance="@style/Typography.Regular12" />
 
@@ -89,7 +89,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="리뷰 평점"
+                            android:text="이웃 팔로잉"
                             android:textAlignment="center"
                             android:textAppearance="@style/Typography.Regular12" />
 
@@ -125,11 +125,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="4.5"
+                            android:text="32"
                             android:textColor="#000000"
-                            android:textStyle="bold"
-                            app:icon="@drawable/ic_star_24dp"
-                            app:iconTint="#FFF176" />
+                            android:textStyle="bold" />
 
                         <Button
                             android:id="@+id/button_review_exp"

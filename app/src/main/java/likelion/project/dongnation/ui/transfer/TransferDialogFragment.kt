@@ -75,7 +75,7 @@ class TransferDialogFragment(private val transferCode: String) : DialogFragment(
                                 Snackbar.make(mainActivity.activityMainBinding.fragmentContainerViewMain, it.showMessage, Snackbar.LENGTH_SHORT)
                                     .show()
                                 mainActivity.replaceFragment(MainActivity.USER_INFO_FRAGMENT, false, null)
-
+                                mainActivity.bottomNavigationBar()
                             }
 
                             "송금 코드 등록 실패" -> {
