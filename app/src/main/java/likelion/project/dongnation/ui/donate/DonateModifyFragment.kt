@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateWriteBinding
 import likelion.project.dongnation.model.Donations
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class DonateModifyFragment : Fragment() {
@@ -32,23 +33,48 @@ class DonateModifyFragment : Fragment() {
 
         fragmentDonateModifyBinding.run {
             mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
+            category = resources.getStringArray(R.array.array_donate_category)
 
             toolbarDonateWrite.setNavigationOnClickListener {
                 mainActivity.removeFragment("DonateModifyFragment")
             }
 
-            category = resources.getStringArray(R.array.array_donate_category)
             spinnerDonateWriteCategory.run {
                 adapter = SpinnerAdapter(mainActivity, R.layout.item_spinner, category)
             }
 
             initModifyDonateInfo(donate)
+
+            buttonDonateWriteSave.run {
+                text = "수정하기"
+                setOnClickListener {
+
+                    val title = editTextDonateWriteTitle.text.toString()
+                    val subTitle = editTextDonateWriteSubTitle.text.toString()
+                    val content = editTextDonateWriteContent.text.toString()
+                    val selectCategory = spinnerDonateWriteCategory.selectedItemPosition
+
+                    if (DonateWriteFragment().donateValidation(title, subTitle, content, selectCategory)){
+                        val userId = LoginViewModel.loginUserInfo.userId
+                        val type = if(radioGroupDonateWriteType.checkedRadioButtonId == R.id.radioButton_donate_write_type_help_me){
+                            "도와주세요"
+                        } else {
+                            "도와드릴게요"
+                        }
+
+                        val donate = Donations(title, subTitle, type, userId, category[selectCategory], content)
+                        // viewModel.addDonate(donate)
+
+                        mainActivity.removeFragment("DonateWriteFragment")
+                    }
+                }
+            }
         }
 
         return fragmentDonateModifyBinding.root
     }
 
-    fun initModifyDonateInfo(donate : Donations){
+    private fun initModifyDonateInfo(donate : Donations){
         fragmentDonateModifyBinding.run {
             if (donate.donationType == "도와주세요"){
                 radioGroupDonateWriteType.check(R.id.radioButton_donate_write_type_help_me)
