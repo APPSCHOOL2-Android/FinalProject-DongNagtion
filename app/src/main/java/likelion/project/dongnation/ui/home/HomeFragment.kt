@@ -2,20 +2,16 @@ package likelion.project.dongnation.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.search.SearchView
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import likelion.project.dongnation.R
-import likelion.project.dongnation.databinding.ActivityMainBinding
 import likelion.project.dongnation.databinding.FragmentHomeBinding
-import likelion.project.dongnation.repository.DonateRepository
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
@@ -25,6 +21,9 @@ class HomeFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var viewModel: HomeViewModel
 
+    private lateinit var adapter: HomeAdapter
+    private var recyclerView: RecyclerView? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,14 +32,6 @@ class HomeFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-
-        viewModel.run {
-            donatesLiveData.observe(viewLifecycleOwner){ donates ->
-                fragmentHomeBinding.recyclerviewHomeDonationAll.adapter = HomeAdapter(mainActivity, donates)
-            }
-
-            loadDonations()
-        }
 
         fragmentHomeBinding.run {
 
@@ -52,7 +43,10 @@ class HomeFragment : Fragment() {
                     false
                 }
             }
-            
+
+            adapter = HomeAdapter(mainActivity, emptyList()) // 초기에 빈 데이터로 어댑터를 설정
+            recyclerviewHomeDonationAll.adapter = adapter
+
             textViewHomeLocation.text = LoginViewModel.loginUserInfo.userAddress
 
             buttonHomeSearch.setOnClickListener {
@@ -74,7 +68,27 @@ class HomeFragment : Fragment() {
         return fragmentHomeBinding.root
     }
 
-    fun searchResult(){
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        recyclerView = fragmentHomeBinding.recyclerviewHomeDonationAll
+
+        // RecyclerView.Adapter.StateRestorationPolicy 설정
+        recyclerView?.adapter?.stateRestorationPolicy =
+            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
+        // 데이터 로드
+        viewModel.run {
+            donatesLiveData.observe(viewLifecycleOwner) { donates ->
+                // 기존 어댑터를 업데이트
+                adapter.updateData(donates)
+            }
+
+            loadDonations()
+        }
+    }
+
+    private fun searchResult(){
         val word = fragmentHomeBinding.editTextHomeSearch.text.toString()
 
         if (word == ""){
@@ -86,7 +100,7 @@ class HomeFragment : Fragment() {
                 searchLiveData.observe(viewLifecycleOwner){ search ->
                     fragmentHomeBinding.recyclerviewHomeDonationAll.run {
                         adapter = HomeAdapter(mainActivity, search)
-                        adapter!!.notifyDataSetChanged()
+                        adapter?.notifyDataSetChanged()
                     }
                 }
 
@@ -95,7 +109,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun hideKeyboard(view: View) {
+    private fun hideKeyboard(view: View) {
         val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }

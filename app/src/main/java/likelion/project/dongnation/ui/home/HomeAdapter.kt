@@ -5,19 +5,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.chip.Chip
 import likelion.project.dongnation.databinding.ItemDonationlistBinding
 import likelion.project.dongnation.model.Donations
-import likelion.project.dongnation.model.Review
 import likelion.project.dongnation.ui.donate.DonateInfoFragment
 import likelion.project.dongnation.ui.main.MainActivity
-import kotlin.math.round
 
-class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donations>) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class HomeAdapter(val mainActivity: MainActivity, var donates: List<Donations>) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
-    var rate: Double = 0.0
+    private var rate: Double = 0.0
     inner class HomeViewHolder(binding: ItemDonationlistBinding) : RecyclerView.ViewHolder(binding.root){
         var itemThumbnail : ImageView
         var itemTitle : TextView
@@ -73,5 +71,11 @@ class HomeAdapter(val mainActivity: MainActivity, val donates: MutableList<Donat
         }
     }
 
+    fun updateData(newItems: List<Donations>) {
+        val diffCallback = DiffCallback(donates, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
 
+        donates = newItems.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
+    }
 }
