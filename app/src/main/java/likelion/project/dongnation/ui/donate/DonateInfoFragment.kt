@@ -16,6 +16,7 @@ import likelion.project.dongnation.model.Donations
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import likelion.project.dongnation.ui.review.ItemSpacingDecoration
+import kotlin.math.round
 
 class DonateInfoFragment : Fragment() {
 
@@ -26,7 +27,6 @@ class DonateInfoFragment : Fragment() {
 
     val imgList = ArrayList<String>()
     private var donateIdx = ""
-    private var rate = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +36,6 @@ class DonateInfoFragment : Fragment() {
         mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(this)[DonateViewModel::class.java]
 
-        rate = arguments?.getDouble("rate")!!
         donateIdx = arguments?.getString("donationIdx")!!
 
         initViews()
@@ -124,7 +123,6 @@ class DonateInfoFragment : Fragment() {
             textViewDonateInfoTitle.text = donateInfo.donationTitle
             textViewDonateInfoSubTitle.text = donateInfo.donationSubtitle
             textViewDonateInfoCategory.text = donateInfo.donationCategory
-            textViewDonateInfoReviewScore.text = rate.toString()
             textViewDonateInfoContent.text = donateInfo.donationContent
             textViewDonateInfoReviewNumber.text = "(${donateInfo.donationReview.size})"
 
@@ -155,7 +153,17 @@ class DonateInfoFragment : Fragment() {
                 buttonDonateInfoDelete.setOnClickListener {
 
                 }
+    fun getRateAverage(reviews : List<Review>) : Double{
+        var total = 0.0
+
+        if (reviews.isEmpty()){
+            return total
+        } else {
+            for (review in reviews){
+                total += review.reviewRate.toFloat()
             }
         }
+
+        return round((total / reviews.size) * 10) / 10
     }
 }
