@@ -46,17 +46,10 @@ class DonateInfoFragment : Fragment() {
     }
 
     private fun initViews() {
-        imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
-        imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
-        imgList.add(R.drawable.ic_launcher_logo_foreground.toString())
-
         fragmentDonateInfoBinding.apply {
             buttonDonateInfoBack.setOnClickListener {
                 mainActivity.removeFragment("DonateInfoFragment")
             }
-
-            viewpager2DonateInfoThumbnail.adapter = DonateInfoFragmentStateAdapter(mainActivity)
-            setupTabLayoutMediator()
 
             buttonDonateInfoChat.setOnClickListener {
                 mainActivity.replaceFragment("ChattingFragment", true, null)
@@ -134,6 +127,15 @@ class DonateInfoFragment : Fragment() {
             textViewDonateInfoReviewScore.text = rate.toString()
             textViewDonateInfoContent.text = donateInfo.donationContent
             textViewDonateInfoReviewNumber.text = "(${donateInfo.donationReview.size})"
+
+            if (donateInfo.donationImg.isNotEmpty()){
+                for (image in donateInfo.donationImg){
+                    imgList.add(image)
+                }
+            }
+
+            viewpager2DonateInfoThumbnail.adapter = DonateInfoFragmentStateAdapter(mainActivity)
+            setupTabLayoutMediator()
 
             if (donateInfo.donationType == "도와주세요") {
                 buttonDonateInfoDonation.visibility = View.GONE
