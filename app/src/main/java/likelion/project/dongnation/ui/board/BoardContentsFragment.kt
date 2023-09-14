@@ -1,5 +1,6 @@
 package likelion.project.dongnation.ui.board
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,12 +14,15 @@ import androidx.viewpager2.widget.ViewPager2
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentBoardContentsBinding
 import likelion.project.dongnation.databinding.ItemBoardContentsCommentBinding
+import likelion.project.dongnation.model.Tips
 import likelion.project.dongnation.ui.main.MainActivity
 
 class BoardContentsFragment : Fragment() {
 
     lateinit var fragmentBoardContentsBinding: FragmentBoardContentsBinding
     lateinit var mainActivity: MainActivity
+
+    lateinit var board: Tips
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,20 +31,35 @@ class BoardContentsFragment : Fragment() {
         fragmentBoardContentsBinding = FragmentBoardContentsBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        board = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("board", Tips::class.java)!!
+        } else {
+            arguments?.getParcelable("board")!!
+        }
+
         fragmentBoardContentsBinding.run {
 
             materialToolbarBoardContents.run {
-                title = "팁 제목"
+                title = board.tipTitle
                 setNavigationIcon(R.drawable.ic_back_24dp)
                 setNavigationOnClickListener {
 
                 }
             }
 
+            textViewBoardContentsWriter.text = board.tipWriterName
+            textViewBoardContentsDate.text = mainActivity.formatTimeDifference(board.tipDate.toDate())
+            textViewBoardContentsContents.text = board.tipContent
+
             viewPagerBoardContents.run {
-                viewPagerBoardContents.adapter = BoardContentsViewPagerAdapter(getImageList())
-                viewPagerBoardContents.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-                springDotsIndicatorBoardContents.setViewPager2(viewPagerBoardContents)    // indicator 설정
+                if (getImageList().isNotEmpty()) {
+                    viewPagerBoardContents.adapter = BoardContentsViewPagerAdapter(getImageList())
+                    viewPagerBoardContents.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                    springDotsIndicatorBoardContents.setViewPager2(viewPagerBoardContents)    // indicator 설정
+                }else {
+                    layoutBoardContentsImg.visibility = View.GONE
+                }
+
             }
 
             recyclerViewBoardContents.run {
@@ -60,7 +79,14 @@ class BoardContentsFragment : Fragment() {
 
     // 뷰 페이저에 들어갈 아이템
     private fun getImageList(): ArrayList<String> {
-        return arrayListOf<String>(R.drawable.ic_back_24dp.toString(), R.drawable.ic_launcher_logo_foreground.toString(), R.drawable.ic_launcher_logo_foreground.toString())
+
+        val imageList = arrayListOf<String>()
+
+        if (board.tipsImg.isNotEmpty()) {
+            imageList.addAll(board.tipsImg)
+        }
+
+        return imageList
     }
 
     inner class BoardContentsAdapter : RecyclerView.Adapter<BoardContentsAdapter.BoardContentsHolder>() {

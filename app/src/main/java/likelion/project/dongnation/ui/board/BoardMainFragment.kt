@@ -89,7 +89,16 @@ class BoardMainFragment : Fragment() {
 
                 // 게시판 클릭시
                 itemBoardMainBinding.root.setOnClickListener {
-                    mainActivity.replaceFragment(MainActivity.BOARD_CONTENTS_FRAGMENT, true, null)
+
+                    val position = bindingAdapterPosition // 현재 아이템의 위치를 가져옴
+                    if (position != RecyclerView.NO_POSITION) {
+                        val selectedDonation = tipsDataList[position] // 선택한 아이템을 가져옴
+
+                        var bundle = Bundle()
+                        bundle.putParcelable("board", selectedDonation)
+                        mainActivity.replaceFragment(MainActivity.BOARD_CONTENTS_FRAGMENT, true, bundle)
+                    }
+
                 }
             }
         }
@@ -112,33 +121,7 @@ class BoardMainFragment : Fragment() {
 
         override fun onBindViewHolder(holder: BoarMainHolder, position: Int) {
             val tipTimestamp = tipsDataList[position].tipDate // Firestore에서 가져온 Timestamp 객체
-            val currentDate = Date() // 현재 날짜 및 시간
-
-            val timeDifference = currentDate.time - tipTimestamp.toDate().time
-            val timeDifferenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(timeDifference)
-            val timeDifferenceInMinutes = TimeUnit.MILLISECONDS.toMinutes(timeDifference)
-            val timeDifferenceInHours = TimeUnit.MILLISECONDS.toHours(timeDifference)
-            val timeDifferenceInDays = TimeUnit.MILLISECONDS.toDays(timeDifference)
-
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-            val formattedDate = when {
-                timeDifferenceInSeconds < 60 -> { // 60초 미만: "1분 전"과 같이 표시
-                    "${timeDifferenceInSeconds}초 전"
-                }
-                timeDifferenceInMinutes < 60 -> { // 60분 미만: "1시간 전"과 같이 표시
-                    "${timeDifferenceInMinutes}분 전"
-                }
-                timeDifferenceInHours < 24 -> { // 24시간 미만: "1시간 전"과 같이 표시
-                    "${timeDifferenceInHours}시간 전"
-                }
-                timeDifferenceInDays <= 30 -> { // 30일 이내: "5일 전"과 같이 표시
-                    "${timeDifferenceInDays}일 전"
-                }
-                else -> { // 30일 이후: 년도-월-일 형식으로 표시
-                    dateFormat.format(tipTimestamp.toDate())
-                }
-            }
+            val formattedDate = mainActivity.formatTimeDifference(tipTimestamp.toDate())
 
             holder.textViewTitle.text = tipsDataList[position].tipTitle
             holder.textViewWriter.text = tipsDataList[position].tipWriterName

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ItemBoardContentsImageBinding
 
@@ -32,7 +33,10 @@ class BoardContentsViewPagerAdapter(private val imageList: ArrayList<String>) : 
     override fun onBindViewHolder(holder: BoardContentsViewPagerViewHolder, position: Int) {
         // 이미지 설정하기
         val imageUrl = imageList[position]
-        holder.imageViewBoardContentViewPager.setImageResource(R.drawable.ic_launcher_logo_foreground)
+
+        Glide.with(holder.imageViewBoardContentViewPager.context)
+            .load(imageUrl)
+            .into(holder.imageViewBoardContentViewPager)
 
     }
 
