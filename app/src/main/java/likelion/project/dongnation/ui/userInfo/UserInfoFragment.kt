@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentUserInfoBinding
+import likelion.project.dongnation.databinding.ItemUserInfoDrawelCheckBinding
 import likelion.project.dongnation.ui.main.MainActivity
 
 class UserInfoFragment : Fragment() {
@@ -57,6 +59,23 @@ class UserInfoFragment : Fragment() {
 
             // 계정 탈퇴
             layoutInfoWithdrawal.setOnClickListener {
+                val binding = ItemUserInfoDrawelCheckBinding.inflate(LayoutInflater.from(context))
+                val builder = MaterialAlertDialogBuilder(mainActivity)
+                builder.setView(binding.root)
+                val dialog = builder.create()
+
+                binding.buttonDrawelCheckYes.setOnClickListener {
+                    mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
+                    mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, null)
+                    Snackbar.make(requireView(), "탈퇴 처리가 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+
+                binding.buttonDrawelCheckNo.setOnClickListener {
+                    dialog.dismiss()
+                }
+
+                dialog.show()
             }
 
         }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <TextView
+        style="@style/Typography.Bold20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="정말로 동네이션을 떠나시겠어요?" />
+
+    <TextView
+        style="@style/Typography.Regular16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="이 곳은 동네의 주민들과의 재능을 " />
+
+    <TextView
+        style="@style/Typography.Regular16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="베풀고 받으면서 소통하는 곳이에요." />
+
+    <TextView
+        style="@style/Typography.Regular16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="잠깐 이 곳을 떠나신다 해도," />
+
+    <TextView
+        style="@style/Typography.Regular16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="이웃 여러분은 당신을 기다리고 있을거에요." />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_drawelCheck_no"
+            style="@style/Typography.Regular15"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="다시 생각해 볼게요."
+            android:textColor="@color/white" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <Button
+            android:id="@+id/button_drawelCheck_yes"
+            style="@style/Typography.Regular15"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green100"
+            android:text="탈퇴할게요."
+            android:textColor="@color/black" />
+    </LinearLayout>
+</LinearLayout>
