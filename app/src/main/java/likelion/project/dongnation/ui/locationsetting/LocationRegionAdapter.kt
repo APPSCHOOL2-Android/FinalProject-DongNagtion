@@ -54,7 +54,7 @@ class LocationRegionAdapter(val regionNames: Array<String>) :
         }
     }
 
-    private fun setSingleSelection(position: Int) {
+    fun setSingleSelection(position: Int) {
         if (position == RecyclerView.NO_POSITION) return
         notifyItemChanged(selectedPostion)
         selectedPostion = position

@@ -1,9 +1,6 @@
 package com.qure.create.location
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +19,9 @@ import likelion.project.dongnation.ui.locationsetting.AreaNameCallback
 import likelion.project.dongnation.ui.locationsetting.LocationSettingPageFragment
 import likelion.project.dongnation.ui.locationsetting.LocationSettingPagerAdapter
 import likelion.project.dongnation.ui.locationsetting.LocationSettingViewModel
+import likelion.project.dongnation.ui.locationsetting.Province
 import likelion.project.dongnation.ui.locationsetting.Region
 import likelion.project.dongnation.ui.locationsetting.RegionPositionCallback
-import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCallback {
@@ -97,6 +94,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
                 regionName = "",
                 listener = listener,
                 arealistener = arealistener,
+                selectedIndex = -1
             ),
             LocationSettingPageFragment.newInstance(
                 title = getString(R.string.location_setting_selection_city),
@@ -105,6 +103,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
                 regionName = "",
                 listener = listener,
                 arealistener = arealistener,
+                selectedIndex = -1
             ),
             LocationSettingPageFragment.newInstance(
                 title = getString(R.string.location_setting_selection_map),
@@ -113,6 +112,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
                 regionName = "",
                 listener = listener,
                 arealistener = arealistener,
+                selectedIndex = -1
             )
         )
     }
@@ -126,18 +126,64 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
         binding.apply {
             buttonLocationSettingNext.setOnClickListener {
                 if (currentItemPosition == 2) {
-                    viewModel.updateAddress(User(userId = LoginViewModel.loginUserInfo.userId, userAddress = areaName.filterNot { it.isDigit() }))
-                    Log.d("location", LoginViewModel.loginUserInfo.userId)
+                    viewModel.updateAddress(
+                        User(
+                            userId = "2eqn9AfBVl9oXROMY2Wx",
+                            userAddress = areaName.filterNot { it.isDigit() })
+                    )
                     mainActivity.replaceFragment(MainActivity.HOME_FRAGMENT, false, null)
-                    mainActivity.activityMainBinding.bottomNavigation.visibility = View.VISIBLE
+                    mainActivity.activityMainBinding.bottomNavigation.visibility =
+                        View.VISIBLE
                 }
                 viewPagerLocationSetting.run {
                     currentItem += PAGE_INCREMENT_VALUE
                     currentItemPosition = currentItem
+                    if (currentItem == 2) {
+                        val selected = selectedRegionName.take(2)
+                        val krDo = Province.findKrDo(selected[0])
+                        val regionArray = Region.getArray(requireContext(), krDo.number)
+                        setRefreshAdapter(
+                            currentItem - 1,
+                            regionArray,
+                            R.string.location_setting_do,
+                            R.string.location_setting_selection_do,
+                            regionArray.indexOf(selected[1])
+                        )
+                    } else if (currentItem == 1) {
+                        val selected = selectedRegionName.take(1)
+                        setRefreshAdapter(
+                            currentItem - 1,
+                            Region.getArray(requireContext()),
+                            R.string.location_setting_city,
+                            R.string.location_setting_selection_city,
+                            Region.getArray(requireContext()).indexOf(selected[0])
+                        )
+                    }
                 }
             }
             buttonLocationSettingPrevious.setOnClickListener {
                 viewPagerLocationSetting.run {
+                    if (currentItem == 2) {
+                        val selected = selectedRegionName.take(2)
+                        val krDo = Province.findKrDo(selected[0])
+                        val regionArray = Region.getArray(requireContext(), krDo.number)
+                        setRefreshAdapter(
+                            currentItem - 1,
+                            regionArray,
+                            R.string.location_setting_city,
+                            R.string.location_setting_selection_city,
+                            regionArray.indexOf(selected[1])
+                        )
+                    } else if (currentItem == 1) {
+                        val selected = selectedRegionName.take(1)
+                        setRefreshAdapter(
+                            currentItem - 1,
+                            Region.getArray(requireContext()),
+                            R.string.location_setting_do,
+                            R.string.location_setting_selection_do,
+                            Region.getArray(requireContext()).indexOf(selected[0])
+                        )
+                    }
                     currentItem -= PAGE_INCREMENT_VALUE
                     currentItemPosition = currentItem
                 }
@@ -195,11 +241,15 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
     }
 
     private fun setSelectedRegionName(postion: Int) {
-        val regionArray = Region.getArray(this.requireContext(), postion)
+        val regionArray = if (currentItemPosition == 0 || selectedRegionName[0].isEmpty()) Region.getArray(
+            this.requireContext(),
+            postion
+        ) else selectedRegionName.toTypedArray()
+        selectedRegionId = if (currentItemPosition == 0 || selectedRegionName[0].isEmpty()) postion else Region.getArray(requireContext()).indexOf(regionArray[0])
         when (currentItemPosition) {
             0 -> {
-                selectedRegionId = postion
-                selectedRegionName[0] = resources.getStringArray(R.array.array_region)[postion]
+                selectedRegionName[0] =
+                    resources.getStringArray(R.array.array_region)[selectedRegionId]
                 selectedRegionName[1] = ""
                 refreshAdapter(regionArray)
             }
@@ -215,22 +265,32 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
     private fun refreshAdapter(regionArray: Array<String>) {
         when (currentItemPosition) {
             0 -> setRefreshAdapter(
+                currentItemPosition + 1,
                 regionArray,
+                R.string.location_setting_city,
                 R.string.location_setting_selection_city,
-                R.string.location_setting_city
+                -1
             )
 
             else -> setRefreshAdapter(
+                currentItemPosition + 1,
                 emptyArray(),
+                R.string.location_setting_map,
                 R.string.location_setting_selection_map,
-                R.string.location_setting_map
+                -1
             )
         }
     }
 
-    private fun setRefreshAdapter(regionArray: Array<String>, title: Int, subTitle: Int) {
+    private fun setRefreshAdapter(
+        currentPosition: Int,
+        regionArray: Array<String>,
+        title: Int,
+        subTitle: Int,
+        selectedIndex: Int
+    ) {
         adapter.refreshFragment(
-            currentItemPosition + 1,
+            currentPosition,
             LocationSettingPageFragment.newInstance(
                 title = getString(title),
                 subTitle = getString(subTitle),
@@ -238,17 +298,17 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
                 regionName = selectedRegionName.joinToString(" "),
                 listener = listener,
                 arealistener = arealistener,
+                selectedIndex = selectedIndex
             )
         )
     }
 
     override fun setAreaName(name: String, coords: String) {
-        this.areaName = name
+        this.selectedRegionName = name.split(" ").take(2).toMutableList()
         this.coords = coords
     }
 
     companion object {
         private const val PAGE_INCREMENT_VALUE = 1
     }
-
 }
