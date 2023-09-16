@@ -50,6 +50,10 @@ class DonateWriteFragment : Fragment() {
             mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
             val category = resources.getStringArray(R.array.array_donate_category)
 
+            toolbarDonateWrite.setNavigationOnClickListener {
+                mainActivity.removeFragment("DonateWriteFragment")
+            }
+
             spinnerDonateWriteCategory.run {
                 adapter = SpinnerAdapter(mainActivity, R.layout.item_spinner, category)
             }
@@ -150,7 +154,7 @@ class DonateWriteFragment : Fragment() {
             } else {
                 "도와드릴게요"
             }
-            
+
             val donate = Donations(
                 donationTitle = title,
                 donationSubtitle = subTitle,
