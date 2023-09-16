@@ -3,6 +3,7 @@ package com.qure.create.location
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ import likelion.project.dongnation.ui.locationsetting.LocationSettingPagerAdapte
 import likelion.project.dongnation.ui.locationsetting.LocationSettingViewModel
 import likelion.project.dongnation.ui.locationsetting.Region
 import likelion.project.dongnation.ui.locationsetting.RegionPositionCallback
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCallback {
@@ -124,7 +126,8 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
         binding.apply {
             buttonLocationSettingNext.setOnClickListener {
                 if (currentItemPosition == 2) {
-                    viewModel.updateAddress(User(userId = "2eqn9AfBVl9oXROMY2Wx", userAddress = areaName.filterNot { it.isDigit() }))
+                    viewModel.updateAddress(User(userId = LoginViewModel.loginUserInfo.userId, userAddress = areaName.filterNot { it.isDigit() }))
+                    Log.d("location", LoginViewModel.loginUserInfo.userId)
                     mainActivity.replaceFragment(MainActivity.HOME_FRAGMENT, false, null)
                     mainActivity.activityMainBinding.bottomNavigation.visibility = View.VISIBLE
                 }

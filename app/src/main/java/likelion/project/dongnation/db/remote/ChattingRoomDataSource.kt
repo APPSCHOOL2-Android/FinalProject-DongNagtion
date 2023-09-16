@@ -1,5 +1,6 @@
 package likelion.project.dongnation.db.remote
 
+import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -28,13 +29,28 @@ class ChattingRoomDataSource {
 
     // 두 명의 유저가 소속된 채팅방
     suspend fun getChattingRoom(user: User, userCounterpart: User): ChattingRoom {
-        val chattingRoomList1 = getChattingRooms(user)
+        val chattingRoomList = getChattingRooms(user)
         var chattingRoomResult = ChattingRoom()
 
-        for(chattingRoom in chattingRoomList1){
+        for(chattingRoom in chattingRoomList){
             if(chattingRoom.chattingRoomUserId == user.userId
                 && chattingRoom.chattingRoomUserIdCounterpart == userCounterpart.userId) {
                 chattingRoomResult = chattingRoom
+                break
+            }
+        }
+
+        return chattingRoomResult
+    }
+
+    suspend fun isChattingRoomExist(user: User, userCounterpart: User): Boolean {
+        val chattingRoomList = getChattingRooms(user)
+        var chattingRoomResult = false
+
+        for(chattingRoom in chattingRoomList){
+            if(chattingRoom.chattingRoomUserId == user.userId
+                && chattingRoom.chattingRoomUserIdCounterpart == userCounterpart.userId) {
+                chattingRoomResult = true
                 break
             }
         }
@@ -57,8 +73,8 @@ class ChattingRoomDataSource {
         val messageList = getMessages(user, userCounterpart)
         messageList.add(message)
         db.collection("chattingRooms")
-            .whereEqualTo("userId", user.userId)
-            .whereEqualTo("userIdCounterpart", userCounterpart.userId)
+            .whereEqualTo("chattingRoomUserId", user.userId)
+            .whereEqualTo("chattingRoomUserIdCounterpart", userCounterpart.userId)
             .get()
             .addOnSuccessListener {
                 if(it.documents.size != 0){
@@ -68,7 +84,7 @@ class ChattingRoomDataSource {
                 else {
                     val newChattingRoom = ChattingRoom(user.userId, userCounterpart.userId)
                     newChattingRoom.chattingRoomMessages.add(message)
-                    db.collection("chattingRoms").add(newChattingRoom)
+                    db.collection("chattingRooms").add(newChattingRoom)
                 }
             }
 
@@ -76,8 +92,8 @@ class ChattingRoomDataSource {
         val messageListCounterpart = getMessages(userCounterpart, user)
         messageListCounterpart.add(message)
         db.collection("chattingRooms")
-            .whereEqualTo("userId", userCounterpart.userId)
-            .whereEqualTo("userIdCounterpart", user.userId)
+            .whereEqualTo("chattingRoomUserId", userCounterpart.userId)
+            .whereEqualTo("chattingRoomUserIdCounterpart", user.userId)
             .get()
             .addOnSuccessListener {
                 if(it.documents.size != 0){
@@ -87,7 +103,7 @@ class ChattingRoomDataSource {
                 else {
                     val newChattingRoom = ChattingRoom(userCounterpart.userId, user.userId)
                     newChattingRoom.chattingRoomMessages.add(message)
-                    db.collection("chattingRoms").add(newChattingRoom)
+                    db.collection("chattingRooms").add(newChattingRoom)
                 }
             }
     }

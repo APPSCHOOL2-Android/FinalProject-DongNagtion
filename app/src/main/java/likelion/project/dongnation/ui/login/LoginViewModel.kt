@@ -204,7 +204,7 @@ class LoginViewModel : ViewModel() {
 
     fun signInCredentialToUserGOOGLE(credential: SignInCredential){
         val userType = LOGIN_GOOGLE
-        val userId = credential.googleIdToken
+        val userId = credential.id
         val userDisplayName = credential.displayName
         val userEmail = credential.id
         if(userId != null && userDisplayName != null){
