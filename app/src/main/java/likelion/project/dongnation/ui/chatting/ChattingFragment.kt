@@ -52,13 +52,14 @@ class ChattingFragment : Fragment() {
         fragmentChattingBinding.apply {
             textInputLayoutChattingMessage.apply {
                 setEndIconOnClickListener {
-                    val newTextView1 = makeMessageOneself(inflater, editTextChattingMessage.text.toString())
+                    val newTextView = makeMessageOneself(inflater, editTextChattingMessage.text.toString())
                     chattingViewModel.sendingState.observe(viewLifecycleOwner) {
                         when(it){
                             ChattingViewModel.SEND_MESSAGE_COMPLETE -> {
                                 constraintLayoutChatting.apply {
                                     scrollViewChatting.apply {
-                                        linearLayoutChatting.addView(newTextView1)
+                                        linearLayoutChatting.addView(newTextView)
+                                        editTextChattingMessage.setText("")
                                     }
                                 }
                             }
