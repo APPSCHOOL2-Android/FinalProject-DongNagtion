@@ -28,13 +28,28 @@ class ChattingRoomDataSource {
 
     // 두 명의 유저가 소속된 채팅방
     suspend fun getChattingRoom(user: User, userCounterpart: User): ChattingRoom {
-        val chattingRoomList1 = getChattingRooms(user)
+        val chattingRoomList = getChattingRooms(user)
         var chattingRoomResult = ChattingRoom()
 
-        for(chattingRoom in chattingRoomList1){
+        for(chattingRoom in chattingRoomList){
             if(chattingRoom.chattingRoomUserId == user.userId
                 && chattingRoom.chattingRoomUserIdCounterpart == userCounterpart.userId) {
                 chattingRoomResult = chattingRoom
+                break
+            }
+        }
+
+        return chattingRoomResult
+    }
+
+    suspend fun isChattingRoomExist(user: User, userCounterpart: User): Boolean {
+        val chattingRoomList = getChattingRooms(user)
+        var chattingRoomResult = false
+
+        for(chattingRoom in chattingRoomList){
+            if(chattingRoom.chattingRoomUserId == user.userId
+                && chattingRoom.chattingRoomUserIdCounterpart == userCounterpart.userId) {
+                chattingRoomResult = true
                 break
             }
         }
@@ -68,7 +83,7 @@ class ChattingRoomDataSource {
                 else {
                     val newChattingRoom = ChattingRoom(user.userId, userCounterpart.userId)
                     newChattingRoom.chattingRoomMessages.add(message)
-                    db.collection("chattingRoms").add(newChattingRoom)
+                    db.collection("chattingRooms").add(newChattingRoom)
                 }
             }
 
@@ -87,7 +102,7 @@ class ChattingRoomDataSource {
                 else {
                     val newChattingRoom = ChattingRoom(userCounterpart.userId, user.userId)
                     newChattingRoom.chattingRoomMessages.add(message)
-                    db.collection("chattingRoms").add(newChattingRoom)
+                    db.collection("chattingRooms").add(newChattingRoom)
                 }
             }
     }

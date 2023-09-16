@@ -58,6 +58,7 @@ class ChattingFragment : Fragment() {
                             ChattingViewModel.SEND_MESSAGE_COMPLETE -> {
                                 constraintLayoutChatting.apply {
                                     scrollViewChatting.apply {
+                                        linearLayoutChatting.removeView(newTextView)
                                         linearLayoutChatting.addView(newTextView)
                                         editTextChattingMessage.setText("")
                                     }
