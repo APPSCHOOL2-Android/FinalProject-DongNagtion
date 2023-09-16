@@ -1,5 +1,6 @@
 package likelion.project.dongnation.db.remote
 
+import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -72,8 +73,8 @@ class ChattingRoomDataSource {
         val messageList = getMessages(user, userCounterpart)
         messageList.add(message)
         db.collection("chattingRooms")
-            .whereEqualTo("userId", user.userId)
-            .whereEqualTo("userIdCounterpart", userCounterpart.userId)
+            .whereEqualTo("chattingRoomUserId", user.userId)
+            .whereEqualTo("chattingRoomUserIdCounterpart", userCounterpart.userId)
             .get()
             .addOnSuccessListener {
                 if(it.documents.size != 0){
@@ -91,8 +92,8 @@ class ChattingRoomDataSource {
         val messageListCounterpart = getMessages(userCounterpart, user)
         messageListCounterpart.add(message)
         db.collection("chattingRooms")
-            .whereEqualTo("userId", userCounterpart.userId)
-            .whereEqualTo("userIdCounterpart", user.userId)
+            .whereEqualTo("chattingRoomUserId", userCounterpart.userId)
+            .whereEqualTo("chattingRoomUserIdCounterpart", user.userId)
             .get()
             .addOnSuccessListener {
                 if(it.documents.size != 0){
