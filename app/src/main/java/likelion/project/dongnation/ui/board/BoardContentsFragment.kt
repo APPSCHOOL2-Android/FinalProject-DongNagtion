@@ -15,6 +15,7 @@ import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentBoardContentsBinding
 import likelion.project.dongnation.databinding.ItemBoardContentsCommentBinding
 import likelion.project.dongnation.model.Tips
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class BoardContentsFragment : Fragment() {
@@ -23,6 +24,7 @@ class BoardContentsFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     lateinit var board: Tips
+    val userId = LoginViewModel.loginUserInfo.userId
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,12 +40,14 @@ class BoardContentsFragment : Fragment() {
         }
 
         fragmentBoardContentsBinding.run {
+            // 바텀 네비게이션 안 보이게 하기
+            mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
 
             materialToolbarBoardContents.run {
                 title = board.tipTitle
                 setNavigationIcon(R.drawable.ic_back_24dp)
                 setNavigationOnClickListener {
-
+                    mainActivity.removeFragment(MainActivity.BOARD_CONTENTS_FRAGMENT)
                 }
             }
 
@@ -67,9 +71,17 @@ class BoardContentsFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context)
             }
 
-            // 게시글 수정 이미지 클릭
-            imageViewBoardContentsEdit.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.BOARD_MODIFY_FRAGMENT, true, null)
+            if (userId == board.tipWriterId) {
+                // 게시글 수정 이미지 클릭
+                imageViewBoardContentsEdit.setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putParcelable("board", board)
+                    mainActivity.replaceFragment(MainActivity.BOARD_MODIFY_FRAGMENT, true, bundle)
+                }
+
+            } else {
+                imageViewBoardContentsEdit.visibility = View.GONE
+                imageViewBoardContentsDelete.visibility = View.GONE
             }
 
         }
