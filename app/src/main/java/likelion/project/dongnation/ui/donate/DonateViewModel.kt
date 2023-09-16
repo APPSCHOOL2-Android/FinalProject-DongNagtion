@@ -1,27 +1,32 @@
 package likelion.project.dongnation.ui.donate
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.model.Donations
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.DonateRepository
 import likelion.project.dongnation.repository.UserRepository
+import javax.security.auth.callback.Callback
 
 class DonateViewModel : ViewModel() {
     private val donateRepository = DonateRepository()
     private val userRepository = UserRepository()
 
     val donateLiveData = MutableLiveData<Donations>()
-    val userLiveData = MutableLiveData<User>()
+    val userLiveData = MutableLiveData<User?>()
     val experienceLiveData = MutableLiveData<Int>()
 
-    fun addDonate(donate : Donations){
-        viewModelScope.launch(Dispatchers.IO) {
-            donateRepository.addDonate(donate)
-        }
+    fun addDonate(donate : Donations) : Task<Void> {
+        return donateRepository.addDonate(donate)
+    }
+
+    fun uploadImage(uri: Uri): Task<Uri> {
+        return donateRepository.uploadImage(uri)
     }
 
     fun findDonateInfo(donationIdx : String){

@@ -3,7 +3,6 @@ package likelion.project.dongnation.ui.donate
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +10,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.storage.FirebaseStorage
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateWriteBinding
 import likelion.project.dongnation.model.Donations
 import likelion.project.dongnation.ui.gallery.GalleryImage
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
-import java.util.UUID
 
 class DonateWriteFragment : Fragment() {
 
@@ -27,8 +25,10 @@ class DonateWriteFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var viewModel: DonateViewModel
 
-    // 이미지 URL을 저장하는 목록
-    private val imagesUrl = mutableListOf<String>()
+    // 이미지 Uri 저장 리스트
+    private val imagesUri = mutableListOf<Uri>()
+    private var isUploading = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +60,7 @@ class DonateWriteFragment : Fragment() {
 
             buttonDonateWriteSave.setOnClickListener {
                 handleDonateSave()
+
             }
 
             imageView1DonateWrite.setOnClickListener {
@@ -85,24 +86,13 @@ class DonateWriteFragment : Fragment() {
                 bundle.getParcelableArray("imageList")
             }
 
-            imagesUrl.clear()
-
-            // 이미지 표시 및 리스트에 저장
+            // 이미지 URI를 임시로 저장
             result?.let { images ->
                 images.forEachIndexed { index, item ->
                     if (item is GalleryImage) {
                         val uri = item.uri
-                        uploadImageToFirebaseStorage(
-                            uri,
-                            onSuccess = { imageUrl ->
-                                imagesUrl.add(imageUrl)
-                                displayImage(index, uri)
-                            },
-                            onFailure = { e ->
-                                // 이미지 업로드 실패 시 처리
-                                Log.e("DonateWriteFragment", "Error uploading image", e)
-                            }
-                        )
+                        imagesUri.add(uri)
+                        displayImage(index, uri)
                     }
                 }
             }
@@ -138,8 +128,10 @@ class DonateWriteFragment : Fragment() {
         if (imageViewId != 0) {
             val imageView = fragmentDonateWriteBinding.root.findViewById<ImageView>(imageViewId)
             imageView.setImageDrawable(null)
-            if (imagesUrl.size > index) {
-                imagesUrl.removeAt(index)
+
+            // 이미지 URL이 저장되어 있는 경우 삭제
+            if (imagesUri.size > index) {
+                imagesUri.removeAt(index)
             }
         }
     }
@@ -151,14 +143,14 @@ class DonateWriteFragment : Fragment() {
         val content = fragmentDonateWriteBinding.editTextDonateWriteContent.text.toString()
         val selectCategory = fragmentDonateWriteBinding.spinnerDonateWriteCategory.selectedItemPosition
 
-        if (donateValidation(title, subTitle, content, selectCategory)) {
+        if (donateValidation(title, subTitle, content, selectCategory) == "재능 기부 글이 저장되었습니다.") {
             val userId = LoginViewModel.loginUserInfo.userId
             val type = if (fragmentDonateWriteBinding.radioGroupDonateWriteType.checkedRadioButtonId == R.id.radioButton_donate_write_type_help_me) {
                 "도와주세요"
             } else {
                 "도와드릴게요"
             }
-
+            
             val donate = Donations(
                 donationTitle = title,
                 donationSubtitle = subTitle,
@@ -166,49 +158,64 @@ class DonateWriteFragment : Fragment() {
                 donationUser = userId,
                 donationCategory = resources.getStringArray(R.array.array_donate_category)[selectCategory],
                 donationContent = content,
-                donationImg = imagesUrl
+                donationImg =  mutableListOf()
             )
 
-            viewModel.addDonate(donate)
-
-            mainActivity.removeFragment("DonateWriteFragment")
+            uploadImagesAndSaveDonate(donate)
         }
     }
 
+    private fun uploadImagesAndSaveDonate(donate: Donations) {
+        // 이미지 업로드 및 기부 저장 중일 때는 다시 호출되지 않도록 체크
+        if (isUploading) {
+            return
+        }
+        isUploading = true
+
+        val viewModel = ViewModelProvider(this)[DonateViewModel::class.java]
+
+        val uploadTasks = imagesUri.mapIndexed { index, uri ->
+            viewModel.uploadImage(uri).addOnSuccessListener { imageUrl ->
+                val imageUrlStr = imageUrl.toString()
+                donate.donationImg.add(imageUrlStr)
+
+                // 모든 이미지 업로드가 완료된 경우 donate 객체를 Firestore에 저장
+                if (donate.donationImg.size == imagesUri.size) {
+
+                    viewModel.addDonate(donate).addOnCompleteListener { saveTask ->
+                        isUploading = false // 업로드 완료 후 플래그를 false로 설정
+                        if (saveTask.isSuccessful) {
+                            val bundle = Bundle()
+                            bundle.putString("donationIdx", "${donate.donationIdx}")
+                            mainActivity.removeFragment("DonateWriteFragment")
+                            mainActivity.replaceFragment("DonateInfoFragment", true, bundle)
+                        } else {
+                            // 기부 저장 중 오류가 발생한 경우
+                            Snackbar.make(requireView(), "저장 중 오류가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }.addOnFailureListener { exception ->
+                isUploading = false // 업로드 완료 후 플래그를 false로 설정
+                Snackbar.make(requireView(), "이미지 업로드 중 오류가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
+        Tasks.whenAll(uploadTasks)
+        Snackbar.make(requireView(), "재능 기부 글이 저장되었습니다.", Snackbar.LENGTH_SHORT).show()
+    }
+
     // 데이터 유효성 검사
-    fun donateValidation(title: String, subTitle: String, content: String, selectCategory: Int): Boolean{
+    fun donateValidation(title: String, subTitle: String, content: String, selectCategory: Int): String{
         val snackBarText = when {
             selectCategory == 0 -> "카테고리를 선택해주세요."
             title.isEmpty() -> "제목을 입력해주세요."
             subTitle.isEmpty() -> "대표 문구를 입력해주세요."
             content.isEmpty() -> "내용을 입력해주세요."
+            imagesUri.isEmpty() -> "사진은 최소 1장 이상 업로드 해주세요."
             else -> "재능 기부 글이 저장되었습니다."
         }
 
-        val snackBar = Snackbar.make(requireView(), snackBarText, Snackbar.LENGTH_SHORT)
-        snackBar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
-        snackBar.show()
-
-        return snackBarText == "재능 기부 글이 저장되었습니다."
-    }
-
-    private fun uploadImageToFirebaseStorage(uri: Uri, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
-        val storageRef = FirebaseStorage.getInstance().reference
-        val imageRef = storageRef.child("donateImg/${UUID.randomUUID()}.jpg")
-
-        imageRef.putFile(uri)
-            .addOnSuccessListener { taskSnapshot ->
-                imageRef.downloadUrl
-                    .addOnSuccessListener { downloadUri ->
-                        val imageUrl = downloadUri.toString()
-                        onSuccess(imageUrl)
-                    }
-                    .addOnFailureListener { e ->
-                        onFailure(e)
-                    }
-            }
-            .addOnFailureListener { e ->
-                onFailure(e)
-            }
+        return snackBarText
     }
 }

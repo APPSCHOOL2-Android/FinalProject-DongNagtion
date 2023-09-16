@@ -1,13 +1,23 @@
 package likelion.project.dongnation.repository
 
+import android.net.Uri
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import likelion.project.dongnation.model.Donations
+import java.util.UUID
 
 class DonateRepository {
     private val db = Firebase.firestore
+    private val storage = FirebaseStorage.getInstance()
+    private val storageRef = storage.reference
 
     suspend fun getAllDonate(): MutableList<Donations> {
         val querySnapshot = db.collection("Donations")
@@ -34,7 +44,7 @@ class DonateRepository {
         return querySnapshot.documents.firstOrNull()?.toObject(Donations::class.java)!!
     }
 
-    suspend fun addDonate(donate : Donations){
+    fun addDonate(donate : Donations) : Task<Void>{
         db.collection("Donations")
             .add(donate)
             .addOnSuccessListener { documentReference ->
@@ -47,9 +57,22 @@ class DonateRepository {
             .addOnFailureListener { e ->
                 // 데이터 추가 실패
             }
+
+        return Tasks.forResult(null)
     }
 
     suspend fun modifyDonate(donations: Donations){
 
+    fun uploadImage(uri: Uri): Task<Uri> {
+        val imageRef = storageRef.child("donateImg/${UUID.randomUUID()}.jpg")
+        return imageRef.putFile(uri)
+            .continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                imageRef.downloadUrl
+            }
     }
 }

@@ -16,7 +16,6 @@ import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
 import likelion.project.dongnation.model.Donations
 import likelion.project.dongnation.model.Review
-import likelion.project.dongnation.ui.home.HomeAdapter
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import likelion.project.dongnation.ui.review.ItemSpacingDecoration
