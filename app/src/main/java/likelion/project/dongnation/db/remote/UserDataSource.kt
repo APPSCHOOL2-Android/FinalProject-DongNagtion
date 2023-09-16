@@ -29,7 +29,9 @@ class UserDataSource {
     }
 
     suspend fun saveUser(user: User) = withContext(Dispatchers.IO){
-        db.collection("users").add(user)
+        db.collection("users")
+            .document(user.userId)
+            .set(user)
     }
 
     suspend fun updateAddress(user: User): Flow<Result<Boolean>> {
