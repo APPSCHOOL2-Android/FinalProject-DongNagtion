@@ -31,6 +31,7 @@ import likelion.project.dongnation.ui.board.BoardWriteFragment
 import likelion.project.dongnation.ui.donate.DonateWriteFragment
 import likelion.project.dongnation.ui.gallery.GalleryFragment
 import likelion.project.dongnation.ui.chatting.ChattingFragment
+import likelion.project.dongnation.ui.donate.DonateModifyFragment
 import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
@@ -110,6 +111,7 @@ class MainActivity : AppCompatActivity() {
             GALLERY_FRAGMENT -> GalleryFragment()
             BOARD_MODIFY_FRAGMENT -> BoardModifyFragment()
             DONATE_WRITE_FRAGMENT -> DonateWriteFragment()
+            DONATE_MODIFY_FRAGMENT -> DonateModifyFragment()
             CHATTING_FRAGMENT -> ChattingFragment()
             USER_INFO_BOARD_FRAGMENT -> UserInfoBoardFragment()
             USER_INFO_FOLLOWING_FRAGMENT -> UserInfoFollowingFragment()
@@ -260,6 +262,7 @@ class MainActivity : AppCompatActivity() {
         val GALLERY_FRAGMENT = "GalleryFragment"
         val BOARD_MODIFY_FRAGMENT = "BoardModifyFragment"
         val DONATE_WRITE_FRAGMENT = "DonateWriteFragment"
+        val DONATE_MODIFY_FRAGMENT = "DonateModifyFragment"
         val CHATTING_FRAGMENT = "ChattingFragment"
         val USER_INFO_BOARD_FRAGMENT = "UserInfoBoardFragment"
         val USER_INFO_FOLLOWING_FRAGMENT = "UserInfoFollowingFragment"

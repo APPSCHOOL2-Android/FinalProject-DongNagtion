@@ -49,4 +49,12 @@ class DonateViewModel : ViewModel() {
             experienceLiveData.postValue(experience)
         }
     }
+
+    suspend fun modifyDonate(donationIdx : String, donate : Donations) : Task<Void>{
+        return donateRepository.modifyDonate(donationIdx, donate)
+    }
+
+    fun deleteImage(uri : String) {
+        return donateRepository.deleteImage(uri)
+    }
 }
