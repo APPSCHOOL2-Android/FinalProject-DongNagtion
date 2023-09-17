@@ -31,22 +31,28 @@ class Region {
     }
 }
 
-enum class Province(val number: Int) {
-    SEOUL(0),
-    BUSAN(1),
-    DAEGU(2),
-    INCHEON(3),
-    GWANGJU(4),
-    DAEJEON(5),
-    ULSAN(6),
-    SEJONG(7),
-    GYEONGGI(8),
-    GANGWON(9),
-    CHUNG_BUK(10),
-    CHUNG_NAM(11),
-    GYEONG_BUK(12),
-    GYEONG_NAM(13),
-    JEON_BUK(14),
-    JEON_NAM(15),
-    JEJU(16),
+enum class Province(val krDo: String, val number: Int) {
+    SEOUL("서울특별시", 0),
+    BUSAN("부산광역시", 1),
+    DAEGU("대구광역시", 2),
+    INCHEON("인천광역시", 3),
+    GWANGJU("광주광역시", 4),
+    DAEJEON("대전광역시", 5),
+    ULSAN("울산광역시", 6),
+    SEJONG("세종특별자치시", 7),
+    GYEONGGI("경기도", 8),
+    GANGWON("강원도", 9),
+    CHUNG_BUK("충청북도", 10),
+    CHUNG_NAM("충청남도", 11),
+    GYEONG_BUK("경상북도", 12),
+    GYEONG_NAM("경상남도", 13),
+    JEON_BUK("전라북도", 14),
+    JEON_NAM("전라남도", 15),
+    JEJU("제주특별자치도", 16);
+
+    companion object {
+        fun findKrDo(krDo: String): Province {
+            return values().find { it.krDo == krDo } ?: throw IllegalArgumentException()
+        }
+    }
 }
