@@ -8,12 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentBoardContentsBinding
 import likelion.project.dongnation.databinding.ItemBoardContentsCommentBinding
+import likelion.project.dongnation.databinding.ItemBoardContentsDialogBinding
 import likelion.project.dongnation.model.Tips
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
@@ -26,12 +32,16 @@ class BoardContentsFragment : Fragment() {
     lateinit var board: Tips
     val userId = LoginViewModel.loginUserInfo.userId
 
+    lateinit var viewModel: BoardViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         fragmentBoardContentsBinding = FragmentBoardContentsBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        viewModel = ViewModelProvider(this)[BoardViewModel::class.java]
 
         board = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable("board", Tips::class.java)!!
@@ -77,6 +87,29 @@ class BoardContentsFragment : Fragment() {
                     val bundle = Bundle()
                     bundle.putParcelable("board", board)
                     mainActivity.replaceFragment(MainActivity.BOARD_MODIFY_FRAGMENT, true, bundle)
+                }
+
+                // 게시글 삭제 이미지 클릭
+                imageViewBoardContentsDelete.setOnClickListener{
+                    val binding = ItemBoardContentsDialogBinding.inflate(LayoutInflater.from(context))
+                    val builder = MaterialAlertDialogBuilder(mainActivity)
+                    builder.setView(binding.root)
+                    val dialog = builder.create()
+
+                    binding.buttonBoardContentsCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+
+                    binding.buttonBoardContentsDelete.setOnClickListener {
+                        
+                        viewModel.deleteBoard(board)
+
+                        mainActivity.removeFragment(MainActivity.BOARD_CONTENTS_FRAGMENT)
+                        Snackbar.make(requireView(), "게시글이 삭제되었습니다.", Snackbar.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+
+                    dialog.show()
                 }
 
             } else {
