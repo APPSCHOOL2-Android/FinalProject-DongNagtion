@@ -12,7 +12,7 @@ data class Donations(
     val donationUser: String = "",
     val donationCategory: String = "",
     val donationContent: String = "",
-    val donationImg: MutableList<String> = mutableListOf(),
+    var donationImg: MutableList<String> = mutableListOf(),
     val donationTimeStamp: Timestamp = Timestamp.now(),
     val donationReview: List<Review> = emptyList()
 ) : Parcelable {

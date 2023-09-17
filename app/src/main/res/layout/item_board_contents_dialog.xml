@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <TextView
+        style="@style/Typography.Bold20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="게시글을 삭제하시겠습니까?"
+        android:textAlignment="center" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_board_contents_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/transfer_cancel"
+        android:textAppearance="@style/Typography.Bold16"
+        app:cornerRadius="10dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_board_contents_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/green100"
+        android:text="삭제하기"
+        android:textAppearance="@style/Typography.Bold16"
+        app:cornerRadius="10dp" />
+
+</LinearLayout>
+

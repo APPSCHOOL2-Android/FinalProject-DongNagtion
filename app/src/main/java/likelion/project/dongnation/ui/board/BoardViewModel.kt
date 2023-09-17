@@ -19,4 +19,10 @@ class BoardViewModel : ViewModel() {
         }
     }
 
+    fun deleteBoard(board: Tips) {
+        viewModelScope.launch {
+            boardRepository.deleteBoard(board)
+        }
+    }
+
 }

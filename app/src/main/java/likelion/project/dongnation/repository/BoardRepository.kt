@@ -27,4 +27,11 @@ class BoardRepository {
         return boardList
     }
 
+    suspend fun deleteBoard(board: Tips) {
+        db.collection("tips")
+            .document(board.tipIdx)
+            .delete()
+            .await()
+    }
+
 }
