@@ -44,6 +44,7 @@ class ChattingFragment : Fragment() {
         chattingRoomUserIdCounterpart =
             arguments?.getString("chattingRoomUserIdCounterpart", "로딩중").toString()
         chattingRoom = ChattingRoom()
+        Log.d("chatting", chattingRoomUserIdCounterpart)
 
         initUI()
         observe()
@@ -93,7 +94,7 @@ class ChattingFragment : Fragment() {
 
     // 유저 채팅 생성
     private fun sendMessage(inputMessage: String){
-        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, "user2Tmp", inputMessage, getDate())
+        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, inputMessage, getDate())
 //        chattingViewModel.sendMessage("user2Tmp0918", LoginViewModel.loginUserInfo.userId, inputMessage, getDate())
         fragmentChattingBinding.editTextChattingMessage.run {
             setText("")
