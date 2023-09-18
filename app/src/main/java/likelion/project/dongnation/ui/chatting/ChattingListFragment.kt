@@ -59,6 +59,7 @@ class ChattingListFragment : Fragment() {
             fragmentChattingListBinding.run{
                 recyclerViewChattingList.run{
                     chattingList = chattingListViewModel.chattingList.value!!
+                    adapter?.notifyDataSetChanged()
                 }
             }
         }
