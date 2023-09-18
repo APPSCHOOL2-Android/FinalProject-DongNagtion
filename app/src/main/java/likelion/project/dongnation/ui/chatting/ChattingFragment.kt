@@ -7,11 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentChattingBinding
-import likelion.project.dongnation.databinding.ItemChattingMessageCounterpartBinding
-import likelion.project.dongnation.databinding.ItemChattingMessageOneselfBinding
+import likelion.project.dongnation.databinding.ItemChattingMessageCounterpartRowBinding
+import likelion.project.dongnation.databinding.ItemChattingMessageOneselfRowBinding
+import likelion.project.dongnation.databinding.ItemChattingMessageOneselfRowBinding.*
+import likelion.project.dongnation.model.ChattingRoom
+import likelion.project.dongnation.model.User
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import java.text.SimpleDateFormat
@@ -24,6 +30,7 @@ class ChattingFragment : Fragment() {
     private lateinit var mainActivity: MainActivity
 
     private lateinit var chattingRoomUserIdCounterpart: String
+    private lateinit var chattingRoom: ChattingRoom
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,69 +42,52 @@ class ChattingFragment : Fragment() {
 
         chattingRoomUserIdCounterpart =
             arguments?.getString("chattingRoomUserIdCounterpart", "로딩중").toString()
+        chattingRoom = ChattingRoom()
 
-        setToolbar()
-        sendMessage(inflater)
+        initUI()
+        observe()
+
         return fragmentChattingBinding.root
     }
 
-    private fun setToolbar(){
-        fragmentChattingBinding.apply {
-            toolbarChatting.apply{
+    private fun initUI(){
+        fragmentChattingBinding.run {
+            toolbarChatting.run{
                 setNavigationIcon(R.drawable.ic_back_24dp)
                 setNavigationOnClickListener {
                     mainActivity.removeFragment("ChattingFragment")
                 }
                 title = chattingRoomUserIdCounterpart
             }
-        }
-    }
 
-    private fun sendMessage(inflater: LayoutInflater){
-        fragmentChattingBinding.apply {
-            textInputLayoutChattingMessage.apply {
-                setEndIconOnClickListener {
-                    val newTextView = makeMessageOneself(inflater, editTextChattingMessage.text.toString())
-                    chattingViewModel.sendingState.observe(viewLifecycleOwner) {
-                        when(it){
-                            ChattingViewModel.SEND_MESSAGE_COMPLETE -> {
-                                constraintLayoutChatting.apply {
-                                    scrollViewChatting.apply {
-                                        linearLayoutChatting.removeView(newTextView)
-                                        linearLayoutChatting.addView(newTextView)
-                                        editTextChattingMessage.setText("")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            recyclerViewChatting.run{
+                adapter = RecyclerAdapter()
+                layoutManager = LinearLayoutManager(mainActivity)
+                chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy(), User(userId = chattingRoomUserIdCounterpart))
+            }
+
+            textInputLayoutChattingMessage.setEndIconOnClickListener {
+                sendMessage(editTextChattingMessage.text.toString())
             }
         }
     }
 
+    private fun observe(){
+        chattingViewModel.chattingRoom.observe(viewLifecycleOwner){
+            chattingRoom = chattingViewModel.chattingRoom.value!!
+        }
+    }
+
     // 유저 채팅 생성
-    private fun makeMessageOneself(inflater: LayoutInflater, inputMessage: String): LinearLayout {
-        val itemChattingMessageOneselfBinding = ItemChattingMessageOneselfBinding.inflate(inflater)
-        itemChattingMessageOneselfBinding.run {
+    private fun sendMessage(inputMessage: String): LinearLayout {
+        val itemChattingMessageOneselfRowBinding = inflate(layoutInflater)
+        itemChattingMessageOneselfRowBinding.run {
             textViewItemChattingMessage.text = inputMessage
             textViewItemChattingDate.text = getDate()
         }
         chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, "user2Tmp0918", inputMessage, getDate())
-        val message = itemChattingMessageOneselfBinding.root
+        val message = itemChattingMessageOneselfRowBinding.root
         message.gravity = Gravity.END
-        return message
-    }
-
-    // 상대방 채팅 생성
-    private fun makeMessageCounterpart(inflater: LayoutInflater, inputMessage: String): LinearLayout {
-        val itemChattingMessageCounterpartBinding = ItemChattingMessageCounterpartBinding.inflate(inflater)
-        itemChattingMessageCounterpartBinding.run{
-            textViewItemChattingMessage.text = inputMessage
-            textViewItemChattingDate.text = getDate()
-        }
-        val message = itemChattingMessageCounterpartBinding.root
-        message.gravity = Gravity.START
         return message
     }
 
@@ -109,5 +99,86 @@ class ChattingFragment : Fragment() {
         val chattingDataFormat = SimpleDateFormat("MM.dd")
 
         return chattingDataFormat.format(currentDate)
+    }
+
+    inner class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+
+        // 유저 자신 채팅 ViewHolder
+        inner class ViewHolderOneself(itemChattingMessageOneselfRowBinding: ItemChattingMessageOneselfRowBinding)
+            : RecyclerView.ViewHolder(itemChattingMessageOneselfRowBinding.root) {
+
+                var textViewMessage: TextView
+                var textViewDate: TextView
+
+                init {
+                    textViewMessage = itemChattingMessageOneselfRowBinding.textViewItemChattingMessage
+                    textViewDate = itemChattingMessageOneselfRowBinding.textViewItemChattingDate
+                }
+            }
+
+        // 상대방 채팅 ViewHolder
+        inner class ViewHolderCounterpart(itemChattingMessageCounterpartRowBinding: ItemChattingMessageCounterpartRowBinding)
+            : RecyclerView.ViewHolder(itemChattingMessageCounterpartRowBinding.root) {
+
+                var textViewMessage: TextView
+                var textViewDate: TextView
+
+                init {
+                    textViewMessage = itemChattingMessageCounterpartRowBinding.textViewItemChattingMessage
+                    textViewDate = itemChattingMessageCounterpartRowBinding.textViewItemChattingDate
+                }
+            }
+
+        override fun getItemViewType(position: Int): Int {
+            return if(chattingRoom.chattingRoomMessages[position].messageUserId == LoginViewModel.loginUserInfo.userId){
+                MESSAGE_ONESELF
+            } else{
+                MESSAGE_COUNTERPART
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val itemChattingMessageOneselfRowBinding = ItemChattingMessageOneselfRowBinding.inflate(layoutInflater)
+            val itemChattingMessageCounterpartRowBinding = ItemChattingMessageCounterpartRowBinding.inflate(layoutInflater)
+
+            val viewHolderOneself = ViewHolderOneself(itemChattingMessageOneselfRowBinding)
+            val viewHolderCounterpart = ViewHolderCounterpart(itemChattingMessageCounterpartRowBinding)
+
+            // 가로 세로 길이 설정
+            val params = RecyclerView.LayoutParams(
+                RecyclerView.LayoutParams.MATCH_PARENT,
+                RecyclerView.LayoutParams.WRAP_CONTENT
+            )
+            itemChattingMessageOneselfRowBinding.root.layoutParams = params
+            itemChattingMessageCounterpartRowBinding.root.layoutParams = params
+
+            return if(viewType == MESSAGE_ONESELF){
+                viewHolderOneself
+            } else{
+                viewHolderCounterpart
+            }
+        }
+
+        override fun getItemCount(): Int {
+            return chattingRoom.chattingRoomMessages.size
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            when(holder){
+                is ViewHolderOneself -> {
+                    holder.textViewMessage.text = chattingRoom.chattingRoomMessages[position].messageContent
+                    holder.textViewDate.text = chattingRoom.chattingRoomMessages[position].messageDate
+                }
+                is ViewHolderCounterpart -> {
+                    holder.textViewMessage.text = chattingRoom.chattingRoomMessages[position].messageContent
+                    holder.textViewDate.text = chattingRoom.chattingRoomMessages[position].messageDate
+                }
+            }
+        }
+    }
+
+    companion object {
+        const val MESSAGE_ONESELF = 1
+        const val MESSAGE_COUNTERPART = 2
     }
 }

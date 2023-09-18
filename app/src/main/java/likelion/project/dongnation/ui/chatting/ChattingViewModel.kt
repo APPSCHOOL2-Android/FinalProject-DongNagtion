@@ -3,6 +3,7 @@ package likelion.project.dongnation.ui.chatting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.runBlocking
+import likelion.project.dongnation.model.ChattingRoom
 import likelion.project.dongnation.model.Message
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.ChattingRoomRepository
@@ -10,6 +11,7 @@ import likelion.project.dongnation.repository.ChattingRoomRepository
 class ChattingViewModel : ViewModel() {
     private val chattingRoomRepository = ChattingRoomRepository()
     var sendingState = MutableLiveData<Int>()
+    val chattingRoom = MutableLiveData<ChattingRoom>()
 
     fun sendMessage(userId: String, userCounterpartId: String, content: String, date: String){
         val user = User(userId = userId)
@@ -19,6 +21,12 @@ class ChattingViewModel : ViewModel() {
         runBlocking {
             chattingRoomRepository.sendMessage(user, userCounterpart, message)
             sendingState.value = SEND_MESSAGE_COMPLETE
+        }
+    }
+
+    fun getChattingList(user: User, userCounterpart: User){
+        runBlocking {
+            chattingRoom.value = chattingRoomRepository.getChattingRoom(user, userCounterpart)
         }
     }
 
