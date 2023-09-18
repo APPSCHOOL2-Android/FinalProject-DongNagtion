@@ -42,7 +42,7 @@ class ChattingFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         chattingRoomUserIdCounterpart =
-            arguments?.getString("chattingRoomUserIdCounterpart", "로딩중").toString()
+            arguments?.getString("chattingRoomUserIdCounterpart", "").toString()
         chattingRoom = ChattingRoom()
         Log.d("chatting", chattingRoomUserIdCounterpart)
 
@@ -59,7 +59,7 @@ class ChattingFragment : Fragment() {
                 setNavigationOnClickListener {
                     mainActivity.removeFragment("ChattingFragment")
                 }
-                title = chattingRoomUserIdCounterpart
+                chattingViewModel.getUser(chattingRoomUserIdCounterpart)
             }
 
             recyclerViewChatting.run{
@@ -89,6 +89,9 @@ class ChattingFragment : Fragment() {
                     }
                 }
             }
+        }
+        chattingViewModel.chattingRoomUserNameCounterpart.observe(viewLifecycleOwner){
+            fragmentChattingBinding.toolbarChatting.title = chattingViewModel.chattingRoomUserNameCounterpart.value
         }
     }
 

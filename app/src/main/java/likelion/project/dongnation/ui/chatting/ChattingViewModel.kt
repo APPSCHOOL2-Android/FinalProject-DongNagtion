@@ -11,11 +11,14 @@ import likelion.project.dongnation.model.ChattingRoom
 import likelion.project.dongnation.model.Message
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.ChattingRoomRepository
+import likelion.project.dongnation.repository.UserRepository
 
 class ChattingViewModel : ViewModel() {
     private val chattingRoomRepository = ChattingRoomRepository()
+    private val userRepository = UserRepository()
     var sendingState = MutableLiveData<Int>()
     val chattingRoom = MutableLiveData<ChattingRoom>()
+    val chattingRoomUserNameCounterpart = MutableLiveData<String>()
 
     fun sendMessage(userId: String, userCounterpartId: String, content: String, date: String)
     = viewModelScope.launch{
@@ -40,6 +43,12 @@ class ChattingViewModel : ViewModel() {
             GET_MESSAGE_COMPLETE
         }
         sendingState.value = result.await()
+    }
+
+    fun getUser(userId: String){
+        viewModelScope.async {
+            chattingRoomUserNameCounterpart.value = userRepository.getUserForId(userId)?.userName
+        }
     }
 
     companion object {
