@@ -22,6 +22,7 @@ import likelion.project.dongnation.ui.locationsetting.LocationSettingViewModel
 import likelion.project.dongnation.ui.locationsetting.Province
 import likelion.project.dongnation.ui.locationsetting.Region
 import likelion.project.dongnation.ui.locationsetting.RegionPositionCallback
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCallback {
@@ -127,8 +128,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
             buttonLocationSettingNext.setOnClickListener {
                 if (currentItemPosition == 2) {
                     viewModel.updateAddress(
-                        User(
-                            userId = "2eqn9AfBVl9oXROMY2Wx",
+                        LoginViewModel.loginUserInfo.copy(
                             userAddress = areaName.filterNot { it.isDigit() })
                     )
                     mainActivity.replaceFragment(MainActivity.HOME_FRAGMENT, false, null)
@@ -304,6 +304,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
     }
 
     override fun setAreaName(name: String, coords: String) {
+        this.areaName = name
         this.selectedRegionName = name.split(" ").take(2).toMutableList()
         this.coords = coords
     }
