@@ -1,7 +1,6 @@
 package likelion.project.dongnation.ui.map
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Address
@@ -11,11 +10,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.firestore.ktx.firestore
@@ -30,15 +29,18 @@ import com.naver.maps.map.NaverMapSdk
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
-import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import likelion.project.dongnation.BuildConfig
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentMapBinding
 import likelion.project.dongnation.model.AddressLatLng
 import likelion.project.dongnation.model.MarkerData
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
-import kotlin.concurrent.thread
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -46,13 +48,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mainActivity: MainActivity
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource : FusedLocationSource
+
+    private var markerList: MutableList<Marker> = mutableListOf()
+    private var markerDataList: MutableList<MarkerData> = mutableListOf()
+
+
+    var userId = LoginViewModel.loginUserInfo.userId
+    var userAddress = "서울특별시 은평구 불광동"
+    val db = Firebase.firestore
+    private val imgList = ArrayList<String>()
+//    private val vworldAddress = "https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_ADEMD_INFO&key=B4CFB7B1-1523-3C86-9CE2-4EAAE0ADC98A&attrFilter=emd_kor_nm:=:녹번동&단일검색=Y"
     private val permissionList = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION
     )
-    var markerList: MutableList<Marker> = mutableListOf()
-    var markerDataList: MutableList<MarkerData> = mutableListOf()
-    val imgList = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,6 +75,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(mainActivity, permissionList, 5000)
         } else {
             initMapView()
+            loadMarkers()
         }
 
         fragmentMapBinding.run {
@@ -75,20 +85,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         if (!query.isNullOrBlank()) {
-                            searchMarker(query.toString())
                             return true
                         }
                         return false
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        if (newText.isNullOrBlank()) {
-                            thread {
-                                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                imm.hideSoftInputFromWindow(view?.windowToken, 0)
-                            }
+                        if (!newText.isNullOrBlank()) {
                         }
-                        return false
+                        return true
                     }
                 })
             }
@@ -103,67 +108,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
             imageViewMapBack.setOnClickListener {
                 mainActivity.removeFragment("MapFragment")
+                mainActivity.activityMainBinding.bottomNavigation.visibility = View.VISIBLE
             }
 
         }
 
         return fragmentMapBinding.root
-    }
-
-    private fun searchMarker(query: String) {
-
-        for (markerData in markerDataList) {
-            if (markerData.title.contains(query, ignoreCase = true)) {
-                val marker = Marker()
-                val latitude = getLatLng(markerData.address).latitude
-                val longitude = getLatLng(markerData.address).longitude
-                marker.run {
-                    isHideCollidedSymbols = true
-                    iconTintColor = Color.GREEN
-                    position = LatLng(latitude, longitude)
-                    onClickListener = Overlay.OnClickListener {
-                        val sheetBehavior = BottomSheetBehavior.from(fragmentMapBinding.include1.bottomSheetMap)
-                        sheetBehavior.isHideable = false
-                        sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-                        naverMap.setOnMapClickListener { _, _ ->
-                            if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                            }
-                        }
-
-                        fragmentMapBinding.include1.run {
-                            textViewDonateTitle.text = markerData.title
-                            textViewDonateName.text = markerData.name
-                            textViewDonateContext.text = markerData.content
-
-                            if (markerData.img != null) {
-                                for (image in markerData.img) {
-                                    imgList.add(image)
-                                }
-
-                                if (imgList.size >= 1) {
-                                    Glide.with(requireContext())
-                                        .load(imgList[0]) // 이미지 URL
-                                        .placeholder(R.mipmap.ic_launcher_logo)
-                                        .error(R.mipmap.ic_launcher_logo)
-                                        .into(imageViewDonateThumbnail1)
-                                }
-                            }
-
-                            buttonMapGotoDetail.setOnClickListener {
-                                val bundle = Bundle()
-                                bundle.putString("donationIdx", markerData.idx)
-                                mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
-                            }
-                        }
-                        false
-                    }
-                    map = naverMap
-                }
-                markerList.add(marker)
-            }
-        }
     }
 
     private fun initMapView() {
@@ -191,9 +141,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
+
+        db.collection("users").whereEqualTo("userId", userId).get().addOnSuccessListener { result ->
+            for(document in result) {
+                val dbAddress = document["userAddress"] as String
+                userAddress = dbAddress
+            }
+
         locationSource = FusedLocationSource(this,5000)
         naverMap.locationSource = locationSource
-        val currentLocation = getLatLng("서울시 은평구 녹번동")
+        val currentLocation = getLatLng(userAddress)
         val cameraPosition = CameraPosition(LatLng(currentLocation.latitude, currentLocation.longitude), 14.0)
         naverMap.cameraPosition = cameraPosition
         naverMap.run {
@@ -212,19 +169,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         fragmentMapBinding.buttonMapSetLocation.setOnClickListener {
             val cameraUpdate = CameraUpdate.zoomTo(13.0)
-            naverMap.cameraPosition = cameraPosition
+            val newLocation = getLatLng(userAddress.split("동").firstOrNull().plus("동"))
+            val newCameraPosition = CameraPosition(LatLng(newLocation.latitude, newLocation.longitude), 14.0)
+            naverMap.cameraPosition = newCameraPosition
             naverMap.moveCamera(cameraUpdate)
         }
 
-        addMarkersFromDB(naverMap, markerList)
+        loadMarkers()
+        }
     }
 
-    fun getMarkerDataFromDB(onSuccess: (List<MarkerData>) -> Unit) {
-        val db = Firebase.firestore
-        val donationCollection = db.collection("Donations")
+    private suspend fun getMarkerDataFromDBAsync(): List<MarkerData> {
+        return withContext(Dispatchers.IO) {
+            val donationCollection = db.collection("Donations")
+            val markerDataList = mutableListOf<MarkerData>()
 
-        donationCollection.get().addOnSuccessListener { result1 ->
-            markerDataList.clear()
+            val result1 = donationCollection.get().await() // 비동기로 데이터 가져오기
 
             for (document1 in result1) {
                 val idx = document1["donationIdx"] as String
@@ -234,86 +194,98 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 val userId = document1["donationUser"] as String
                 val img = document1["donationImg"] as MutableList<String>
 
-                db.collection("users").whereEqualTo("userId", userId).get().addOnSuccessListener { result2 ->
-                    for (document2 in result2) {
-                        val userName = document2["userName"] as String
-                        var userAddress = document2["userAddress"] as String
-                        if(userAddress == "") {
-                            userAddress = "서울특별시 은평구 녹번동 278-1"
-                        } else {
-                            userAddress = document2["userAddress"] as String
-                            Log.d("테스트e", userAddress)
-                        }
-                        markerDataList.add(MarkerData(idx, type, userAddress, userName, title, content, img))
+                val result2 = db.collection("users").whereEqualTo("userId", userId).get().await()
 
-                        Log.d("테스트d", markerDataList.size.toString())
-                        onSuccess(markerDataList)
+                for (document2 in result2) {
+                    val userName = document2["userName"] as String
+                    var userAddress = document2["userAddress"] as String
+                    if (userAddress == "") {
+                        userAddress = "서울특별시 은평구 녹번동 278-1" // 주소가 설정되지 않았을 때 초기 주소값
+                    } else {
+                        userAddress = document2["userAddress"] as String
                     }
+                    markerDataList.add(MarkerData(idx, type, userAddress, userName, title, content, img))
                 }
             }
+
+            markerDataList
         }
     }
-    fun addMarkersFromDB(naverMap: NaverMap, markerList: MutableList<Marker>) {
-        markerList.clear()
 
-        getMarkerDataFromDB { markerDataList ->
-            for (markerData in markerDataList) {
-                val marker = Marker()
-                val latitude = getLatLng(markerData.address).latitude
-                val longitude = getLatLng(markerData.address).longitude
-                marker.run {
-                    isHideCollidedSymbols = true
-                    if(markerData.type == "도와주세요") {
-                        iconTintColor = Color.MAGENTA
-                    } else if(markerData.type == "도와드릴게요") {
-                        iconTintColor = Color.BLUE
-                    }
-                    position = LatLng(latitude, longitude)
-                    onClickListener = Overlay.OnClickListener {
-                        val sheetBehavior = BottomSheetBehavior.from(fragmentMapBinding.include1.bottomSheetMap)
-                        sheetBehavior.isHideable = false
-                        sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    private fun loadMarkers() {
+        mainActivity.lifecycleScope.launch {
+            val markerDataList = getMarkerDataFromDBAsync()
+            addMarkersToMap(markerDataList)
+        }
+    }
 
-                        naverMap.setOnMapClickListener { _, _ ->
-                            if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                            }
+    private fun addMarkersToMap(markerDataList: List<MarkerData>) {
+        for (markerData in markerDataList) {
+            val marker = Marker()
+            val latitude = getLatLng(markerData.address).latitude
+            val longitude = getLatLng(markerData.address).longitude
+            marker.run {
+                isHideCollidedSymbols = true
+                if(markerData.type == "도와주세요") {
+                    iconTintColor = Color.MAGENTA
+                } else if(markerData.type == "도와드릴게요") {
+                    iconTintColor = Color.BLUE
+                }
+                position = LatLng(latitude, longitude)
+                onClickListener = Overlay.OnClickListener {
+                    val sheetBehavior = BottomSheetBehavior.from(fragmentMapBinding.include1.bottomSheetMap)
+                    sheetBehavior.isHideable = false
+                    sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+                    naverMap.setOnMapClickListener { _, _ ->
+                        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                         }
+                    }
 
-                        fragmentMapBinding.include1.run {
-                            textViewDonateTitle.text = markerData.title
-                            textViewDonateName.text = markerData.name
-                            textViewDonateContext.text = markerData.content
+                    fragmentMapBinding.include1.run {
+                        textViewDonateTitle.text = markerData.title
+                        textViewDonateName.text = markerData.name
+                        textViewDonateContext.text = markerData.content
 
-                            if (markerData.img != null) {
-                                for (image in markerData.img) {
-                                    imgList.add(image)
-                                }
+                        if (markerData.img != null) {
+                            imgList.clear()
 
-                                if (imgList.size >= 1) {
+                            for (image in markerData.img) {
+                                imgList.add(image)
+                            }
+
+                            val imageViewMap = mapOf(
+                                imageViewDonateThumbnail1 to imgList.getOrNull(0),
+                                imageViewDonateThumbnail2 to imgList.getOrNull(1),
+                                imageViewDonateThumbnail3 to imgList.getOrNull(2)
+                            )
+
+                            for ((imageView, imageUrl) in imageViewMap) {
+                                if (!imageUrl.isNullOrBlank()) {
                                     Glide.with(requireContext())
-                                        .load(imgList[0]) // 이미지 URL
+                                        .load(imageUrl)
                                         .placeholder(R.mipmap.ic_launcher_logo)
                                         .error(R.mipmap.ic_launcher_logo)
-                                        .into(imageViewDonateThumbnail1)
+                                        .into(imageView)
                                 }
                             }
-
-                            buttonMapGotoDetail.setOnClickListener {
-                                val bundle = Bundle()
-                                bundle.putString("donationIdx", markerData.idx)
-                                mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
-                            }
                         }
-                        false
+
+                        buttonMapGotoDetail.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putString("donationIdx", markerData.idx)
+                            mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
+                        }
                     }
-                    map = naverMap
+                    false
                 }
-                markerList.add(marker)
-                Log.d("테스트", markerList.size.toString())
+                map = naverMap
             }
+            markerList.add(marker)
         }
     }
+
 
     fun getLatLng(address: String): AddressLatLng{
         val geocoder = Geocoder(mainActivity)
