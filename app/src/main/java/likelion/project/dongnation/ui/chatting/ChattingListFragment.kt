@@ -7,27 +7,34 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentChattingListBinding
 import likelion.project.dongnation.databinding.ItemChattingListRowBinding
+import likelion.project.dongnation.model.ChattingRoom
 import likelion.project.dongnation.ui.main.MainActivity
 
 class ChattingListFragment : Fragment() {
     private lateinit var fragmentChattingListBinding: FragmentChattingListBinding
+    private lateinit var chattingListViewModel: ChattingListViewModel
     private lateinit var mainActivity: MainActivity
 
-    var list = arrayListOf<Int>(1, 2, 3, 4, 5, 6)
+    private lateinit var chattingList: ArrayList<ChattingRoom>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         fragmentChattingListBinding = FragmentChattingListBinding.inflate(inflater)
+        chattingListViewModel = ViewModelProvider(this)[ChattingListViewModel::class.java]
         mainActivity = activity as MainActivity
 
+        chattingList = ArrayList()
+
         initUI()
+        observe()
 
         return fragmentChattingListBinding.root
     }
@@ -41,6 +48,17 @@ class ChattingListFragment : Fragment() {
             recyclerViewChattingList.run{
                 adapter = RecyclerAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
+                chattingListViewModel.getChattingList()
+            }
+        }
+    }
+
+    private fun observe(){
+        chattingListViewModel.chattingList.observe(viewLifecycleOwner){
+            fragmentChattingListBinding.run{
+                recyclerViewChattingList.run{
+                    chattingList = chattingListViewModel.chattingList.value!!
+                }
             }
         }
     }
@@ -86,7 +104,7 @@ class ChattingListFragment : Fragment() {
 
         // 전체 행 개수 반환
         override fun getItemCount(): Int {
-            return list.size
+            return chattingList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
