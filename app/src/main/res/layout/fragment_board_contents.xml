@@ -156,7 +156,8 @@
                 android:background="@android:color/transparent"
                 android:gravity="top|start"
                 android:hint="댓글을 입력해주세요"
-                android:maxLines="2" />
+                android:maxLines="2"
+                android:textAppearance="@style/Typography.Medium14" />
 
             <ImageButton
                 android:id="@+id/imageButtonBoardContentsCommentButton"

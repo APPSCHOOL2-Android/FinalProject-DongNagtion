@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:titleTextAppearance="@style/Typography.Bold24" />
+        app:titleTextAppearance="@style/Typography.Bold20" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="280dp"
                 android:padding="10dp">
 
                 <ImageView
@@ -83,7 +83,7 @@
                             android:layout_weight="1"
                             android:text="이웃 팔로잉"
                             android:textAlignment="center"
-                            android:textAppearance="@style/Typography.Regular12" />
+                            android:textAppearance="@style/Typography.Regular14" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -91,7 +91,7 @@
                             android:layout_weight="1"
                             android:text="리뷰 평점"
                             android:textAlignment="center"
-                            android:textAppearance="@style/Typography.Regular12" />
+                            android:textAppearance="@style/Typography.Regular14" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -99,7 +99,7 @@
                             android:layout_weight="1"
                             android:text="경험"
                             android:textAlignment="center"
-                            android:textAppearance="@style/Typography.Regular12" />
+                            android:textAppearance="@style/Typography.Regular14" />
 
                     </LinearLayout>
 
@@ -116,6 +116,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="20"
+                            android:textAppearance="@style/Typography.Light12"
                             android:textColor="#000000"
                             android:textStyle="bold" />
 
@@ -126,6 +127,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="4.5"
+                            android:textAppearance="@style/Typography.Light12"
                             android:textColor="#000000"
                             android:textStyle="bold"
                             app:icon="@drawable/ic_star_24dp"
@@ -138,6 +140,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="65회"
+                            android:textAppearance="@style/Typography.Light12"
                             android:textColor="#000000"
                             android:textStyle="bold"
                             app:icon="@drawable/ic_leaf_24dp"
@@ -167,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="송금 코드"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Medium16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -203,7 +206,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="동네 변경"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Medium16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -239,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="이웃 팔로잉"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Medium16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -275,7 +278,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="게시판 작성 글"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Medium16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -311,7 +314,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="로그아웃"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Medium16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -347,7 +350,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="계정 탈퇴"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Medium16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

@@ -15,7 +15,9 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/Theme.Dongnation.Toolbar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:subtitleTextAppearance="@style/Typography.Regular20"
+        app:titleTextAppearance="@style/Typography.Regular20" />
 
     <ScrollView
         android:id="@+id/scrollView_chatting"
