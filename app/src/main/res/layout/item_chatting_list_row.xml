@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView_item_chatting_list_message"
+            android:id="@+id/textView_item_chatting_list_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageView_item_chatting_list_profile" />
 
         <TextView
-            android:id="@+id/textView_item_chatting_list_content"
+            android:id="@+id/textView_item_chatting_list_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -42,7 +42,7 @@
             android:textAlignment="textStart"
             android:textAppearance="@style/Typography.Medium12"
             app:layout_constraintStart_toEndOf="@+id/imageView_item_chatting_list_profile"
-            app:layout_constraintTop_toBottomOf="@+id/textView_item_chatting_list_message" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_item_chatting_list_id" />
 
         <TextView
             android:id="@+id/textView_item_chatting_list_type"
@@ -57,7 +57,7 @@
             android:textAppearance="@style/Typography.Bold13"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView_item_chatting_list_message" />
+            app:layout_constraintTop_toTopOf="@+id/textView_item_chatting_list_id" />
 
         <TextView
             android:id="@+id/textView_item_chatting_list_date"

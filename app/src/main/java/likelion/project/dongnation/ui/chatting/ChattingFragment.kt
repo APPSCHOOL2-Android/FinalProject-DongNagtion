@@ -78,7 +78,7 @@ class ChattingFragment : Fragment() {
             textViewItemChattingMessage.text = inputMessage
             textViewItemChattingDate.text = getDate()
         }
-        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, "user2Tmp", inputMessage, getDate())
+        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, "user2Tmp0918", inputMessage, getDate())
         val message = itemChattingMessageOneselfBinding.root
         message.gravity = Gravity.END
         return message
