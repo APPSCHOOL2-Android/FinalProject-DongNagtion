@@ -1,6 +1,7 @@
 package likelion.project.dongnation.ui.chatting
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -81,6 +82,9 @@ class ChattingListFragment : Fragment() {
             }
 
             override fun onClick(p0: View?) {
+                val bundle = Bundle()
+                bundle.putString("chattingRoomUserIdCounterpart", chattingList[absoluteAdapterPosition].chattingRoomUserIdCounterpart)
+                mainActivity.replaceFragment("ChattingFragment", true, bundle)
             }
         }
 

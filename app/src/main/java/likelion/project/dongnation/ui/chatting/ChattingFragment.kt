@@ -23,6 +23,8 @@ class ChattingFragment : Fragment() {
     private lateinit var chattingViewModel: ChattingViewModel
     private lateinit var mainActivity: MainActivity
 
+    private lateinit var chattingRoomUserIdCounterpart: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +32,9 @@ class ChattingFragment : Fragment() {
         fragmentChattingBinding = FragmentChattingBinding.inflate(inflater)
         chattingViewModel = ViewModelProvider(this)[ChattingViewModel::class.java]
         mainActivity = activity as MainActivity
+
+        chattingRoomUserIdCounterpart =
+            arguments?.getString("chattingRoomUserIdCounterpart", "로딩중").toString()
 
         setToolbar()
         sendMessage(inflater)
@@ -43,7 +48,7 @@ class ChattingFragment : Fragment() {
                 setNavigationOnClickListener {
                     mainActivity.removeFragment("ChattingFragment")
                 }
-                title = "유저 아이디"
+                title = chattingRoomUserIdCounterpart
             }
         }
     }
