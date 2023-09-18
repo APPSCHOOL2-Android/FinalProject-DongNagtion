@@ -32,6 +32,7 @@ import likelion.project.dongnation.ui.donate.DonateWriteFragment
 import likelion.project.dongnation.ui.gallery.GalleryFragment
 import likelion.project.dongnation.ui.chatting.ChattingFragment
 import likelion.project.dongnation.ui.donate.DonateModifyFragment
+import likelion.project.dongnation.ui.chatting.ChattingListFragment
 import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
@@ -116,6 +117,7 @@ class MainActivity : AppCompatActivity() {
             USER_INFO_BOARD_FRAGMENT -> UserInfoBoardFragment()
             USER_INFO_FOLLOWING_FRAGMENT -> UserInfoFollowingFragment()
             TRANSFER_FRAGMENT -> TransferFragment()
+            CHATTING_LIST_FRAGMENT -> ChattingListFragment()
             else -> Fragment()
         }
 
@@ -200,7 +202,7 @@ class MainActivity : AppCompatActivity() {
                         override fun onNavigationItemSelected(item: MenuItem): Boolean {
                             val fragment = when (item.itemId) {
                                 R.id.item_bottom_donate -> HOME_FRAGMENT
-                                R.id.item_bottom_chat -> CHATTING_FRAGMENT
+                                R.id.item_bottom_chat -> CHATTING_LIST_FRAGMENT
                                 R.id.item_bottom_tip -> BOARD_MAIN_FRAGMENT
                                 R.id.item_bottom_info -> USER_INFO_FRAGMENT
                                 else -> { HOME_FRAGMENT }
@@ -267,5 +269,6 @@ class MainActivity : AppCompatActivity() {
         val USER_INFO_BOARD_FRAGMENT = "UserInfoBoardFragment"
         val USER_INFO_FOLLOWING_FRAGMENT = "UserInfoFollowingFragment"
         val TRANSFER_FRAGMENT = "TransferFragment"
+        val CHATTING_LIST_FRAGMENT = "ChattingListFragment"
     }
 }

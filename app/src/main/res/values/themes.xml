@@ -17,6 +17,7 @@
 
     <style name="Theme.Dongnation.Toolbar">
         <item name="colorPrimary">#FFFFFF</item>
+        <item name="titleTextAppearance">@style/Typography.Bold20</item>
     </style>
 
     <style name="ChipChoice" parent="@style/Widget.MaterialComponents.Chip.Filter">
