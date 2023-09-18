@@ -53,7 +53,7 @@ class LocationRegionAdapter(val regionNames: Array<String>) :
             imageViewItemRegionCheck.isSelected = isSelected
             textViewItemRegionName.isSelected = isSelected
             constraintLayoutItemRegion.background =
-                if (isSelected) root.context.resources.getra(R.drawable.bg_rect_green200_outline_r10)
+                if (isSelected) root.context.resources.getDrawable(R.drawable.bg_rect_green200_outline_r10)
                 else root.context.resources.getDrawable(R.drawable.bg_rect_gray300_outline_r10)
         }
     }
