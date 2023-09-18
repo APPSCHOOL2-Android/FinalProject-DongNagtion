@@ -1,6 +1,7 @@
 package likelion.project.dongnation.ui.chatting
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -63,7 +64,7 @@ class ChattingFragment : Fragment() {
             recyclerViewChatting.run{
                 adapter = RecyclerAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
-                chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy(), User(userId = chattingRoomUserIdCounterpart))
+                chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
             }
 
             textInputLayoutChattingMessage.setEndIconOnClickListener {
@@ -76,20 +77,27 @@ class ChattingFragment : Fragment() {
         chattingViewModel.chattingRoom.observe(viewLifecycleOwner){
             chattingRoom = chattingViewModel.chattingRoom.value!!
         }
+        chattingViewModel.sendingState.observe(viewLifecycleOwner){
+            when(it){
+                ChattingViewModel.SEND_MESSAGE_COMPLETE -> {
+                    chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
+                }
+                ChattingViewModel.GET_MESSAGE_COMPLETE -> {
+                    fragmentChattingBinding.recyclerViewChatting.run {
+                        adapter?.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
     }
 
     // 유저 채팅 생성
-    private fun sendMessage(inputMessage: String): LinearLayout {
-        val itemChattingMessageOneselfRowBinding = inflate(layoutInflater)
-        itemChattingMessageOneselfRowBinding.run {
-            textViewItemChattingMessage.text = inputMessage
-            textViewItemChattingDate.text = getDate()
-        }
-        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, "user2Tmp0918", inputMessage, getDate())
+    private fun sendMessage(inputMessage: String){
+        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, "user2Tmp", inputMessage, getDate())
 //        chattingViewModel.sendMessage("user2Tmp0918", LoginViewModel.loginUserInfo.userId, inputMessage, getDate())
-        val message = itemChattingMessageOneselfRowBinding.root
-        message.gravity = Gravity.END
-        return message
+        fragmentChattingBinding.editTextChattingMessage.run {
+            setText("")
+        }
     }
 
     // 현재 날짜 생성 및 반환
