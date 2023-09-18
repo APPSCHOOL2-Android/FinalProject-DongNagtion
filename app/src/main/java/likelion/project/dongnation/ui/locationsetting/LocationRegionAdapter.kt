@@ -3,6 +3,7 @@ package likelion.project.dongnation.ui.locationsetting
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ItemRegionBinding
 
 class LocationRegionAdapter(val regionNames: Array<String>) :
@@ -51,6 +52,9 @@ class LocationRegionAdapter(val regionNames: Array<String>) :
             textViewItemRegionName.text = regionName
             imageViewItemRegionCheck.isSelected = isSelected
             textViewItemRegionName.isSelected = isSelected
+            constraintLayoutItemRegion.background =
+                if (isSelected) root.context.resources.getra(R.drawable.bg_rect_green200_outline_r10)
+                else root.context.resources.getDrawable(R.drawable.bg_rect_gray300_outline_r10)
         }
     }
 
