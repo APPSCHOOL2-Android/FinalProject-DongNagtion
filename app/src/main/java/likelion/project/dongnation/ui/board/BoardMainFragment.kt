@@ -1,12 +1,15 @@
 package likelion.project.dongnation.ui.board
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,6 +58,22 @@ class BoardMainFragment : Fragment() {
             searchViewBoarMainSearch.run {
                 queryHint = "팁 게시글 검색"
                 isSubmitButtonEnabled = true
+
+                setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        searchBoardResult()
+                        hideKeyboard()
+
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        if (newText.isNullOrBlank()) {
+                            loadAllBoards()
+                        }
+                        return true
+                    }
+                })
             }
 
             recyclerBoardMainList.run{
@@ -71,6 +90,45 @@ class BoardMainFragment : Fragment() {
         }
 
         return fragmentBoardMainBinding.root
+    }
+
+    private fun loadAllBoards() {
+        viewModel.loadBoard()
+        fragmentBoardMainBinding.layoutBardMainNoResult.visibility = View.GONE
+    }
+    private fun searchBoardResult(){
+        val word = fragmentBoardMainBinding.searchViewBoarMainSearch.query.toString()
+
+        viewModel.run {
+            searchBoardLiveData.observe(viewLifecycleOwner){ searchList ->
+                tipsDataList.clear()
+                searchList.forEach{
+                    tipsDataList.add(it)
+                }
+
+                if (tipsDataList.isNotEmpty()) {
+                    fragmentBoardMainBinding.layoutBardMainNoResult.visibility = View.GONE
+                }else {
+                    fragmentBoardMainBinding.layoutBardMainNoResult.visibility = View.VISIBLE
+                }
+
+                fragmentBoardMainBinding.recyclerBoardMainList.adapter?.notifyDataSetChanged()
+            }
+
+            if (word.isNotEmpty()) {
+                searchBoard(word)
+                fragmentBoardMainBinding.layoutBardMainNoResult.visibility = View.GONE
+            }else {
+                fragmentBoardMainBinding.layoutBardMainNoResult.visibility = View.VISIBLE
+            }
+
+        }
+
+    }
+
+    private fun hideKeyboard() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     inner class BoardMainAdapter : RecyclerView.Adapter<BoardMainAdapter.BoarMainHolder>(){
@@ -97,6 +155,7 @@ class BoardMainFragment : Fragment() {
                         var bundle = Bundle()
                         bundle.putParcelable("board", selectedDonation)
                         mainActivity.replaceFragment(MainActivity.BOARD_CONTENTS_FRAGMENT, true, bundle)
+                        fragmentBoardMainBinding.searchViewBoarMainSearch.setQuery("", false)
                     }
 
                 }
