@@ -146,18 +146,20 @@
             android:background="@drawable/shape_text"
             android:hint="제목을 입력해주세요."
             android:maxLines="2"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textAppearance="@style/Typography.Regular16" />
 
         <EditText
             android:id="@+id/editTextBoardWrite"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="20dp"
+            android:layout_weight="1"
             android:background="@drawable/shape_text"
             android:gravity="top|start"
             android:hint="내용을 입력해주세요."
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textAppearance="@style/Typography.Regular16" />
 
         <Button
             android:id="@+id/buttonBoardWrite"

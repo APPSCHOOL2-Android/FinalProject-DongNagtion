@@ -39,10 +39,10 @@
             android:id="@+id/textViewWriter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="팁 작성자"
-            android:textAppearance="@style/Typography.Medium16"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
+            android:text="팁 작성자"
+            android:textAppearance="@style/Typography.Regular14"
             app:layout_constraintStart_toEndOf="@+id/imageViewUser"
             app:layout_constraintTop_toTopOf="@+id/textViewTitle" />
 
