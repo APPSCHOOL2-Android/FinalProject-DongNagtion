@@ -129,7 +129,8 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
                 if (currentItemPosition == 2) {
                     viewModel.updateAddress(
                         LoginViewModel.loginUserInfo.copy(
-                            userAddress = areaName.filterNot { it.isDigit() })
+                            userAddress = areaName
+                        )
                     )
                     mainActivity.replaceFragment(MainActivity.HOME_FRAGMENT, false, null)
                     mainActivity.activityMainBinding.bottomNavigation.visibility =
@@ -241,11 +242,15 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
     }
 
     private fun setSelectedRegionName(postion: Int) {
-        val regionArray = if (currentItemPosition == 0 || selectedRegionName[0].isEmpty()) Region.getArray(
-            this.requireContext(),
-            postion
-        ) else selectedRegionName.toTypedArray()
-        selectedRegionId = if (currentItemPosition == 0 || selectedRegionName[0].isEmpty()) postion else Region.getArray(requireContext()).indexOf(regionArray[0])
+        val regionArray =
+            if (currentItemPosition == 0 || selectedRegionName[0].isEmpty()) Region.getArray(
+                this.requireContext(),
+                postion
+            ) else selectedRegionName.toTypedArray()
+        selectedRegionId =
+            if (currentItemPosition == 0 || selectedRegionName[0].isEmpty()) postion else Region.getArray(
+                requireContext()
+            ).indexOf(regionArray[0])
         when (currentItemPosition) {
             0 -> {
                 selectedRegionName[0] =
