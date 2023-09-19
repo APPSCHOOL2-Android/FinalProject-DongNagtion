@@ -51,11 +51,18 @@ class ChattingViewModel : ViewModel() {
         }
     }
 
+    fun notifyNewMessage()
+    = viewModelScope.async{
+        chattingRoomRepository.notifyNewMessage()
+    }
+
     companion object {
         const val SEND_MESSAGE_NORMAL = 0
         const val SEND_MESSAGE_ATTEMPT = 1
         const val SEND_MESSAGE_COMPLETE = 2
         const val SEND_MESSAGE_FAILURE = 3
         const val GET_MESSAGE_COMPLETE = 4
+
+        var receivingState = MutableLiveData<Boolean>()
     }
 }
