@@ -10,6 +10,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentHomeBinding
 import likelion.project.dongnation.ui.login.LoginViewModel
@@ -47,7 +49,13 @@ class HomeFragment : Fragment() {
             adapter = HomeAdapter(mainActivity, emptyList()) // 초기에 빈 데이터로 어댑터를 설정
             recyclerviewHomeDonationAll.adapter = adapter
 
-            textViewHomeLocation.text = LoginViewModel.loginUserInfo.userAddress
+            val db = Firebase.firestore
+            db.collection("users").whereEqualTo("userId", LoginViewModel.loginUserInfo.userId).get().addOnSuccessListener { result ->
+                for(document in result) {
+                    val dbAddress = document["userAddress"] as String
+                    textViewHomeLocation.text = dbAddress.split("동").firstOrNull().plus("동")
+                }
+            }
 
             buttonHomeSearch.setOnClickListener {
                 searchResult()
