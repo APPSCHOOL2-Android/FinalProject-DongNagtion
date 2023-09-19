@@ -50,6 +50,7 @@ class ChattingListFragment : Fragment() {
                 adapter = RecyclerAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
                 chattingListViewModel.getChattingList()
+                chattingListViewModel.notifyNewMessage()
             }
         }
     }
@@ -62,6 +63,9 @@ class ChattingListFragment : Fragment() {
                     adapter?.notifyDataSetChanged()
                 }
             }
+        }
+        ChattingListViewModel.receivingState.observe(viewLifecycleOwner){
+            chattingListViewModel.getChattingList()
         }
     }
 

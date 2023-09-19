@@ -10,6 +10,7 @@ import likelion.project.dongnation.model.ChattingRoom
 import likelion.project.dongnation.model.Message
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.ChattingRoomRepository
+import likelion.project.dongnation.ui.chatting.ChattingListViewModel
 import likelion.project.dongnation.ui.chatting.ChattingViewModel
 import likelion.project.dongnation.ui.login.LoginViewModel
 import kotlin.coroutines.resume
@@ -119,6 +120,7 @@ class ChattingRoomDataSource {
             .addSnapshotListener { value, error ->
                 Log.d("chatting", "수신 데이터 소스")
                 ChattingViewModel.receivingState.value = true
+                ChattingListViewModel.receivingState.value = true
             }
     }
 }
