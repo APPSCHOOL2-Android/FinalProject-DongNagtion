@@ -1,10 +1,12 @@
 package likelion.project.dongnation.ui.board
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.model.Tips
+import likelion.project.dongnation.model.TipsRipple
 import likelion.project.dongnation.repository.BoardRepository
 
 class BoardViewModel : ViewModel() {
@@ -12,6 +14,7 @@ class BoardViewModel : ViewModel() {
     val boardRepository = BoardRepository()
     val boardLiveData = MutableLiveData<MutableList<Tips>>()
     val searchBoardLiveData = MutableLiveData<MutableList<Tips>>()
+    val ripplesLiveData = MutableLiveData<MutableList<TipsRipple>>()
 
     fun loadBoard() {
         viewModelScope.launch {
@@ -40,6 +43,13 @@ class BoardViewModel : ViewModel() {
     fun deleteBoard(board: Tips) {
         viewModelScope.launch {
             boardRepository.deleteBoard(board)
+        }
+    }
+
+    fun loadRipples(tipIdx: String) {
+        viewModelScope.launch {
+            val ripples = boardRepository.getRipplesForBoard(tipIdx)
+            ripplesLiveData.postValue(ripples)
         }
     }
 

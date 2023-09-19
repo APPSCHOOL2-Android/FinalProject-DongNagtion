@@ -12,6 +12,7 @@ data class Tips(
     val tipContent : String = "",
     val tipDate : Timestamp = Timestamp.now(),
     val tipsImg : List<String> = ArrayList(),
+    val tipRipples: List<TipsRipple> = emptyList()
 ): Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -48,3 +49,12 @@ data class Tips(
         }
     }
 }
+
+data class TipsRipple(
+    val tipIdx: String = "",
+    val rippleIdx: String = "",
+    val rippleWriterId: String = "",
+    val rippleWriterName: String = "",
+    val rippleDate: Timestamp = Timestamp.now(),
+    val rippleContent : String = "",
+)

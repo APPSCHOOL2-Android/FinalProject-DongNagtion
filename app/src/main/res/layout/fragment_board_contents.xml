@@ -127,15 +127,15 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/shape_text"
                     android:padding="10dp"
-                    android:textAppearance="@style/Typography.Medium14"
-                    android:text="팁 내용입니다"/>
+                    android:text="팁 내용입니다"
+                    android:textAppearance="@style/Typography.Medium14" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewBoardContents"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="60dp"/>
+                    android:layout_marginBottom="60dp" />
             </LinearLayout>
 
         </ScrollView>
@@ -163,7 +163,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@color/gray100"
-                android:src="@drawable/ic_send_24dp" />
+                android:src="@drawable/ic_send_24dp"
+                android:visibility="gone" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
