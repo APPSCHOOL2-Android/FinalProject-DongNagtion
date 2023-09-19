@@ -29,6 +29,7 @@
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_itemGalleryImage"
+        android:transitionGroup="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:constraint_referenced_ids="imageView_itemGalleryImage, checkBox_item_GalleryImage" />
