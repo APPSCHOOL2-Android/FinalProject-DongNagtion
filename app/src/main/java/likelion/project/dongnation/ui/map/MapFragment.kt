@@ -57,7 +57,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     var userAddress = "서울특별시 은평구 불광동"
     val db = Firebase.firestore
     private val imgList = ArrayList<String>()
-//    private val vworldAddress = "https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_ADEMD_INFO&key=B4CFB7B1-1523-3C86-9CE2-4EAAE0ADC98A&attrFilter=emd_kor_nm:=:녹번동&단일검색=Y"
+    private val vworldAddress = "https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_ADEMD_INFO&key=B4CFB7B1-1523-3C86-9CE2-4EAAE0ADC98A&attrFilter=emd_kor_nm:=:녹번동&단일검색=Y"
     private val permissionList = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION
@@ -85,6 +85,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         if (!query.isNullOrBlank()) {
+                            performSearch(query.toString())
                             return true
                         }
                         return false
@@ -115,6 +116,38 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         return fragmentMapBinding.root
     }
+
+    private fun performSearch(query: String) {
+        if (query.isNotBlank()) {
+            for (marker in markerList) {
+                marker.isVisible = false // 모든 마커를 숨깁니다.
+            }
+
+            for (markerData in markerDataList) {
+                // 마커 데이터의 제목과 검색어가 일치하면 해당 마커를 보이게 하고 초록색으로 설정합니다.
+                if (markerData.title.contains(query, ignoreCase = true)) {
+                    val marker = findMarkerForMarkerData(markerData)
+                    marker?.isVisible = true
+                    marker?.iconTintColor = Color.GREEN
+                }
+            }
+        } else {
+            // 검색어가 비어 있으면 모든 마커를 다시 표시합니다.
+            showAllMarkers()
+        }
+    }
+
+    private fun findMarkerForMarkerData(markerData: MarkerData): Marker? {
+        // 마커 데이터의 위치와 일치하는 마커를 찾아 반환합니다.
+        for (marker in markerList) {
+            val markerLatLng = LatLng(getLatLng(markerData.address).latitude, getLatLng(markerData.address).longitude)
+            if (marker.position == markerLatLng) {
+                return marker
+            }
+        }
+        return null // 해당 마커를 찾을 수 없으면 null을 반환합니다.
+    }
+
 
     private fun initMapView() {
         val fm = childFragmentManager
@@ -215,70 +248,86 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun addMarkersToMap(markerDataList: List<MarkerData>) {
-        for (markerData in markerDataList) {
-            val marker = Marker()
-            val latitude = getLatLng(markerData.address).latitude
-            val longitude = getLatLng(markerData.address).longitude
-            marker.run {
-                isHideCollidedSymbols = true
-                if(markerData.type == "도와주세요") {
-                    iconTintColor = Color.MAGENTA
-                } else if(markerData.type == "도와드릴게요") {
-                    iconTintColor = Color.BLUE
-                }
-                position = LatLng(latitude, longitude)
-                onClickListener = Overlay.OnClickListener {
-                    val sheetBehavior = BottomSheetBehavior.from(fragmentMapBinding.include1.bottomSheetMap)
-                    sheetBehavior.isHideable = false
-                    sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-                    naverMap.setOnMapClickListener { _, _ ->
-                        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        db.collection("users").whereEqualTo("userId", userId).get().addOnSuccessListener { result ->
+            for (document in result) {
+                val dbAddress = document["userAddress"] as String
+                userAddress = dbAddress
+            }
+            for (markerData in markerDataList) {
+                val marker = Marker()
+                val latitude = getLatLng(markerData.address).latitude
+                val longitude = getLatLng(markerData.address).longitude
+                val address = markerData.address
+                val city = address.split(" ")[1]
+                val userCity = userAddress.split(" ")[1]
+                Log.d("userCity", city)
+                Log.d("userCity", userCity)
+                if(city == userCity) {
+                    marker.run {
+                        isHideCollidedSymbols = true
+                        if(markerData.type == "도와주세요") {
+                            iconTintColor = Color.MAGENTA
+                        } else if(markerData.type == "도와드릴게요") {
+                            iconTintColor = Color.BLUE
                         }
-                    }
+                        position = LatLng(latitude, longitude)
+                        onClickListener = Overlay.OnClickListener {
+                            val sheetBehavior = BottomSheetBehavior.from(fragmentMapBinding.include1.bottomSheetMap)
+                            sheetBehavior.isHideable = false
+                            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
-                    fragmentMapBinding.include1.run {
-                        textViewDonateTitle.text = markerData.title
-                        textViewDonateName.text = markerData.name
-                        textViewDonateContext.text = markerData.content
-
-                        if (markerData.img != null) {
-                            imgList.clear()
-
-                            for (image in markerData.img) {
-                                imgList.add(image)
-                            }
-
-                            val imageViewMap = mapOf(
-                                imageViewDonateThumbnail1 to imgList.getOrNull(0),
-                                imageViewDonateThumbnail2 to imgList.getOrNull(1),
-                                imageViewDonateThumbnail3 to imgList.getOrNull(2)
-                            )
-
-                            for ((imageView, imageUrl) in imageViewMap) {
-                                if (!imageUrl.isNullOrBlank()) {
-                                    Glide.with(requireContext())
-                                        .load(imageUrl)
-                                        .placeholder(R.mipmap.ic_launcher_logo)
-                                        .error(R.mipmap.ic_launcher_logo)
-                                        .into(imageView)
+                            naverMap.setOnMapClickListener { _, _ ->
+                                if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                                    sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                                 }
                             }
-                        }
 
-                        buttonMapGotoDetail.setOnClickListener {
-                            val bundle = Bundle()
-                            bundle.putString("donationIdx", markerData.idx)
-                            mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
+                            fragmentMapBinding.include1.run {
+                                textViewDonateTitle.text = markerData.title
+                                textViewDonateName.text = markerData.name
+                                textViewDonateContext.text = markerData.content
+
+                                if (markerData.img != null) {
+                                    imgList.clear()
+
+                                    for (image in markerData.img) {
+                                        imgList.add(image)
+                                    }
+
+                                    val imageViewMap = mapOf(
+                                        imageViewDonateThumbnail1 to imgList.getOrNull(0),
+                                        imageViewDonateThumbnail2 to imgList.getOrNull(1),
+                                        imageViewDonateThumbnail3 to imgList.getOrNull(2)
+                                    )
+
+                                    for ((imageView, imageUrl) in imageViewMap) {
+                                        if (!imageUrl.isNullOrBlank()) {
+                                            Glide.with(requireContext())
+                                                .load(imageUrl)
+                                                .placeholder(R.mipmap.ic_launcher_logo)
+                                                .error(R.mipmap.ic_launcher_logo)
+                                                .into(imageView)
+                                        }
+                                    }
+                                }
+
+                                buttonMapGotoDetail.setOnClickListener {
+                                    val bundle = Bundle()
+                                    bundle.putString("donationIdx", markerData.idx)
+                                    mainActivity.replaceFragment(MainActivity.DONATE_INFO_FRAGMENT, true, bundle)
+                                }
+                            }
+                            false
                         }
+                        map = naverMap
                     }
-                    false
                 }
-                map = naverMap
+
+
+                markerList.add(marker)
             }
-            markerList.add(marker)
         }
+
     }
 
 
