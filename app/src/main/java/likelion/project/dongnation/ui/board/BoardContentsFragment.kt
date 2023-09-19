@@ -256,6 +256,12 @@ class BoardContentsFragment : Fragment() {
                 imageViewCommentItemDelete = binding.imageViewCommentItemDelete
                 textViewCommentItemContents = binding.textViewCommentItemContents
                 textViewCommentItemDate = binding.textViewCommentItemDate
+
+                // 댓글 수정
+                imageViewCommentItemEdit.setOnClickListener {
+                    mainActivity.replaceFragment(MainActivity.BOARD_RIPPLES_MODIFY_FRAGMENT, true, null)
+                }
+
             }
 
         }
@@ -284,6 +290,15 @@ class BoardContentsFragment : Fragment() {
             holder.textViewCommentItemWriter.text = tipsRippleDataList[position].rippleWriterName
             holder.textViewCommentItemContents.text = tipsRippleDataList[position].rippleContent
             holder.textViewCommentItemDate.text = formattedDate
+
+            if (userId == tipsRippleDataList[position].rippleWriterId) {
+                holder.imageViewCommentItemEdit.visibility = View.VISIBLE
+                holder.imageViewCommentItemDelete.visibility = View.VISIBLE
+            } else {
+                holder.imageViewCommentItemEdit.visibility = View.GONE
+                holder.imageViewCommentItemDelete.visibility = View.GONE
+            }
+
         }
 
     }
