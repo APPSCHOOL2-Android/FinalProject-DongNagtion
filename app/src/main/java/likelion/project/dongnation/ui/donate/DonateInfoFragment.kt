@@ -54,7 +54,11 @@ class DonateInfoFragment : Fragment() {
             }
 
             buttonDonateInfoChat.setOnClickListener {
-                mainActivity.replaceFragment("ChattingFragment", true, null)
+                val bundle = Bundle()
+                bundle.putString("chattingRoomUserIdCounterpart",
+                    viewModel.userLiveData.value?.userId
+                )
+                mainActivity.replaceFragment("ChattingFragment", true, bundle)
             }
 
             buttonDonateInfoDonation.setOnClickListener {

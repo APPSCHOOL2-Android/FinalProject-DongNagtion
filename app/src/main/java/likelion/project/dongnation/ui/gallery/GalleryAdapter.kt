@@ -46,17 +46,23 @@ class GalleryAdapter(
             Glide.with(binding.root)
                 .load(item.uri)
                 .into(binding.imageViewItemGalleryImage)
+
+            binding.checkBoxItemGalleryImage.isChecked = item.isSelected
+            binding.groupItemGalleryImage.background = if (item.isSelected)
+                context.resources.getDrawable(R.drawable.bg_rect_green200_outline)
+            else
+                null
+
             binding.groupItemGalleryImage.setOnClickListener {
                 if (selectedImages.size < 3 || selectedImages.contains(item)) {
-                    binding.groupItemGalleryImage.background =
-                        if (binding.groupItemGalleryImage.background == null)
-                            context.resources.getDrawable(R.drawable.bg_rect_green200_outline)
-                        else null
+                    item.isSelected = !item.isSelected
+                    binding.checkBoxItemGalleryImage.isChecked = item.isSelected
+                    binding.groupItemGalleryImage.background = if (item.isSelected)
+                        context.resources.getDrawable(R.drawable.bg_rect_green200_outline)
+                    else
+                        null
 
-                    binding.checkBoxItemGalleryImage.isChecked =
-                        !binding.checkBoxItemGalleryImage.isChecked
-
-                    if (binding.checkBoxItemGalleryImage.isChecked) {
+                    if (item.isSelected) {
                         selectedImages.add(item)
                     } else {
                         selectedImages.remove(item)

@@ -10,5 +10,6 @@ data class GalleryImage(
     var name: String = "",
     var bucketId: Long = 0,
     var bucketName: String = "",
-    var addedDate: Long = 0
+    var addedDate: Long = 0,
+    var isSelected: Boolean = false,
 ) : Parcelable

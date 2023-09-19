@@ -2,9 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout_itemRegion"
     android:layout_width="@dimen/region_size"
     android:layout_height="35dp"
-    android:background="@drawable/bg_rect_gray300_outline_r10">
+    android:background="@drawable/selector_region"
+    android:clickable="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/textView_itemRegion_name"
