@@ -155,7 +155,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         naverMap.cameraPosition = cameraPosition
         naverMap.run {
             uiSettings.run {
-                setLogoMargin(75, 20, 20, 50)
+                setLogoMargin(40, 20, 20, 40)
                 isLocationButtonEnabled = false
                 isCompassEnabled = false
                 isIndoorLevelPickerEnabled = false
@@ -199,11 +199,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 for (document2 in result2) {
                     val userName = document2["userName"] as String
                     var userAddress = document2["userAddress"] as String
-                    if (userAddress == "") {
-                        userAddress = "서울특별시 은평구 녹번동 278-1" // 주소가 설정되지 않았을 때 초기 주소값
-                    } else {
-                        userAddress = document2["userAddress"] as String
-                    }
                     markerDataList.add(MarkerData(idx, type, userAddress, userName, title, content, img))
                 }
             }
