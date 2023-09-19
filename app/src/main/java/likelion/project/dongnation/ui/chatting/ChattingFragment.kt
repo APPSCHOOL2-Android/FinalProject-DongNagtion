@@ -66,6 +66,8 @@ class ChattingFragment : Fragment() {
                 adapter = RecyclerAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
                 chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
+                chattingViewModel.notifyNewMessage()
+                ChattingViewModel.receivingState.value = false
             }
 
             textInputLayoutChattingMessage.setEndIconOnClickListener {
@@ -93,12 +95,18 @@ class ChattingFragment : Fragment() {
         chattingViewModel.chattingRoomUserNameCounterpart.observe(viewLifecycleOwner){
             fragmentChattingBinding.toolbarChatting.title = chattingViewModel.chattingRoomUserNameCounterpart.value
         }
+        ChattingViewModel.receivingState.observe(viewLifecycleOwner){
+            if(it){
+                chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
+                ChattingViewModel.receivingState.value = false
+                Log.d("chatting", "수신 프래그먼트")
+            }
+        }
     }
 
     // 유저 채팅 생성
     private fun sendMessage(inputMessage: String){
         chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, inputMessage, getDate())
-//        chattingViewModel.sendMessage("user2Tmp0918", LoginViewModel.loginUserInfo.userId, inputMessage, getDate())
         fragmentChattingBinding.editTextChattingMessage.run {
             setText("")
         }

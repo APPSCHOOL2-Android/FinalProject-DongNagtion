@@ -4,6 +4,7 @@ import likelion.project.dongnation.db.remote.ChattingRoomDataSource
 import likelion.project.dongnation.model.ChattingRoom
 import likelion.project.dongnation.model.Message
 import likelion.project.dongnation.model.User
+import likelion.project.dongnation.ui.chatting.ChattingViewModel
 
 class ChattingRoomRepository {
     private val chattingRoomDataSource = ChattingRoomDataSource()
@@ -25,4 +26,7 @@ class ChattingRoomRepository {
 
     suspend fun sendMessage(user: User, userCounterpart: User, message: Message)
     = chattingRoomDataSource.sendMessage(user, userCounterpart, message)
+
+    suspend fun notifyNewMessage()
+    = chattingRoomDataSource.notifyNewMessage()
 }

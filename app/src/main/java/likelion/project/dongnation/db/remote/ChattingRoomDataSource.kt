@@ -9,6 +9,11 @@ import kotlinx.coroutines.withContext
 import likelion.project.dongnation.model.ChattingRoom
 import likelion.project.dongnation.model.Message
 import likelion.project.dongnation.model.User
+import likelion.project.dongnation.repository.ChattingRoomRepository
+import likelion.project.dongnation.ui.chatting.ChattingViewModel
+import likelion.project.dongnation.ui.login.LoginViewModel
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class ChattingRoomDataSource {
     private val db = Firebase.firestore
@@ -105,6 +110,15 @@ class ChattingRoomDataSource {
                     newChattingRoom.chattingRoomMessages.add(message)
                     db.collection("chattingRooms").add(newChattingRoom)
                 }
+            }
+    }
+
+    suspend fun notifyNewMessage() = withContext(Dispatchers.IO){
+        db.collection("chattingRooms")
+            .whereEqualTo("chattingRoomUserId", LoginViewModel.loginUserInfo.userId)
+            .addSnapshotListener { value, error ->
+                Log.d("chatting", "수신 데이터 소스")
+                ChattingViewModel.receivingState.value = true
             }
     }
 }

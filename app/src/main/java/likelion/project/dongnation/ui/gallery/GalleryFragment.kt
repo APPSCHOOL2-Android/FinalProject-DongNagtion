@@ -60,7 +60,7 @@ class GalleryFragment : Fragment(), GalleryAdapter.OnItemClickListener {
         with(binding.toolbarGalery) {
             inflateMenu(R.menu.menu_gallery)
             setNavigationOnClickListener {
-
+                mainActivity.removeFragment(MainActivity.GALLERY_FRAGMENT)
             }
             menu.findItem(R.id.item_image_selection).isEnabled = false
             setOnMenuItemClickListener {
