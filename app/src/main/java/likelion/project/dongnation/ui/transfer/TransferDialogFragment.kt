@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.databinding.FragmentDialogTransferBinding
 import likelion.project.dongnation.model.User
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class TransferDialogFragment(private val transferCode: String) : DialogFragment() {
@@ -45,18 +46,9 @@ class TransferDialogFragment(private val transferCode: String) : DialogFragment(
         dialog?.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         binding.editTextDialogTransferTransferCode.setText(transferCode)
         binding.buttonDialogTransferRegistration.setOnClickListener {
+            val user = LoginViewModel.loginUserInfo
             viewModel.updateTransferCode(
-                User(
-                    userAddress = "서울특별시 종로구 수송동 ",
-                    userEmail = "dltkd13956@naver.com",
-                    userExperience = 0,
-                    userFollowList = listOf(),
-                    userFollowingNum = 0,
-                    userId = "2eqn9AfBVl9oXROMY2Wx",
-                    userName = "이상준",
-                    userTransCode = transferCode,
-                    userType = 5
-                )
+                user.copy(userTransCode = transferCode)
             )
         }
         binding.buttonDialogTransferCancel.setOnClickListener {
