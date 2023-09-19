@@ -1,11 +1,16 @@
 package likelion.project.dongnation.ui.board
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import likelion.project.dongnation.R
@@ -21,8 +27,11 @@ import likelion.project.dongnation.databinding.FragmentBoardContentsBinding
 import likelion.project.dongnation.databinding.ItemBoardContentsCommentBinding
 import likelion.project.dongnation.databinding.ItemBoardContentsDialogBinding
 import likelion.project.dongnation.model.Tips
+import likelion.project.dongnation.model.TipsRipple
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
+import java.util.Date
+import kotlin.random.Random
 
 class BoardContentsFragment : Fragment() {
 
@@ -32,7 +41,12 @@ class BoardContentsFragment : Fragment() {
     lateinit var board: Tips
     val userId = LoginViewModel.loginUserInfo.userId
 
+    val db = Firebase.firestore
+    val userName = LoginViewModel.loginUserInfo.userName
+
     lateinit var viewModel: BoardViewModel
+
+    val tipsRippleDataList = mutableListOf<TipsRipple>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +61,16 @@ class BoardContentsFragment : Fragment() {
             arguments?.getParcelable("board", Tips::class.java)!!
         } else {
             arguments?.getParcelable("board")!!
+        }
+
+        viewModel.run {
+            ripplesLiveData.observe(viewLifecycleOwner) { ripplesList ->
+                tipsRippleDataList.clear()
+                ripplesList.forEach{ tipsRippleDataList.add(it) }
+                fragmentBoardContentsBinding.recyclerViewBoardContents.adapter?.notifyDataSetChanged()
+            }
+
+            loadRipples(board.tipIdx)
         }
 
         fragmentBoardContentsBinding.run {
@@ -117,6 +141,73 @@ class BoardContentsFragment : Fragment() {
                 imageViewBoardContentsDelete.visibility = View.GONE
             }
 
+            // 댓글 작성
+            editTextBoardContentsComment.run {
+                addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                        // 텍스트 변경 이전의 상태
+                    }
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        // 텍스트가 변경될 때 호출됨
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+                        // 텍스트 변경 후의 상태
+
+                        if (s?.isNotEmpty() == true) {
+                            imageButtonBoardContentsCommentButton.visibility = View.VISIBLE
+                        } else {
+                            imageButtonBoardContentsCommentButton.visibility = View.GONE
+                        }
+                    }
+                })
+            }
+
+            // 댓글 작성 버튼 클릭
+            imageButtonBoardContentsCommentButton.setOnClickListener {
+
+                val rippleWriterId = userId
+                val rippleWriterName = userName
+
+                val rippleDate = Timestamp(Date())
+                val rippleContent = editTextBoardContentsComment.text.toString()
+
+                val rippleData = hashMapOf<String, Any>(
+                    "tipIdx" to board.tipIdx,
+                    "rippleIdx" to generateRandomRippleIdx(),
+                    "rippleWriterId" to rippleWriterId,
+                    "rippleWriterName" to rippleWriterName,
+                    "rippleDate" to rippleDate,
+                    "rippleContent" to rippleContent
+                )
+
+                val currentBoardRef = db.collection("tips").document(board.tipIdx)
+                currentBoardRef.get()
+                    .addOnSuccessListener { documentSnapshot ->
+                        if (documentSnapshot.exists()) {
+                            val currentRipples = documentSnapshot.get("tipRipples") as? ArrayList<HashMap<String, Any>> ?: ArrayList()
+
+                            currentRipples.add(rippleData)
+
+                            currentBoardRef.update("tipRipples", currentRipples)
+                                .addOnSuccessListener {
+                                    viewModel.loadRipples(board.tipIdx)
+                                    editTextBoardContentsComment.text.clear()
+                                    hideKeyboard()
+                                }
+                                .addOnFailureListener { exception ->
+
+                                }
+
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("aaaaa", "게시물 문서 가져오기 실패: $exception")
+                    }
+
+            }
+
         }
 
         return fragmentBoardContentsBinding.root
@@ -132,6 +223,20 @@ class BoardContentsFragment : Fragment() {
         }
 
         return imageList
+    }
+
+    // 랜덤한 "rippleIdx" 값을 생성
+    private fun generateRandomRippleIdx(): String {
+        val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+        return (1..10)
+            .map { _ -> Random.nextInt(0, charPool.size) }
+            .map(charPool::get)
+            .joinToString("")
+    }
+
+    private fun hideKeyboard() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     inner class BoardContentsAdapter : RecyclerView.Adapter<BoardContentsAdapter.BoardContentsHolder>() {
@@ -168,11 +273,17 @@ class BoardContentsFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 10
+            return tipsRippleDataList.size
         }
 
         override fun onBindViewHolder(holder: BoardContentsHolder, position: Int) {
 
+            val tipTimestamp = tipsRippleDataList[position].rippleDate
+            val formattedDate = mainActivity.formatTimeDifference(tipTimestamp.toDate())
+
+            holder.textViewCommentItemWriter.text = tipsRippleDataList[position].rippleWriterName
+            holder.textViewCommentItemContents.text = tipsRippleDataList[position].rippleContent
+            holder.textViewCommentItemDate.text = formattedDate
         }
 
     }

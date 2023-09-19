@@ -1,10 +1,12 @@
 package likelion.project.dongnation.repository
 
+import android.util.Log
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import likelion.project.dongnation.model.Tips
+import likelion.project.dongnation.model.TipsRipple
 
 class BoardRepository {
 
@@ -32,6 +34,28 @@ class BoardRepository {
             .document(board.tipIdx)
             .delete()
             .await()
+    }
+
+    suspend fun getRipplesForBoard(tipIdx: String): MutableList<TipsRipple> {
+        val ripples = mutableListOf<TipsRipple>()
+
+        val querySnapshot = db.collection("tips")
+            .whereEqualTo("tipIdx", tipIdx)
+            .get()
+            .await()
+
+        for (document in querySnapshot) {
+            val tipData = document.toObject(Tips::class.java)
+
+            // tipData에서 tipRipples 필드를 가져옵니다.
+            val tipRipples = tipData.tipRipples
+
+            val sortedRipples = tipRipples.sortedByDescending { it.rippleDate }
+
+            ripples.addAll(sortedRipples)
+        }
+
+        return ripples
     }
 
 }
