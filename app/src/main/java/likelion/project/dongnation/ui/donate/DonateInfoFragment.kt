@@ -1,5 +1,7 @@
 package likelion.project.dongnation.ui.donate
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
@@ -30,6 +33,7 @@ class DonateInfoFragment : Fragment() {
 
     val imgList = ArrayList<String>()
     private var donateIdx = ""
+    private var transferCode = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +66,12 @@ class DonateInfoFragment : Fragment() {
             }
 
             buttonDonateInfoDonation.setOnClickListener {
-
+                if(transferCode == "") {
+                    Snackbar.make(requireView(), "해당 회원의 송금코드가 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    var intent = Intent(Intent.ACTION_VIEW, Uri.parse(transferCode))
+                    startActivity(intent)
+                }
             }
         }
 
@@ -78,6 +87,7 @@ class DonateInfoFragment : Fragment() {
                         textViewDonateInfoUserName.text = user.userName
                         textViewDonateInfoLacation.text = user.userAddress
                         textViewDonateInfoExperience.text = user.userExperience.toString()
+                        transferCode = user.userTransCode
 
                         val handler = Handler(Looper.getMainLooper())
                         handler.postDelayed({
