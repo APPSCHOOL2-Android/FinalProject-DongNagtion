@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
 import likelion.project.dongnation.model.Donations
@@ -164,15 +166,22 @@ class DonateInfoFragment : Fragment() {
                 buttonDonateInfoDelete.visibility = View.VISIBLE
                 buttonDonateInfoModify.visibility = View.VISIBLE
 
+                buttonDonateInfoDelete.setOnClickListener {
+                    val db = Firebase.firestore
+                    if(donateIdx != null) {
+                        db.collection("Donations").document(donateIdx).delete()
+                            .addOnSuccessListener {
+                                Snackbar.make(requireView(), "이전 화면으로 돌아가면 삭제가 완료됩니다.", Snackbar.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+
                 buttonDonateInfoModify.setOnClickListener {
                     val bundle = Bundle()
                     bundle.putParcelable("donate", donateInfo)
                     mainActivity.replaceFragment("DonateModifyFragment", true, bundle)
                 }
 
-                buttonDonateInfoDelete.setOnClickListener {
-
-                }
             } else {
                 buttonDonateInfoChat.visibility = View.VISIBLE
                 buttonDonateInfoDelete.visibility = View.GONE
