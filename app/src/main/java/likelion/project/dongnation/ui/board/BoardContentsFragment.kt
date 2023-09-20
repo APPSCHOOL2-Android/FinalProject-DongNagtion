@@ -259,7 +259,13 @@ class BoardContentsFragment : Fragment() {
 
                 // 댓글 수정
                 imageViewCommentItemEdit.setOnClickListener {
-                    mainActivity.replaceFragment(MainActivity.BOARD_RIPPLES_MODIFY_FRAGMENT, true, null)
+                    val position = bindingAdapterPosition
+                    val selectedRipple = tipsRippleDataList[position]
+
+                    var bundle = Bundle()
+                    bundle.putParcelable("ripple", selectedRipple)
+                    bundle.putString("tipIdx", board.tipIdx)
+                    mainActivity.replaceFragment(MainActivity.BOARD_RIPPLES_MODIFY_FRAGMENT, true, bundle)
                 }
 
             }
