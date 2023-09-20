@@ -74,14 +74,12 @@ class ChattingListFragment : Fragment() {
 
             var textViewName: TextView
             var textViewMessage: TextView
-            var textViewType: TextView
             var textViewDate: TextView
 
 
             init {
                 textViewName = itemChattingListRowBinding.textViewItemChattingListName
                 textViewMessage = itemChattingListRowBinding.textViewItemChattingListMessage
-                textViewType = itemChattingListRowBinding.textViewItemChattingListType
                 textViewDate = itemChattingListRowBinding.textViewItemChattingListDate
             }
 
