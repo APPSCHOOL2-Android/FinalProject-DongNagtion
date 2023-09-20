@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,218 +20,249 @@
         app:title="리뷰 작성"
         app:titleTextAppearance="@style/Typography.Bold20" />
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView_review_write"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/button_review_write_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_review_write">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="vertical">
+            android:layout_margin="15dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/imageView_review_write_donation_thumbnail"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_launcher_logo_foreground" />
+
+
+            <TextView
+                android:id="@+id/textView_review_write_donation_title"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/review_write_title"
+                android:textAppearance="@style/Typography.Bold16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imageView_review_write_donation_thumbnail"
+                app:layout_constraintTop_toTopOf="@id/imageView_review_write_donation_thumbnail" />
+
+            <TextView
+                android:id="@+id/textView_review_write_donation_user"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/review_write_user"
+                android:textAppearance="@style/Typography.Medium16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textView_review_write_donation_title"
+                app:layout_constraintTop_toBottomOf="@id/textView_review_write_donation_title" />
+
+            <TextView
+                android:id="@+id/textView_review_write_donation_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/review_write_category"
+                android:textAppearance="@style/Typography.Medium16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textView_review_write_donation_user"
+                app:layout_constraintTop_toBottomOf="@id/textView_review_write_donation_user" />
+
+            <TextView
+                android:id="@+id/textView_review_write_selection_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/review_write_selection_image_subtitle"
+                android:textAppearance="@style/Typography.Medium16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageView_review_write_donation_thumbnail" />
+
+
+            <View
+                android:id="@+id/view_reivew_write_camera"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_rect_green200_outline_r5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_review_write_selection_image" />
+
+            <ImageButton
+                android:id="@+id/imageButton_review_write_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_camera_24dp"
+                app:layout_constraintBottom_toBottomOf="@id/view_reivew_write_camera"
+                app:layout_constraintEnd_toEndOf="@id/view_reivew_write_camera"
+                app:layout_constraintStart_toStartOf="@id/view_reivew_write_camera"
+                app:layout_constraintTop_toTopOf="@id/view_reivew_write_camera" />
+
+            <TextView
+                android:id="@+id/textView_review_write_donation_selection_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/review_write_text_selection_imge"
+                android:textSize="8dp"
+                app:layout_constraintEnd_toEndOf="@id/imageButton_review_write_camera"
+                app:layout_constraintStart_toStartOf="@id/imageButton_review_write_camera"
+                app:layout_constraintTop_toBottomOf="@id/imageButton_review_write_camera" />
+
+
+            <ImageView
+                android:id="@+id/imageView_review_write_image1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
                 android:background="@drawable/shape_text"
-                android:orientation="horizontal">
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="@id/view_reivew_write_camera"
+                app:layout_constraintStart_toEndOf="@id/view_reivew_write_camera"
+                app:layout_constraintTop_toTopOf="@id/view_reivew_write_camera" />
 
-                <ImageView
-                    android:id="@+id/imageView_review_write_donate_thumbnail"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="10dp"
-                    app:srcCompat="@drawable/ic_launcher_logo_foreground" />
+            <ImageView
+                android:id="@+id/imageView_review_write_image1_delete"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_baseline_clear_24"
+                app:layout_constraintEnd_toEndOf="@id/imageView_review_write_image1"
+                app:layout_constraintTop_toTopOf="@id/imageView_review_write_image1" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+            <ImageView
+                android:id="@+id/imageView_review_write_image2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/shape_text"
+                app:layout_constraintBottom_toBottomOf="@id/imageView_review_write_image1"
+                app:layout_constraintStart_toEndOf="@id/imageView_review_write_image1"
+                app:layout_constraintTop_toTopOf="@id/imageView_review_write_image1" />
 
-                    <TextView
-                        android:id="@+id/textView_review_write_donate_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="재능 제목"
-                        android:textAppearance="@style/Typography.Bold16" />
+            <ImageView
+                android:id="@+id/imageView_review_write_image2_delete"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_baseline_clear_24"
+                app:layout_constraintEnd_toEndOf="@id/imageView_review_write_image2"
+                app:layout_constraintTop_toTopOf="@id/imageView_review_write_image2" />
 
-                    <TextView
-                        android:id="@+id/textView_review_write_donate_user"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="재능 기부한 사용자"
-                        android:textAppearance="@style/Typography.Medium16" />
+            <ImageView
+                android:id="@+id/imageView_review_write_image3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitXY"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/shape_text"
+                app:layout_constraintBottom_toBottomOf="@id/imageView_review_write_image2"
+                app:layout_constraintStart_toEndOf="@id/imageView_review_write_image2"
+                app:layout_constraintTop_toTopOf="@id/imageView_review_write_image2" />
 
-                    <TextView
-                        android:id="@+id/textView_review_write_donate_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="재능 카테고리"
-                        android:textAppearance="@style/Typography.Medium16" />
-                </LinearLayout>
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/imageView_review_write_image3_delete"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_baseline_clear_24"
+                app:layout_constraintEnd_toEndOf="@id/imageView_review_write_image3"
+                app:layout_constraintTop_toTopOf="@id/imageView_review_write_image3" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textView_review_write_star_score"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
-                android:text="사진 선택"
-                android:textAppearance="@style/Typography.Medium16" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_camera"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/imageButtonBoardWrite"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/white"
-                        android:src="@drawable/ic_camera_24dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:padding="2dp"
-                        android:text="이미지 선택"
-                        android:textSize="8dp" />
-
-                </LinearLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp">
-
-                    <ImageView
-                        android:id="@+id/imageView1BoardWrite"
-                        android:layout_width="42dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/shape_text"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="4dp"
-                        android:src="@drawable/ic_baseline_clear_24"
-                        app:layout_constraintEnd_toEndOf="@id/imageView1BoardWrite"
-                        app:layout_constraintTop_toTopOf="@id/imageView1BoardWrite" />
-
-                    <ImageView
-                        android:id="@+id/imageView2BoardWrite"
-                        android:layout_width="42dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/shape_text"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imageView1BoardWrite"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="4dp"
-                        android:src="@drawable/ic_baseline_clear_24"
-                        app:layout_constraintEnd_toEndOf="@id/imageView2BoardWrite"
-                        app:layout_constraintTop_toTopOf="@id/imageView2BoardWrite" />
-
-                    <ImageView
-                        android:id="@+id/imageView3BoardWrite"
-                        android:layout_width="42dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/shape_text"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imageView2BoardWrite"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="4dp"
-                        android:src="@drawable/ic_baseline_clear_24"
-                        app:layout_constraintEnd_toEndOf="@id/imageView3BoardWrite"
-                        app:layout_constraintTop_toTopOf="@id/imageView3BoardWrite" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"
-                android:text="리뷰 점수 작성"
-                android:textAppearance="@style/Typography.Medium16" />
+                android:text="@string/review_write_score_subtitle"
+                android:textAppearance="@style/Typography.Medium16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_review_write_donation_selection_image" />
 
             <RatingBar
-                android:id="@+id/ratingBar"
+                android:id="@+id/ratingBar_review_write"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
                 android:progressTint="@color/yellow"
                 android:rating="2.5"
-                android:stepSize="0.5" />
+                android:stepSize="0.5"
+                app:layout_constraintStart_toStartOf="@id/textView_review_write_star_score"
+                app:layout_constraintTop_toBottomOf="@id/textView_review_write_star_score" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/textView_review_write_donation_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
-                android:text="리뷰 내용 작성"
-                android:textAppearance="@style/Typography.Medium16" />
+                android:text="@string/review_write_content_subtitle"
+                android:textAppearance="@style/Typography.Medium16"
+                app:layout_constraintStart_toStartOf="@id/ratingBar_review_write"
+                app:layout_constraintTop_toBottomOf="@id/ratingBar_review_write" />
 
             <EditText
-                android:id="@+id/editTextTextMultiLine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/editText_review_write_donation_content"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/shape_text"
-                android:ems="10"
                 android:gravity="start|top"
-                android:hint="내용을 입력해주세요."
+                android:hint="@string/review_write_input_content"
                 android:inputType="textMultiLine"
-                android:lines="13"
+                android:isScrollContainer="false"
+                android:maxLines="14"
+                android:overScrollMode="never"
                 android:padding="10dp"
-                android:textAppearance="@style/Typography.Medium16" />
+                android:textAppearance="@style/Typography.Medium16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_review_write_donation_content" />
 
-        </LinearLayout>
-    </ScrollView>
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_review_write"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="view_reivew_write_camera, imageButton_review_write_camera, textView_review_write_donation_category" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressbar_review_write"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_review_write_save"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="15dp"
-        android:text="리뷰 저장하기"
+        android:text="@string/review_write_save"
         android:textAppearance="@style/Typography.Bold20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

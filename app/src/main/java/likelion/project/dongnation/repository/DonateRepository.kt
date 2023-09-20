@@ -1,16 +1,15 @@
 package likelion.project.dongnation.repository
 
 import android.net.Uri
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import likelion.project.dongnation.model.Donations
@@ -21,23 +20,23 @@ class DonateRepository {
     private val storage = FirebaseStorage.getInstance()
     private val storageRef = storage.reference
 
-    suspend fun getAllDonate(): MutableList<Donations> {
-        val querySnapshot = db.collection("Donations")
-            .orderBy("donationTimeStamp", Query.Direction.DESCENDING)
-            .get()
-            .await()
-
-        val donationsList = mutableListOf<Donations>()
-
-        for (document in querySnapshot) {
-            val donations = document.toObject(Donations::class.java)
-            donationsList.add(donations)
+    suspend fun getAllDonate(): Flow<Result<List<Donations>>> {
+        return flow {
+            kotlin.runCatching {
+                db.collection("Donations")
+                    .orderBy("donationTimeStamp", Query.Direction.DESCENDING)
+                    .get()
+                    .await()
+                    .toObjects(Donations::class.java)
+            }.onSuccess {
+                emit(Result.success(it))
+            }.onFailure {
+                emit(Result.failure(it))
+            }
         }
-
-        return donationsList
     }
 
-    suspend fun getOneDonate(idx : String): Donations {
+    suspend fun getOneDonate(idx: String): Donations {
         val querySnapshot = db.collection("Donations")
             .whereEqualTo("donationIdx", idx)
             .get()
@@ -46,7 +45,7 @@ class DonateRepository {
         return querySnapshot.documents.firstOrNull()?.toObject(Donations::class.java)!!
     }
 
-    fun addDonate(donate : Donations) : Task<Void>{
+    fun addDonate(donate: Donations): Task<Void> {
         db.collection("Donations")
             .add(donate)
             .addOnSuccessListener { documentReference ->
@@ -63,7 +62,7 @@ class DonateRepository {
         return Tasks.forResult(null)
     }
 
-    suspend fun modifyDonate(idx: String, newData: Donations) : Task<Void> {
+    suspend fun modifyDonate(idx: String, newData: Donations): Task<Void> {
         val documentReference = db.collection("Donations").document(idx)
         withContext(Dispatchers.IO) {
             documentReference.update(
@@ -73,7 +72,7 @@ class DonateRepository {
                 "donationSubtitle", newData.donationSubtitle,
                 "donationContent", newData.donationContent,
                 "donationImg", newData.donationImg
-                ).await()
+            ).await()
         }
 
         return Tasks.forResult(null)
@@ -92,7 +91,7 @@ class DonateRepository {
             }
     }
 
-    fun deleteImage(fileUrl: String){
+    fun deleteImage(fileUrl: String) {
         val imageRef = storageRef.child(fileUrl)
         imageRef.delete()
     }
