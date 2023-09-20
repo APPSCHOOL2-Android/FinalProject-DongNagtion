@@ -1,7 +1,6 @@
 package likelion.project.dongnation.ui.chatting
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +49,7 @@ class ChattingListFragment : Fragment() {
                 adapter = RecyclerAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
                 chattingListViewModel.getChattingList()
+                chattingListViewModel.notifyNewMessage()
             }
         }
     }
@@ -63,22 +63,23 @@ class ChattingListFragment : Fragment() {
                 }
             }
         }
+        ChattingListViewModel.receivingState.observe(viewLifecycleOwner){
+            chattingListViewModel.getChattingList()
+        }
     }
 
     inner class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
         inner class ViewHolder(itemChattingListRowBinding: ItemChattingListRowBinding)
             : RecyclerView.ViewHolder(itemChattingListRowBinding.root), OnClickListener {
 
-            var textViewId: TextView
+            var textViewName: TextView
             var textViewMessage: TextView
-            var textViewType: TextView
             var textViewDate: TextView
 
 
             init {
-                textViewId = itemChattingListRowBinding.textViewItemChattingListId
+                textViewName = itemChattingListRowBinding.textViewItemChattingListName
                 textViewMessage = itemChattingListRowBinding.textViewItemChattingListMessage
-                textViewType = itemChattingListRowBinding.textViewItemChattingListType
                 textViewDate = itemChattingListRowBinding.textViewItemChattingListDate
             }
 
@@ -113,7 +114,7 @@ class ChattingListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.textViewId.text = chattingList[position].chattingRoomUserIdCounterpart
+            holder.textViewName.text = chattingList[position].chattingRoomUserNameCounterpart
             holder.textViewMessage.text = chattingList[position].chattingRoomMessages.last().messageContent
             holder.textViewDate.text = chattingList[position].chattingRoomMessages.last().messageDate
         }

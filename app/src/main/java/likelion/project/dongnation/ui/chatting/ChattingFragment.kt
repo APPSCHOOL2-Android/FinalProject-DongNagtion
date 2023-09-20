@@ -31,6 +31,7 @@ class ChattingFragment : Fragment() {
     private lateinit var mainActivity: MainActivity
 
     private lateinit var chattingRoomUserIdCounterpart: String
+    private lateinit var chattingRoomUserNameCounterpart: String
     private lateinit var chattingRoom: ChattingRoom
 
     override fun onCreateView(
@@ -43,8 +44,9 @@ class ChattingFragment : Fragment() {
 
         chattingRoomUserIdCounterpart =
             arguments?.getString("chattingRoomUserIdCounterpart", "").toString()
+        chattingRoomUserNameCounterpart =
+            arguments?.getString("chattingRoomUserNameCounterpart", "").toString()
         chattingRoom = ChattingRoom()
-        Log.d("chatting", chattingRoomUserIdCounterpart)
 
         initUI()
         observe()
@@ -106,7 +108,7 @@ class ChattingFragment : Fragment() {
 
     // 유저 채팅 생성
     private fun sendMessage(inputMessage: String){
-        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, inputMessage, getDate())
+        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, chattingRoomUserNameCounterpart, inputMessage, getDate())
         fragmentChattingBinding.editTextChattingMessage.run {
             setText("")
         }

@@ -10,6 +10,7 @@ import likelion.project.dongnation.model.ChattingRoom
 import likelion.project.dongnation.model.Message
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.ChattingRoomRepository
+import likelion.project.dongnation.ui.chatting.ChattingListViewModel
 import likelion.project.dongnation.ui.chatting.ChattingViewModel
 import likelion.project.dongnation.ui.login.LoginViewModel
 import kotlin.coroutines.resume
@@ -20,13 +21,13 @@ class ChattingRoomDataSource {
 
     // 전체 채팅방
     suspend fun getAllChattingRooms(): MutableList<ChattingRoom> {
-        val querySnapshot = db.collection("chattingRooms").get().await()
+        val querySnapshot = db.collection("chattingRoomsTest").get().await()
         return querySnapshot.toObjects(ChattingRoom::class.java)
     }
 
     // 유저 본인이 소속된 모든 채팅방
     suspend fun getChattingRooms(user: User): MutableList<ChattingRoom> {
-        val querySnapshot = db.collection("chattingRooms")
+        val querySnapshot = db.collection("chattingRoomsTest")
             .whereEqualTo("chattingRoomUserId", user.userId)
             .get().await()
         return querySnapshot.toObjects(ChattingRoom::class.java)
@@ -64,7 +65,7 @@ class ChattingRoomDataSource {
     }
 
     suspend fun addChattingRoom(chattingRoom: ChattingRoom) = withContext(Dispatchers.IO){
-        db.collection("chattingRooms").add(chattingRoom)
+        db.collection("chattingRoomsTest").add(chattingRoom)
     }
 
     // 두 명의 유저가 소속된 채팅방의 메시지
@@ -77,7 +78,7 @@ class ChattingRoomDataSource {
         // 발송 유저의 데이터 베이스 저장
         val messageList = getMessages(user, userCounterpart)
         messageList.add(message)
-        db.collection("chattingRooms")
+        db.collection("chattingRoomsTest")
             .whereEqualTo("chattingRoomUserId", user.userId)
             .whereEqualTo("chattingRoomUserIdCounterpart", userCounterpart.userId)
             .get()
@@ -87,16 +88,16 @@ class ChattingRoomDataSource {
                     db.document(filePath).update("chattingRoomMessages", messageList)
                 }
                 else {
-                    val newChattingRoom = ChattingRoom(user.userId, userCounterpart.userId)
+                    val newChattingRoom = ChattingRoom(user.userId, userCounterpart.userId, userCounterpart.userName)
                     newChattingRoom.chattingRoomMessages.add(message)
-                    db.collection("chattingRooms").add(newChattingRoom)
+                    db.collection("chattingRoomsTest").add(newChattingRoom)
                 }
             }
 
         // 상대 유저의 데이터 베이스 저장
         val messageListCounterpart = getMessages(userCounterpart, user)
         messageListCounterpart.add(message)
-        db.collection("chattingRooms")
+        db.collection("chattingRoomsTest")
             .whereEqualTo("chattingRoomUserId", userCounterpart.userId)
             .whereEqualTo("chattingRoomUserIdCounterpart", user.userId)
             .get()
@@ -106,19 +107,20 @@ class ChattingRoomDataSource {
                     db.document(filePath).update("chattingRoomMessages", messageList)
                 }
                 else {
-                    val newChattingRoom = ChattingRoom(userCounterpart.userId, user.userId)
+                    val newChattingRoom = ChattingRoom(userCounterpart.userId, user.userId, user.userName)
                     newChattingRoom.chattingRoomMessages.add(message)
-                    db.collection("chattingRooms").add(newChattingRoom)
+                    db.collection("chattingRoomsTest").add(newChattingRoom)
                 }
             }
     }
 
     suspend fun notifyNewMessage() = withContext(Dispatchers.IO){
-        db.collection("chattingRooms")
+        db.collection("chattingRoomsTest")
             .whereEqualTo("chattingRoomUserId", LoginViewModel.loginUserInfo.userId)
             .addSnapshotListener { value, error ->
                 Log.d("chatting", "수신 데이터 소스")
                 ChattingViewModel.receivingState.value = true
+                ChattingListViewModel.receivingState.value = true
             }
     }
 }
