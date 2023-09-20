@@ -2,22 +2,32 @@ package likelion.project.dongnation.ui.userInfo
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentUserInfoBoardBinding
 import likelion.project.dongnation.databinding.ItemUserInfoBoardWriteBinding
+import likelion.project.dongnation.model.Tips
+import likelion.project.dongnation.ui.board.BoardViewModel
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class UserInfoBoardFragment : Fragment() {
 
     lateinit var fragmentUserInfoBoardBinding: FragmentUserInfoBoardBinding
     lateinit var mainActivity: MainActivity
+
+    val userId = LoginViewModel.loginUserInfo.userId
+    lateinit var viewModel: BoardViewModel
+
+    val myBoardDataList = mutableListOf<Tips>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +36,34 @@ class UserInfoBoardFragment : Fragment() {
         fragmentUserInfoBoardBinding = FragmentUserInfoBoardBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        viewModel = ViewModelProvider(this)[BoardViewModel::class.java]
+
+        viewModel.run {
+            boardLiveData.observe(viewLifecycleOwner) { tipsList ->
+                myBoardDataList.clear()
+                tipsList.forEach{myBoardDataList.add(it)}
+
+                if (myBoardDataList.isNotEmpty()) {
+                    fragmentUserInfoBoardBinding.layoutWrite.visibility = View.GONE
+                }else {
+                    fragmentUserInfoBoardBinding.layoutWrite.visibility = View.VISIBLE
+                }
+
+                fragmentUserInfoBoardBinding.recyclerViewUserInfoBoardWrite.adapter?.notifyDataSetChanged()
+            }
+
+            loadMyBoard(userId)
+        }
+
         fragmentUserInfoBoardBinding.run {
+
+            mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
+
+            materialToolbarUserInfoBoard.run {
+                setNavigationOnClickListener {
+                    mainActivity.removeFragment(MainActivity.USER_INFO_BOARD_FRAGMENT)
+                }
+            }
 
             // 작성글 클릭
             textViewUserInfoBoardWrite.setOnClickListener {
@@ -78,16 +115,24 @@ class UserInfoBoardFragment : Fragment() {
 
         inner class UserInfoBoardWriteHolder(binding : ItemUserInfoBoardWriteBinding) : RecyclerView.ViewHolder(binding.root) {
 
-            val textViewItemBoardWriteType : TextView
             val textViewItemBoardWriteTitle : TextView
             val textViewItemBoardWriteContents : TextView
             val textViewItemBoardWriteDate : TextView
 
             init {
-                textViewItemBoardWriteType = binding.textViewItemBoardWriteType
                 textViewItemBoardWriteTitle = binding.textViewItemBoardWriteTitle
                 textViewItemBoardWriteContents = binding.textViewItemBoardWriteContents
                 textViewItemBoardWriteDate = binding.textViewItemBoardWriteDate
+
+                binding.root.setOnClickListener {
+                    val position = bindingAdapterPosition
+                    val selectedDonation = myBoardDataList[position]
+
+                    var bundle = Bundle()
+                    bundle.putParcelable("board", selectedDonation)
+                    mainActivity.replaceFragment(MainActivity.BOARD_CONTENTS_FRAGMENT, true, bundle)
+                }
+
             }
 
         }
@@ -106,19 +151,17 @@ class UserInfoBoardFragment : Fragment() {
 
         override fun getItemCount(): Int {
 
-            val itemCount = 5
-
-            if (itemCount == 0) {
-                fragmentUserInfoBoardBinding.layoutWrite.visibility = View.VISIBLE
-            } else {
-                fragmentUserInfoBoardBinding.layoutWrite.visibility = View.GONE
-            }
-
-            return itemCount
+            return myBoardDataList.size
         }
 
         override fun onBindViewHolder(holder: UserInfoBoardWriteHolder, position: Int) {
 
+            val tipTimestamp = myBoardDataList[position].tipDate
+            val formattedDate = mainActivity.formatTimeDifference(tipTimestamp.toDate())
+
+            holder.textViewItemBoardWriteTitle.text = myBoardDataList[position].tipTitle
+            holder.textViewItemBoardWriteContents.text = myBoardDataList[position].tipContent
+            holder.textViewItemBoardWriteDate.text = formattedDate
         }
     }
 
@@ -126,13 +169,11 @@ class UserInfoBoardFragment : Fragment() {
     inner class UserInfoBoardCommentAdapter : RecyclerView.Adapter<UserInfoBoardCommentAdapter.UserInfoBoardCommentHolder>() {
         inner class UserInfoBoardCommentHolder(binding : ItemUserInfoBoardWriteBinding) : RecyclerView.ViewHolder(binding.root) {
 
-            val textViewItemBoardWriteType : TextView
             val textViewItemBoardWriteTitle : TextView
             val textViewItemBoardWriteContents : TextView
             val textViewItemBoardWriteDate : TextView
 
             init {
-                textViewItemBoardWriteType = binding.textViewItemBoardWriteType
                 textViewItemBoardWriteTitle = binding.textViewItemBoardWriteTitle
                 textViewItemBoardWriteContents = binding.textViewItemBoardWriteContents
                 textViewItemBoardWriteDate = binding.textViewItemBoardWriteDate

@@ -79,4 +79,22 @@ class BoardRepository {
         }
     }
 
+    suspend fun getMyBoard(userId: String): MutableList<Tips> {
+
+        val myBoardList = mutableListOf<Tips>()
+
+        val querySnapshot = db.collection("tips")
+            .whereEqualTo("tipWriterId", userId)
+            .get()
+            .await()
+
+        for (document in querySnapshot) {
+            val board = document.toObject(Tips::class.java)
+            board.tipIdx = document.id // 문서 ID를 donationIdx 필드에 할당
+            myBoardList.add(board)
+        }
+
+        return myBoardList
+    }
+
 }
