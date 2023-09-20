@@ -11,12 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
 import likelion.project.dongnation.model.Donations
@@ -24,12 +27,16 @@ import likelion.project.dongnation.model.Review
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import likelion.project.dongnation.ui.review.ItemSpacingDecoration
+import likelion.project.dongnation.ui.review.ReviewAdapter
 import kotlin.math.round
 
 class DonateInfoFragment : Fragment() {
 
     lateinit var fragmentDonateInfoBinding: FragmentDonateInfoBinding
     lateinit var mainActivity: MainActivity
+    private val reviewAdapter by lazy {
+        ReviewAdapter()
+    }
 
     lateinit var viewModel: DonateViewModel
 
@@ -64,8 +71,6 @@ class DonateInfoFragment : Fragment() {
                 bundle.putString("chattingRoomUserIdCounterpart",
                     viewModel.userLiveData.value?.userId
                 )
-                bundle.putString("chattingRoomUserNameCounterpart",
-                    viewModel.userLiveData.value?.userName)
                 mainActivity.replaceFragment("ChattingFragment", true, bundle)
             }
 
@@ -97,6 +102,14 @@ class DonateInfoFragment : Fragment() {
                         handler.postDelayed({
                             fragmentDonateInfoBinding.progressBarDonateInfo.visibility = View.GONE
                         }, 500) // 1초(1000 밀리초) 후에 실행
+                    }
+                }
+            }
+
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    uiState.collect {
+                        reviewAdapter.submitList(it.reviews)
                     }
                 }
             }
@@ -135,7 +148,7 @@ class DonateInfoFragment : Fragment() {
             }
 
             recyclerViewDonateInfoReview.run {
-                adapter = DonateReviewAdapter(donateInfo.donationReview, minOf(donateInfo.donationReview.size, 3))
+                adapter = reviewAdapter
                 addItemDecoration(ItemSpacingDecoration(20))
                 isNestedScrollingEnabled = false
             }
@@ -168,22 +181,15 @@ class DonateInfoFragment : Fragment() {
                 buttonDonateInfoDelete.visibility = View.VISIBLE
                 buttonDonateInfoModify.visibility = View.VISIBLE
 
-                buttonDonateInfoDelete.setOnClickListener {
-                    val db = Firebase.firestore
-                    if(donateIdx != null) {
-                        db.collection("Donations").document(donateIdx).delete()
-                            .addOnSuccessListener {
-                                Snackbar.make(requireView(), "이전 화면으로 돌아가면 삭제가 완료됩니다.", Snackbar.LENGTH_SHORT).show()
-                            }
-                    }
-                }
-
                 buttonDonateInfoModify.setOnClickListener {
                     val bundle = Bundle()
                     bundle.putParcelable("donate", donateInfo)
                     mainActivity.replaceFragment("DonateModifyFragment", true, bundle)
                 }
 
+                buttonDonateInfoDelete.setOnClickListener {
+
+                }
             } else {
                 buttonDonateInfoChat.visibility = View.VISIBLE
                 buttonDonateInfoDelete.visibility = View.GONE
