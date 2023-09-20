@@ -46,6 +46,34 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <Button
+                    android:id="@+id/button_donate_info_delete"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="@color/green200"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_delete_24dp"
+                    app:iconTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_donate_info_modify"
+                    app:layout_constraintEnd_toEndOf="@+id/viewpager2_donate_info_thumbnail"
+                    app:layout_constraintTop_toTopOf="@+id/button_donate_info_modify" />
+
+                <Button
+                    android:id="@+id/button_donate_info_modify"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="60dp"
+                    android:backgroundTint="@color/green200"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_edit_24dp"
+                    app:iconTint="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout_donate_info_dot"
                     android:layout_width="match_parent"
@@ -104,15 +132,6 @@
                                     android:textAppearance="@style/Typography.Bold24" />
                             </HorizontalScrollView>
 
-                            <TextView
-                                android:id="@+id/textView_donate_info_user_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:textAppearance="@style/Typography.Medium16" />
-
                             <Button
                                 android:id="@+id/button_donate_info_like"
                                 android:layout_width="wrap_content"
@@ -137,8 +156,18 @@
                                 android:id="@+id/textView_donate_info_lacation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:textAppearance="@style/Typography.Regular16"
                                 android:textColor="@color/gray500" />
+
+                            <TextView
+                                android:id="@+id/textView_donate_info_user_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:textAppearance="@style/Typography.Medium16" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -242,7 +271,7 @@
                             android:id="@+id/textView9"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="경험"
+                            android:text="좋아요"
                             android:textAlignment="center"
                             android:textAppearance="@style/Typography.Regular12" />
 
@@ -352,7 +381,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/button_donate_info_delete"
+            android:id="@+id/button_donate_info_delete_last"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -380,7 +409,7 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/button_donate_info_modify"
+            android:id="@+id/button_donate_info_modify_last"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -395,7 +424,7 @@
         android:layout_height="match_parent"
         android:background="#4BF4F3F6"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
