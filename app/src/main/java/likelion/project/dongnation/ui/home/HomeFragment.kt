@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         fragmentHomeBinding.run {
-
+            mainActivity.activityMainBinding.bottomNavigation.visibility = View.VISIBLE
             toolbarHome.run {
                 setOnMenuItemClickListener {
                     when(it.itemId) {
