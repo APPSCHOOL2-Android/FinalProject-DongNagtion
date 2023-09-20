@@ -89,7 +89,7 @@ class DonateModifyFragment : Fragment() {
             toolbarDonateWrite.run{
                 title = "재능 기부 글 수정"
                 setNavigationOnClickListener {
-                    mainActivity.removeFragment("DonateModifyFragment")
+                    mainActivity.replaceFragment("HomeFragment", false, null)
                 }
             }
 
