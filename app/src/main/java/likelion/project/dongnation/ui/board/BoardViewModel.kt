@@ -53,4 +53,14 @@ class BoardViewModel : ViewModel() {
         }
     }
 
+    fun deleteRipples(tipIdx: String, rippleIdx: String) {
+        viewModelScope.launch {
+            boardRepository.deleteRipples(tipIdx, rippleIdx)
+            // 댓글 삭제 후 ripplesLiveData 업데이트
+            val updatedRippleList = ripplesLiveData.value?.toMutableList() ?: mutableListOf()
+            updatedRippleList.removeAll { it.rippleIdx == rippleIdx }
+            ripplesLiveData.postValue(updatedRippleList)
+        }
+    }
+
 }

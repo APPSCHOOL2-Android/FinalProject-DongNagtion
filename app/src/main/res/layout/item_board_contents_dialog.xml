@@ -7,6 +7,7 @@
     android:padding="30dp">
 
     <TextView
+        android:id="@+id/textView_board_contents_title"
         style="@style/Typography.Bold20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -58,4 +58,25 @@ class BoardRepository {
         return ripples
     }
 
+    suspend fun deleteRipples(tipIdx: String, rippleIdx: String) {
+
+        val querySnapshot = db.collection("tips")
+            .whereEqualTo("tipIdx", tipIdx)
+            .get()
+            .await()
+
+        for (document in querySnapshot) {
+            val tipRipples = document["tipRipples"] as List<Map<String, Any>>?
+
+            if (tipRipples != null && tipRipples.isNotEmpty()) {
+                val updatedRipples = tipRipples.filter { it["rippleIdx"] != rippleIdx }
+
+                val tipRef = db.collection("tips").document(document.id)
+                tipRef.update("tipRipples", updatedRipples)
+                    .await()
+
+            }
+        }
+    }
+
 }
