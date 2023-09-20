@@ -268,6 +268,30 @@ class BoardContentsFragment : Fragment() {
                     mainActivity.replaceFragment(MainActivity.BOARD_RIPPLES_MODIFY_FRAGMENT, true, bundle)
                 }
 
+                // 댓글 삭제
+                imageViewCommentItemDelete.setOnClickListener {
+                    val binding = ItemBoardContentsDialogBinding.inflate(LayoutInflater.from(context))
+                    val builder = MaterialAlertDialogBuilder(mainActivity)
+                    builder.setView(binding.root)
+                    val dialog = builder.create()
+
+                    binding.textViewBoardContentsTitle.text = "댓글을 삭제하시겠습니까?"
+
+                    binding.buttonBoardContentsCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+
+                    binding.buttonBoardContentsDelete.setOnClickListener {
+
+                        viewModel.deleteRipples(board.tipIdx, tipsRippleDataList[adapterPosition].rippleIdx)
+
+                        Snackbar.make(requireView(), "댓글이 삭제되었습니다.", Snackbar.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+
+                    dialog.show()
+                }
+
             }
 
         }
