@@ -26,6 +26,9 @@ class UserInfoFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         fragmentUserInfoBinding.run {
+            // 바텀 네비게이션 보이게하기
+            mainActivity.activityMainBinding.bottomNavigation.visibility = View.VISIBLE
+
             toolbarUserInfo.title = "내 정보"
 
             // 송금 코드

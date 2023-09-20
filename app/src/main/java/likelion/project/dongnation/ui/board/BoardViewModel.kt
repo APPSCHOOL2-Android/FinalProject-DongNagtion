@@ -63,4 +63,11 @@ class BoardViewModel : ViewModel() {
         }
     }
 
+    fun loadMyBoard(userId : String) {
+        viewModelScope.launch {
+            val board = boardRepository.getMyBoard(userId)
+            boardLiveData.postValue(board)
+        }
+    }
+
 }
