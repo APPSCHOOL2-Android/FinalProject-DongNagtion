@@ -1,20 +1,26 @@
 package likelion.project.dongnation.ui.donate
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.firestore.WriteBatch
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentDonateInfoBinding
 import likelion.project.dongnation.model.Donations
@@ -163,6 +169,10 @@ class DonateInfoFragment : Fragment() {
                 buttonDonateInfoChat.visibility = View.GONE
                 buttonDonateInfoDelete.visibility = View.VISIBLE
                 buttonDonateInfoModify.visibility = View.VISIBLE
+
+                buttonDonateInfoDelete.setOnClickListener {
+                    val db = Firebase.firestore
+                }
 
                 buttonDonateInfoModify.setOnClickListener {
                     val bundle = Bundle()
