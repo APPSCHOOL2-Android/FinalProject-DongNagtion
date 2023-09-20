@@ -17,42 +17,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <Button
-            android:id="@+id/button_map_searchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/gray250"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView_map"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginEnd="20dp"
-            app:iconifiedByDefault="false"
-            app:layout_constraintBottom_toBottomOf="@+id/button_map_searchView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/button_map_searchView"
-            app:queryBackground="@null">
-
-        </androidx.appcompat.widget.SearchView>
-
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/white"
             app:checkedChip="@id/chip_map_all"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_map_searchView"
+            app:layout_constraintTop_toTopOf="@+id/map"
             app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
@@ -115,10 +90,10 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_back_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/button_map_searchView"
-            app:layout_constraintEnd_toStartOf="@+id/button_map_searchView"
+            app:layout_constraintBottom_toBottomOf="@+id/chipGroup_map"
+            app:layout_constraintEnd_toStartOf="@+id/chipGroup_map"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/button_map_searchView" />
+            app:layout_constraintTop_toTopOf="@+id/chipGroup_map" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

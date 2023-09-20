@@ -79,26 +79,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         fragmentMapBinding.run {
-            searchViewMap.run {
-                queryHint = "키워드를 입력해주세요."
-                isSubmitButtonEnabled = true
-                setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        if (!query.isNullOrBlank()) {
-                            performSearch(query.toString())
-                            return true
-                        }
-                        return false
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        if (!newText.isNullOrBlank()) {
-                        }
-                        return true
-                    }
-                })
-            }
-
             chipGroupMap.setOnCheckedChangeListener { group, checkedId ->
                 when(checkedId) {
                     R.id.chip_map_all -> showAllMarkers()
@@ -116,39 +96,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         return fragmentMapBinding.root
     }
-
-    private fun performSearch(query: String) {
-        if (query.isNotBlank()) {
-            for (marker in markerList) {
-                marker.isVisible = false // 모든 마커를 숨깁니다.
-            }
-
-            for (markerData in markerDataList) {
-                // 마커 데이터의 제목과 검색어가 일치하면 해당 마커를 보이게 하고 초록색으로 설정합니다.
-                if (markerData.title.contains(query, ignoreCase = true)) {
-                    val marker = findMarkerForMarkerData(markerData)
-                    marker?.isVisible = true
-                    marker?.iconTintColor = Color.GREEN
-                }
-            }
-        } else {
-            // 검색어가 비어 있으면 모든 마커를 다시 표시합니다.
-            showAllMarkers()
-        }
-    }
-
-    private fun findMarkerForMarkerData(markerData: MarkerData): Marker? {
-        // 마커 데이터의 위치와 일치하는 마커를 찾아 반환합니다.
-        for (marker in markerList) {
-            val markerLatLng = LatLng(getLatLng(markerData.address).latitude, getLatLng(markerData.address).longitude)
-            if (marker.position == markerLatLng) {
-                return marker
-            }
-        }
-        return null // 해당 마커를 찾을 수 없으면 null을 반환합니다.
-    }
-
-
     private fun initMapView() {
         val fm = childFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
