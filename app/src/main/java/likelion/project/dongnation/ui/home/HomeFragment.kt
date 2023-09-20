@@ -7,11 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentHomeBinding
 import likelion.project.dongnation.ui.login.LoginViewModel
@@ -19,7 +24,7 @@ import likelion.project.dongnation.ui.main.MainActivity
 
 class HomeFragment : Fragment() {
 
-    lateinit var fragmentHomeBinding: FragmentHomeBinding
+    lateinit var binding: FragmentHomeBinding
     lateinit var mainActivity: MainActivity
     lateinit var viewModel: HomeViewModel
 
@@ -30,16 +35,16 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
+        binding = FragmentHomeBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
-        fragmentHomeBinding.run {
+        binding.run {
             mainActivity.activityMainBinding.bottomNavigation.visibility = View.VISIBLE
             toolbarHome.run {
                 setOnMenuItemClickListener {
-                    when(it.itemId) {
+                    when (it.itemId) {
                         R.id.item_map -> mainActivity.replaceFragment("MapFragment", true, null)
                     }
                     false
@@ -50,15 +55,15 @@ class HomeFragment : Fragment() {
             recyclerviewHomeDonationAll.adapter = adapter
 
             val db = Firebase.firestore
-            db.collection("users").whereEqualTo("userId", LoginViewModel.loginUserInfo.userId).get().addOnSuccessListener { result ->
-                for(document in result) {
-                    val dbAddress = document["userAddress"] as String
-                    textViewHomeLocation.text = dbAddress.split("동").firstOrNull().plus("동")
+            db.collection("users").whereEqualTo("userId", LoginViewModel.loginUserInfo.userId).get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val dbAddress = document["userAddress"] as String
+                        textViewHomeLocation.text = dbAddress.split("동").firstOrNull().plus("동")
+                    }
                 }
-            }
 
             buttonHomeSearch.setOnClickListener {
-                searchResult()
                 hideKeyboard(it)
             }
 
@@ -72,50 +77,54 @@ class HomeFragment : Fragment() {
                 mainActivity.replaceFragment("DonateWriteFragment", true, null)
             }
         }
-
-        return fragmentHomeBinding.root
+        searchResult()
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = fragmentHomeBinding.recyclerviewHomeDonationAll
+        recyclerView = binding.recyclerviewHomeDonationAll
 
         // RecyclerView.Adapter.StateRestorationPolicy 설정
         recyclerView?.adapter?.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-
-        // 데이터 로드
-        viewModel.run {
-            donatesLiveData.observe(viewLifecycleOwner) { donates ->
-                // 기존 어댑터를 업데이트
-                adapter.updateData(donates)
-            }
-
-            loadDonations()
-        }
+        viewModel.loadDonations()
+        observe()
     }
 
-    private fun searchResult(){
-        val word = fragmentHomeBinding.editTextHomeSearch.text.toString()
-
-        if (word == ""){
-            Snackbar.make(fragmentHomeBinding.root, "검색어를 입력해주세요.", Snackbar.LENGTH_SHORT).show()
-        } else {
-            viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-
-            viewModel.run {
-                searchLiveData.observe(viewLifecycleOwner){ search ->
-                    fragmentHomeBinding.recyclerviewHomeDonationAll.run {
-                        adapter = HomeAdapter(mainActivity, search)
-                        adapter?.notifyDataSetChanged()
+    private fun observe() {
+        if (viewModel.uiState.value.isInitDanationList) binding.shimmerFrameLayoutHome.visibility =
+            View.GONE else binding.shimmerFrameLayoutHome.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.uiState.collect {
+                    delay(500)
+                    if (it.isInitDanationList) {
+                        binding.shimmerFrameLayoutHome.visibility = View.GONE
+                        binding.recyclerviewHomeDonationAll.visibility =
+                            View.VISIBLE
+                        binding.recyclerviewHomeDonationAll.run {
+                            adapter = HomeAdapter(mainActivity, it.donationList)
+                        }
                     }
                 }
-
-                searchDonate(word)
             }
         }
     }
+
+    private fun searchResult() {
+        binding.editTextHomeSearch.addTextChangedListener {
+            it?.let { text ->
+                if (it.isEmpty()) {
+                    viewModel.loadDonations()
+                } else {
+                    viewModel.searchDonate(text.toString())
+                }
+            }
+        }
+    }
+
 
     private fun hideKeyboard(view: View) {
         val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
