@@ -1,87 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imageView_item_img"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_launcher_logo_foreground" />
+    <ImageView
+        android:id="@+id/imageView_itemReview_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_logo_foreground" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="130dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView_item_img"
-            app:layout_constraintTop_toTopOf="parent">
+    <TextView
+        android:id="@+id/textView_itemReview_writer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        android:text="리뷰 작성자"
+        android:textAppearance="@style/Typography.Medium20"
+        app:layout_constraintTop_toTopOf="@+id/imageView_itemReview_img"
+        app:layout_constraintStart_toEndOf="@+id/imageView_itemReview_img"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/imageView_itemReview_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_star_24dp"
+        app:tint="@color/yellow"
+        app:layout_constraintTop_toTopOf="@id/textView_itemReview_writer"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-                <TextView
-                    android:id="@+id/textView_item_writer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="리뷰 작성자"
-                    android:textAppearance="@style/Typography.Medium20" />
+    <TextView
+        android:id="@+id/textView_item_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="4.5"
+        android:textAppearance="@style/Typography.Regular15"
+        app:layout_constraintTop_toBottomOf="@id/imageView_itemReview_star"
+        app:layout_constraintStart_toStartOf="@id/imageView_itemReview_star"
+        app:layout_constraintEnd_toEndOf="@id/imageView_itemReview_star"/>
 
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_star_24dp"
-                    app:tint="@color/yellow" />
 
-                <TextView
-                    android:id="@+id/textView_item_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="4.5"
-                    android:textAppearance="@style/Typography.Regular15" />
+    <TextView
+        android:id="@+id/textView_itemReview_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="너무 친절하게 대해주셔서 너무 좋았습니다! 실력도 엄청 좋으세요!"
+        android:textAppearance="@style/Typography.Medium16"
+        android:layout_marginEnd="15dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@id/textView_itemReview_writer"
+        app:layout_constraintStart_toStartOf="@id/textView_itemReview_writer"
+        app:layout_constraintEnd_toStartOf="@id/textView_itemReview_date"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-            </LinearLayout>
+    <TextView
+        android:id="@+id/textView_itemReview_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1시간 전"
+        android:layout_marginBottom="15dp"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="@id/textView_item_score"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <TextView
-                android:id="@+id/textView_item_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="너무 친절하게 대해주셔서 너무 좋았습니다! 실력도 엄청 좋으세요!"
-                android:textAppearance="@style/Typography.Medium16" />
-
-            <TextView
-                android:id="@+id/textView_item_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1시간 전"
-                android:textAlignment="textEnd" />
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
