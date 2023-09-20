@@ -44,7 +44,7 @@ class ReviewDataSource {
         return flow {
             kotlin.runCatching {
                 db.collection("Reviews")
-                    .whereEqualTo("donationIdx", donationIdx)
+                    .whereEqualTo("donationBoardId", donationIdx)
                     .get()
                     .await()
                     .toObjects(Review::class.java)

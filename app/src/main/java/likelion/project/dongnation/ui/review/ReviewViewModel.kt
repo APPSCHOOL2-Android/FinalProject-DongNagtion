@@ -1,5 +1,6 @@
 package likelion.project.dongnation.ui.review
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ class ReviewViewModel : ViewModel() {
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     fun getReviews(donationIdx: String) {
+        Log.d("TEST4", "${donationIdx}")
         viewModelScope.launch {
             reviewRepository.getReviews(donationIdx).collect {
                 it.onSuccess { reviews ->

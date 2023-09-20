@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import likelion.project.dongnation.databinding.ItemReviewListBinding
 import likelion.project.dongnation.model.Review
+import likelion.project.dongnation.ui.main.MainActivity
 
 class ReviewAdapter : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
@@ -32,7 +33,8 @@ class ReviewAdapter : ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(DIFF_C
                     .into(imageViewItemReviewImg)
                 textViewItemReviewWriter.text = item.reviewWriter
                 textViewItemScore.text = item.reviewRate
-                textViewItemReviewDate.text = item.reviewDate.toString()
+                textViewItemReviewContent.text = item.reviewContent
+                textViewItemReviewDate.text = MainActivity().formatTimeDifference(item.reviewDate.toDate())
             }
         }
     }

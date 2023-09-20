@@ -2,6 +2,7 @@ package likelion.project.dongnation.ui.review
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ class ReviewShowFragment : Fragment() {
     private val reviewAdapter by lazy {
         ReviewAdapter()
     }
+    private var donationIdx: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,11 +34,7 @@ class ReviewShowFragment : Fragment() {
         mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(this)[ReviewViewModel::class.java]
 
-        val reviews = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelableArrayList("reviews", Review::class.java)!!
-        } else {
-            arguments?.getParcelableArrayList("reviews")!!
-        }
+        arguments?.let { donationIdx = it.getString("reviews") }
 
         binding.run {
 
@@ -45,7 +43,6 @@ class ReviewShowFragment : Fragment() {
                     mainActivity.removeFragment("ReviewShowFragment")
                 }
             }
-
         }
 
         return binding.root
@@ -54,9 +51,18 @@ class ReviewShowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observe()
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        with(binding.recyclerViewReviewShowList) {
+            adapter = reviewAdapter
+            addItemDecoration(ItemSpacingDecoration(20))
+        }
     }
 
     private fun observe() {
+        donationIdx?.let { viewModel.getReviews(it) }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
