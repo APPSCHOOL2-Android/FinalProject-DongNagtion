@@ -97,4 +97,31 @@ class BoardRepository {
         return myBoardList
     }
 
+    suspend fun getMyRipple(rippleWriterId: String): MutableList<Tips> {
+        val myRippleList = mutableListOf<Tips>()
+
+        val querySnapshot = db.collection("tips")
+            .get()
+            .await()
+
+        for (document in querySnapshot.documents) {
+            val tipRipplesField = document["tipRipples"] as? ArrayList<*>
+
+            if (tipRipplesField != null) {
+                for (item in tipRipplesField) {
+                    if (item is Map<*, *> && item["rippleWriterId"] == rippleWriterId) {
+
+                        val tip = document.toObject(Tips::class.java)
+
+                        if (tip != null) {
+                            myRippleList.add(tip)
+                        }
+                        break
+                    }
+                }
+            }
+        }
+        return myRippleList
+    }
+
 }

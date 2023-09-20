@@ -15,6 +15,7 @@ class BoardViewModel : ViewModel() {
     val boardLiveData = MutableLiveData<MutableList<Tips>>()
     val searchBoardLiveData = MutableLiveData<MutableList<Tips>>()
     val ripplesLiveData = MutableLiveData<MutableList<TipsRipple>>()
+    val boardRippleLiveData = MutableLiveData<MutableList<Tips>>()
 
     fun loadBoard() {
         viewModelScope.launch {
@@ -67,6 +68,13 @@ class BoardViewModel : ViewModel() {
         viewModelScope.launch {
             val board = boardRepository.getMyBoard(userId)
             boardLiveData.postValue(board)
+        }
+    }
+
+    fun loadMyRipple(rippleWriterId: String) {
+        viewModelScope.launch {
+            val ripple = boardRepository.getMyRipple(rippleWriterId)
+            boardRippleLiveData.postValue(ripple)
         }
     }
 

@@ -28,6 +28,7 @@ class UserInfoBoardFragment : Fragment() {
     lateinit var viewModel: BoardViewModel
 
     val myBoardDataList = mutableListOf<Tips>()
+    val myBoardRippleDataList = mutableListOf<Tips>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +53,16 @@ class UserInfoBoardFragment : Fragment() {
                 fragmentUserInfoBoardBinding.recyclerViewUserInfoBoardWrite.adapter?.notifyDataSetChanged()
             }
 
+            boardRippleLiveData.observe(viewLifecycleOwner) { rippleList ->
+                myBoardRippleDataList.clear()
+                rippleList.forEach{myBoardRippleDataList.add(it)}
+
+                fragmentUserInfoBoardBinding.recyclerViewUserInfoBoardComment.adapter?.notifyDataSetChanged()
+
+            }
+
             loadMyBoard(userId)
+            loadMyRipple(userId)
         }
 
         fragmentUserInfoBoardBinding.run {
@@ -77,8 +87,14 @@ class UserInfoBoardFragment : Fragment() {
                     layoutManager = LinearLayoutManager(context)
                 }
 
-                recyclerViewUserInfoBoardWrite.visibility = View.VISIBLE
-                recyclerViewUserInfoBoardComment.visibility = View.GONE
+                if (myBoardDataList.isEmpty()) {
+                    recyclerViewUserInfoBoardWrite.visibility = View.GONE
+                    recyclerViewUserInfoBoardComment.visibility = View.GONE
+                    layoutWrite.visibility = View.VISIBLE
+                }else {
+                    recyclerViewUserInfoBoardWrite.visibility = View.VISIBLE
+                    recyclerViewUserInfoBoardComment.visibility = View.GONE
+                }
 
             }
 
@@ -94,8 +110,14 @@ class UserInfoBoardFragment : Fragment() {
                     layoutManager = LinearLayoutManager(context)
                 }
 
-                recyclerViewUserInfoBoardWrite.visibility = View.GONE
-                recyclerViewUserInfoBoardComment.visibility = View.VISIBLE
+                if (myBoardRippleDataList.isEmpty()) {
+                    recyclerViewUserInfoBoardWrite.visibility = View.GONE
+                    recyclerViewUserInfoBoardComment.visibility = View.GONE
+                    layoutComment.visibility = View.VISIBLE
+                }else {
+                    recyclerViewUserInfoBoardWrite.visibility = View.GONE
+                    recyclerViewUserInfoBoardComment.visibility = View.VISIBLE
+                }
 
             }
 
@@ -177,6 +199,15 @@ class UserInfoBoardFragment : Fragment() {
                 textViewItemBoardWriteTitle = binding.textViewItemBoardWriteTitle
                 textViewItemBoardWriteContents = binding.textViewItemBoardWriteContents
                 textViewItemBoardWriteDate = binding.textViewItemBoardWriteDate
+
+                binding.root.setOnClickListener {
+                    val position = bindingAdapterPosition
+                    val selectedDonation = myBoardRippleDataList[position]
+
+                    var bundle = Bundle()
+                    bundle.putParcelable("board", selectedDonation)
+                    mainActivity.replaceFragment(MainActivity.BOARD_CONTENTS_FRAGMENT, true, bundle)
+                }
             }
 
         }
@@ -194,19 +225,18 @@ class UserInfoBoardFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            val itemCount = 0
 
-            if (itemCount == 0) {
-                fragmentUserInfoBoardBinding.layoutComment.visibility = View.VISIBLE
-            } else {
-                fragmentUserInfoBoardBinding.layoutComment.visibility = View.GONE
-            }
-
-            return itemCount
+            return myBoardRippleDataList.size
         }
 
         override fun onBindViewHolder(holder: UserInfoBoardCommentHolder, position: Int) {
-            holder.textViewItemBoardWriteTitle.text = "댓글 제목입니다"
+
+            val tipTimestamp = myBoardRippleDataList[position].tipDate
+            val formattedDate = mainActivity.formatTimeDifference(tipTimestamp.toDate())
+
+            holder.textViewItemBoardWriteTitle.text = myBoardRippleDataList[position].tipTitle
+            holder.textViewItemBoardWriteContents.text = myBoardRippleDataList[position].tipContent
+            holder.textViewItemBoardWriteDate.text = formattedDate
         }
     }
 
