@@ -12,6 +12,7 @@ import likelion.project.dongnation.model.Message
 import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.ChattingRoomRepository
 import likelion.project.dongnation.repository.UserRepository
+import likelion.project.dongnation.ui.login.LoginViewModel
 
 class ChattingViewModel : ViewModel() {
     private val chattingRoomRepository = ChattingRoomRepository()
@@ -20,10 +21,10 @@ class ChattingViewModel : ViewModel() {
     val chattingRoom = MutableLiveData<ChattingRoom>()
     val chattingRoomUserNameCounterpart = MutableLiveData<String>()
 
-    fun sendMessage(userId: String, userCounterpartId: String, content: String, date: String)
+    fun sendMessage(userId: String, userCounterpartId: String, userCounterpartName: String, content: String, date: String)
     = viewModelScope.launch{
-        val user = User(userId = userId)
-        val userCounterpart = User(userId = userCounterpartId)
+        val user = User(userId = userId, userName = LoginViewModel.loginUserInfo.userName)
+        val userCounterpart = User(userId = userCounterpartId, userName = userCounterpartName)
         val message = Message(userId, content, date)
 
         val result = async {
