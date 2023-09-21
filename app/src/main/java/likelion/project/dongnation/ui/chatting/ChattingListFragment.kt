@@ -1,19 +1,26 @@
 package likelion.project.dongnation.ui.chatting
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentChattingListBinding
 import likelion.project.dongnation.databinding.ItemChattingListRowBinding
+import likelion.project.dongnation.databinding.ItemChattingRoomLeavingDialogBinding
 import likelion.project.dongnation.model.ChattingRoom
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class ChattingListFragment : Fragment() {
@@ -70,7 +77,7 @@ class ChattingListFragment : Fragment() {
 
     inner class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
         inner class ViewHolder(itemChattingListRowBinding: ItemChattingListRowBinding)
-            : RecyclerView.ViewHolder(itemChattingListRowBinding.root), OnClickListener {
+            : RecyclerView.ViewHolder(itemChattingListRowBinding.root), OnClickListener, OnLongClickListener {
 
             var textViewName: TextView
             var textViewMessage: TextView
@@ -83,10 +90,32 @@ class ChattingListFragment : Fragment() {
                 textViewDate = itemChattingListRowBinding.textViewItemChattingListDate
             }
 
+            // 채팅방 이동
             override fun onClick(p0: View?) {
                 val bundle = Bundle()
                 bundle.putString("chattingRoomUserIdCounterpart", chattingList[absoluteAdapterPosition].chattingRoomUserIdCounterpart)
                 mainActivity.replaceFragment("ChattingFragment", true, bundle)
+            }
+
+            // 채팅방 삭제
+            override fun onLongClick(p0: View?): Boolean {
+                val dialogBuilder = MaterialAlertDialogBuilder(mainActivity)
+                val itemChattingRoomLeavingDialogBinding = ItemChattingRoomLeavingDialogBinding.inflate(layoutInflater)
+                dialogBuilder.setView(itemChattingRoomLeavingDialogBinding.root)
+                val dialog = dialogBuilder.create()
+
+                itemChattingRoomLeavingDialogBinding.apply {
+                    buttonChattingRoomLeavingCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                    buttonChattingRoomLeavingLeaving.setOnClickListener {
+                        chattingListViewModel.leaveChattingRoom(LoginViewModel.loginUserInfo.userId, chattingList[absoluteAdapterPosition].chattingRoomUserIdCounterpart)
+                        dialog.dismiss()
+                    }
+                }
+                dialog.show()
+
+                return true
             }
         }
 
@@ -97,6 +126,7 @@ class ChattingListFragment : Fragment() {
 
             // 클릭 이벤트 설정
             itemChattingListRowBinding.root.setOnClickListener(viewHolder)
+            itemChattingListRowBinding.root.setOnLongClickListener(viewHolder)
 
             // 가로 세로 길이 설정
             val params = RecyclerView.LayoutParams(
