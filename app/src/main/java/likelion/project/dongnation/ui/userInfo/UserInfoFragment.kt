@@ -1,11 +1,14 @@
 package likelion.project.dongnation.ui.userInfo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
@@ -21,12 +24,33 @@ class UserInfoFragment : Fragment() {
     lateinit var fragmentUserInfoBinding: FragmentUserInfoBinding
     lateinit var mainActivity: MainActivity
 
+    lateinit var viewModel: UserInfoViewModel
+    val userId = LoginViewModel.loginUserInfo.userId
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         fragmentUserInfoBinding = FragmentUserInfoBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+
+        viewModel = ViewModelProvider(this).get(UserInfoViewModel::class.java)
+
+        viewModel.run {
+            viewModel.userProfileLiveData.observe(viewLifecycleOwner) { userProfileUrl ->
+
+                if (!userProfileUrl.isNullOrBlank()) {
+                    Glide.with(this@UserInfoFragment)
+                        .load(userProfileUrl)
+                        .circleCrop()
+                        .into(fragmentUserInfoBinding.imageViewInfoProfile)
+
+                } else {
+                    fragmentUserInfoBinding.imageViewInfoProfile.setImageResource(R.drawable.ic_account_circle_48dp)
+                }
+            }
+            viewModel.getUserProfileInfo(userId)
+        }
 
         fragmentUserInfoBinding.run {
             // 바텀 네비게이션 보이게하기
