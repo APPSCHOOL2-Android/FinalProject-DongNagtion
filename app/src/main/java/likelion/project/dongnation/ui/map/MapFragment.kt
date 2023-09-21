@@ -148,8 +148,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         fragmentMapBinding.buttonMapSetLocation.setOnClickListener {
+            val dongAddress = extractLocation(userAddress)
+            Log.d("테스트", dongAddress)
             val cameraUpdate = CameraUpdate.zoomTo(13.0)
-            val newLocation = getLatLng(userAddress.split("동").firstOrNull().plus("동"))
+            val newLocation = getLatLng(dongAddress.split("동").firstOrNull().plus("동"))
             val newCameraPosition = CameraPosition(LatLng(newLocation.latitude, newLocation.longitude), 14.0)
             naverMap.cameraPosition = newCameraPosition
             naverMap.moveCamera(cameraUpdate)
@@ -302,4 +304,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    fun extractLocation(address: String): String {
+        val addressParts = address.split(" ")
+        val dongIndex = addressParts.indexOfFirst { it.endsWith("동") || it.endsWith("읍") || it.endsWith("면") }
+        val dongOrEupOrMyeon = if (dongIndex >= 0) addressParts.subList(2, dongIndex + 1).joinToString(" ") else ""
+        return "${addressParts[0]} ${addressParts[1]} $dongOrEupOrMyeon".trim()
+    }
 }

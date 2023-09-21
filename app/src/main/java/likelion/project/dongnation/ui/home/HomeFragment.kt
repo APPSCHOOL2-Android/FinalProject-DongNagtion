@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         val dbAddress = document["userAddress"] as String
-                        textViewHomeLocation.text = dbAddress.split("동").firstOrNull().plus("동")
+                        textViewHomeLocation.text = extractLocation(dbAddress)
                     }
                 }
 
@@ -129,5 +129,12 @@ class HomeFragment : Fragment() {
     private fun hideKeyboard(view: View) {
         val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun extractLocation(address: String): String {
+        val addressParts = address.split(" ")
+        val dongIndex = addressParts.indexOfFirst { it.endsWith("동") || it.endsWith("읍") || it.endsWith("면") }
+        val dongOrEupOrMyeon = if (dongIndex >= 0) addressParts.subList(2, dongIndex + 1).joinToString(" ") else ""
+        return "${addressParts[0]} ${addressParts[1]} $dongOrEupOrMyeon".trim()
     }
 }
