@@ -21,13 +21,13 @@ class ChattingRoomDataSource {
 
     // 전체 채팅방
     suspend fun getAllChattingRooms(): MutableList<ChattingRoom> {
-        val querySnapshot = db.collection("chattingRoomsTest").get().await()
+        val querySnapshot = db.collection("chattingRooms").get().await()
         return querySnapshot.toObjects(ChattingRoom::class.java)
     }
 
     // 유저 본인이 소속된 모든 채팅방
     suspend fun getChattingRooms(user: User): MutableList<ChattingRoom> {
-        val querySnapshot = db.collection("chattingRoomsTest")
+        val querySnapshot = db.collection("chattingRooms")
             .whereEqualTo("chattingRoomUserId", user.userId)
             .get().await()
         return querySnapshot.toObjects(ChattingRoom::class.java)
@@ -65,7 +65,7 @@ class ChattingRoomDataSource {
     }
 
     suspend fun addChattingRoom(chattingRoom: ChattingRoom) = withContext(Dispatchers.IO){
-        db.collection("chattingRoomsTest").add(chattingRoom)
+        db.collection("chattingRooms").add(chattingRoom)
     }
 
     // 두 명의 유저가 소속된 채팅방의 메시지
@@ -78,7 +78,7 @@ class ChattingRoomDataSource {
         // 발송 유저의 데이터 베이스 저장
         val messageList = getMessages(user, userCounterpart)
         messageList.add(message)
-        db.collection("chattingRoomsTest")
+        db.collection("chattingRooms")
             .whereEqualTo("chattingRoomUserId", user.userId)
             .whereEqualTo("chattingRoomUserIdCounterpart", userCounterpart.userId)
             .get()
@@ -90,14 +90,14 @@ class ChattingRoomDataSource {
                 else {
                     val newChattingRoom = ChattingRoom(user.userId, userCounterpart.userId, userCounterpart.userName)
                     newChattingRoom.chattingRoomMessages.add(message)
-                    db.collection("chattingRoomsTest").add(newChattingRoom)
+                    db.collection("chattingRooms").add(newChattingRoom)
                 }
             }
 
         // 상대 유저의 데이터 베이스 저장
         val messageListCounterpart = getMessages(userCounterpart, user)
         messageListCounterpart.add(message)
-        db.collection("chattingRoomsTest")
+        db.collection("chattingRooms")
             .whereEqualTo("chattingRoomUserId", userCounterpart.userId)
             .whereEqualTo("chattingRoomUserIdCounterpart", user.userId)
             .get()
@@ -109,13 +109,13 @@ class ChattingRoomDataSource {
                 else {
                     val newChattingRoom = ChattingRoom(userCounterpart.userId, user.userId, user.userName)
                     newChattingRoom.chattingRoomMessages.add(message)
-                    db.collection("chattingRoomsTest").add(newChattingRoom)
+                    db.collection("chattingRooms").add(newChattingRoom)
                 }
             }
     }
 
     suspend fun notifyNewMessage() = withContext(Dispatchers.IO){
-        db.collection("chattingRoomsTest")
+        db.collection("chattingRooms")
             .whereEqualTo("chattingRoomUserId", LoginViewModel.loginUserInfo.userId)
             .addSnapshotListener { value, error ->
                 Log.d("chatting", "수신 데이터 소스")
@@ -125,7 +125,7 @@ class ChattingRoomDataSource {
     }
 
     suspend fun leaveChattingRoom(user: User, userCounterpart: User) = withContext(Dispatchers.IO){
-        db.collection("chattingRoomsTest")
+        db.collection("chattingRooms")
             .whereEqualTo("chattingRoomUserId", user.userId)
             .whereEqualTo("chattingRoomUserIdCounterpart", userCounterpart.userId)
             .get()
