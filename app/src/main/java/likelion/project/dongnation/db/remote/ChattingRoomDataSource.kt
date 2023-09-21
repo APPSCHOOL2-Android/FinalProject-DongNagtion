@@ -134,4 +134,30 @@ class ChattingRoomDataSource {
                 db.document(filePath).delete()
             }
     }
+
+    suspend fun blockChattingRoom(user: User, userCounterpart: User, block: Boolean) = withContext(Dispatchers.IO){
+        // 발송 유저의 데이터 베이스 저장
+        db.collection("chattingRooms")
+            .whereEqualTo("chattingRoomUserId", user.userId)
+            .whereEqualTo("chattingRoomUserIdCounterpart", userCounterpart.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    val filePath = it.documents[0].reference.path
+                    db.document(filePath).update("chattingRoomBlock", block)
+                }
+            }
+
+        // 상대 유저의 데이터 베이스 저장
+        db.collection("chattingRooms")
+            .whereEqualTo("chattingRoomUserId", userCounterpart.userId)
+            .whereEqualTo("chattingRoomUserIdCounterpart", user.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    val filePath = it.documents[0].reference.path
+                    db.document(filePath).update("chattingRoomBlock", block)
+                }
+            }
+    }
 }

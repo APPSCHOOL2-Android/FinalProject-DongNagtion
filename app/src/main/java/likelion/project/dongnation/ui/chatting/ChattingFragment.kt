@@ -69,10 +69,16 @@ class ChattingFragment : Fragment() {
                             mainActivity.removeFragment("ChattingFragment")
                         }
                         R.id.menu_item_chatting_block -> {
-
+                            if(chattingViewModel.chattingRoom.value?.chattingRoomBlock == true){
+                                chattingViewModel.blockChattingRoom(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, false)
+                                it.title = "차단하기"
+                            } else {
+                                chattingViewModel.blockChattingRoom(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, true)
+                                it.title = "차단해제하기"
+                            }
                         }
                     }
-                    true
+                    false
                 }
                 chattingViewModel.getUser(chattingRoomUserIdCounterpart)
             }
@@ -94,6 +100,14 @@ class ChattingFragment : Fragment() {
     private fun observe(){
         chattingViewModel.chattingRoom.observe(viewLifecycleOwner){
             chattingRoom = chattingViewModel.chattingRoom.value!!
+            if(it.chattingRoomBlock){
+                fragmentChattingBinding.editTextChattingMessage.isEnabled = false
+                fragmentChattingBinding.editTextChattingMessage.setText("대화가 불가능한 상태입니다")
+            }
+            else{
+                fragmentChattingBinding.editTextChattingMessage.isEnabled = true
+                fragmentChattingBinding.editTextChattingMessage.setText("")
+            }
         }
         chattingViewModel.sendingState.observe(viewLifecycleOwner){
             when(it){
@@ -121,9 +135,11 @@ class ChattingFragment : Fragment() {
 
     // 유저 채팅 생성
     private fun sendMessage(inputMessage: String){
-        chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, chattingRoomUserNameCounterpart, inputMessage, getDate())
-        fragmentChattingBinding.editTextChattingMessage.run {
-            setText("")
+        if(!chattingViewModel.chattingRoom.value?.chattingRoomBlock!!){
+            chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, chattingRoomUserNameCounterpart, inputMessage, getDate())
+            fragmentChattingBinding.editTextChattingMessage.run {
+                setText("")
+            }
         }
     }
 
