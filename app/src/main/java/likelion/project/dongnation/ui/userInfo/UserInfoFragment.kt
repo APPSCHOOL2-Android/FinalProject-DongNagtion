@@ -31,6 +31,12 @@ class UserInfoFragment : Fragment() {
 
             toolbarUserInfo.title = "내 정보"
 
+            // 프로필 등록
+            layoutInfoProfile.setOnClickListener {
+                mainActivity.replaceFragment(MainActivity.USER_INFO_PROFILE_FRAGMENT, true, null)
+                mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
+            }
+
             // 송금 코드
             layoutInfoRemit.setOnClickListener {
                 mainActivity.replaceFragment("TransferFragment", true, null)

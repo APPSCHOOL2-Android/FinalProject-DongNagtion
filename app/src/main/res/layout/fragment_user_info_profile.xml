@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.userInfo.UserInfoProfileFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar_user_info_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:navigationIcon="@drawable/ic_back_24dp"
+        app:title="프로필 등록"
+        app:titleTextAppearance="@style/Typography.Bold20" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp"
+        android:text="동네이션에서 사용될 프로필을 등록해보세요"
+        android:textAppearance="@style/Typography.Medium16" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView_user_info_profile"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/gray300"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView_user_info_plus"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_input_add_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageView_user_info_profile"
+            app:layout_constraintEnd_toEndOf="@id/imageView_user_info_profile"
+            app:layout_constraintStart_toStartOf="@id/imageView_user_info_profile"
+            app:layout_constraintTop_toTopOf="@id/imageView_user_info_profile" />
+
+        <ImageView
+            android:id="@+id/imageView_user_info_delete"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_baseline_clear_24"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/imageView_user_info_profile"
+            app:layout_constraintTop_toTopOf="@id/imageView_user_info_profile"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/button_user_info_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"
+        android:text="등록하기"
+        android:textAppearance="@style/Typography.Bold20" />
+
+</LinearLayout>
