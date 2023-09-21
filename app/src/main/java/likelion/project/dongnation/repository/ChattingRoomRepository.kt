@@ -32,4 +32,7 @@ class ChattingRoomRepository {
 
     suspend fun leaveChattingRoom(user: User, userCounterpart: User)
     = chattingRoomDataSource.leaveChattingRoom(user, userCounterpart)
+
+    suspend fun blockChattingRoom(user: User, userCounterpart: User, block: Boolean)
+    = chattingRoomDataSource.blockChattingRoom(user, userCounterpart, block)
 }

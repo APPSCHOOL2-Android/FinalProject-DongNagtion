@@ -57,6 +57,25 @@ class ChattingViewModel : ViewModel() {
         chattingRoomRepository.notifyNewMessage()
     }
 
+    fun leaveChattingRoom(userId: String, userIdCounterpart: String)
+            = viewModelScope.async {
+        val user = User(userId = userId)
+        val userCounterpart = User(userId = userIdCounterpart)
+        chattingRoomRepository.leaveChattingRoom(user, userCounterpart)
+    }
+
+    fun blockChattingRoom(userId: String, userCounterpartId: String, block: Boolean)
+    = viewModelScope.async{
+        val user = User(userId = userId)
+        val userCounterpart = User(userId = userCounterpartId)
+
+        val result = async {
+            chattingRoomRepository.blockChattingRoom(user, userCounterpart, block)
+            SEND_MESSAGE_COMPLETE
+        }
+        sendingState.value = result.await()
+    }
+
     companion object {
         const val SEND_MESSAGE_NORMAL = 0
         const val SEND_MESSAGE_ATTEMPT = 1

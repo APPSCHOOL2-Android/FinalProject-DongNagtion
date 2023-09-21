@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import likelion.project.dongnation.databinding.FragmentBoardMainBinding
 import likelion.project.dongnation.databinding.ItemBoardMainBinding
 import likelion.project.dongnation.model.Tips
@@ -190,6 +191,7 @@ class BoardMainFragment : Fragment() {
                 val imageUrl = tipsDataList[position].tipsImg[0] // 첫 번째 이미지 URL을 가져옴
                 Glide.with(holder.imageViewUser.context)
                     .load(imageUrl)
+                    .apply(RequestOptions().centerCrop())
                     .into(holder.imageViewUser)
             } else {
                 holder.imageViewUser.setImageDrawable(null)

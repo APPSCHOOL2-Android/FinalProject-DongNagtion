@@ -14,11 +14,9 @@
             android:id="@+id/imageViewCommentItemProfile"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/shape_oval_profile"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_account_circle_48dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewCommentItemWriter"

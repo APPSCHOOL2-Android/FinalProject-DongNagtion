@@ -1,6 +1,7 @@
 package likelion.project.dongnation.ui.board
 
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
@@ -30,6 +32,7 @@ import likelion.project.dongnation.model.Tips
 import likelion.project.dongnation.model.TipsRipple
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
+import likelion.project.dongnation.ui.userInfo.UserInfoViewModel
 import java.util.Date
 import kotlin.random.Random
 
@@ -45,6 +48,7 @@ class BoardContentsFragment : Fragment() {
     val userName = LoginViewModel.loginUserInfo.userName
 
     lateinit var viewModel: BoardViewModel
+    lateinit var viewModel2: UserInfoViewModel
 
     val tipsRippleDataList = mutableListOf<TipsRipple>()
 
@@ -56,6 +60,7 @@ class BoardContentsFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         viewModel = ViewModelProvider(this)[BoardViewModel::class.java]
+        viewModel2 = ViewModelProvider(this)[UserInfoViewModel::class.java]
 
         board = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable("board", Tips::class.java)!!
@@ -71,6 +76,22 @@ class BoardContentsFragment : Fragment() {
             }
 
             loadRipples(board.tipIdx)
+        }
+
+        viewModel2.run {
+            viewModel2.userProfileLiveData.observe(viewLifecycleOwner) { userProfileUrl ->
+
+                if (!userProfileUrl.isNullOrBlank()) {
+                    Glide.with(this@BoardContentsFragment)
+                        .load(userProfileUrl)
+                        .circleCrop()
+                        .into(fragmentBoardContentsBinding.imageViewBoardContentsProfile)
+
+                } else {
+                    fragmentBoardContentsBinding.imageViewBoardContentsProfile.setImageResource(R.drawable.ic_account_circle_48dp)
+                }
+            }
+            viewModel2.getUserProfileInfo(board.tipWriterId)
         }
 
         fragmentBoardContentsBinding.run {
@@ -328,6 +349,31 @@ class BoardContentsFragment : Fragment() {
                 holder.imageViewCommentItemEdit.visibility = View.GONE
                 holder.imageViewCommentItemDelete.visibility = View.GONE
             }
+
+            val userProfileId = tipsRippleDataList[position].rippleWriterId
+
+            db.collection("users")
+                .document(userProfileId).get()
+                .addOnSuccessListener { documentSnapshot ->
+
+                    if (documentSnapshot.exists()) {
+                        val userProfile = documentSnapshot.getString("userProfile")
+
+                        if (!userProfile.isNullOrBlank()) {
+                            Glide.with(this@BoardContentsFragment)
+                                .load(userProfile)
+                                .circleCrop()
+                                .into(holder.imageViewCommentItemProfile)
+                        } else {
+                            holder.imageViewCommentItemProfile.setImageResource(R.drawable.ic_account_circle_48dp)
+                        }
+                    } else {
+
+                    }
+                }
+                .addOnFailureListener {exception ->
+                    Log.e("BoardContentsFragment", "사용자 프로필 데이터 가져오기 실패: $exception")
+                }
 
         }
 
