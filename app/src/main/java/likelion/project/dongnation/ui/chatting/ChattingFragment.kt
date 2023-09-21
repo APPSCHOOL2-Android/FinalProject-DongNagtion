@@ -61,6 +61,19 @@ class ChattingFragment : Fragment() {
                 setNavigationOnClickListener {
                     mainActivity.removeFragment("ChattingFragment")
                 }
+                inflateMenu(R.menu.menu_chatting)
+                setOnMenuItemClickListener {
+                    when(it.itemId){
+                        R.id.menu_item_chatting_leave -> {
+                            chattingViewModel.leaveChattingRoom(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart)
+                            mainActivity.removeFragment("ChattingFragment")
+                        }
+                        R.id.menu_item_chatting_block -> {
+
+                        }
+                    }
+                    true
+                }
                 chattingViewModel.getUser(chattingRoomUserIdCounterpart)
             }
 
