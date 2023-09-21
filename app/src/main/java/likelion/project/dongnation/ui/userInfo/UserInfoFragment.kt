@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentUserInfoBinding
 import likelion.project.dongnation.databinding.ItemUserInfoDrawelCheckBinding
+import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class UserInfoFragment : Fragment() {
@@ -30,6 +33,9 @@ class UserInfoFragment : Fragment() {
             mainActivity.activityMainBinding.bottomNavigation.visibility = View.VISIBLE
 
             toolbarUserInfo.title = "내 정보"
+            textViewInfoNickname.text = LoginViewModel.loginUserInfo.userName
+
+            showUserInfo()
 
             // 프로필 등록
             layoutInfoProfile.setOnClickListener {
@@ -90,5 +96,22 @@ class UserInfoFragment : Fragment() {
         }
 
         return fragmentUserInfoBinding.root
+    }
+
+    private fun showUserInfo() {
+        Firebase.firestore.collection("users").whereEqualTo("userId", LoginViewModel.loginUserInfo.userId).get().addOnSuccessListener { result ->
+            for(document in result) {
+                val userTransCode = document["userTransCode"] as String
+                val userAddress = document["userAddress"] as String
+                val userExperience = document["userExperience"] as Long
+                fragmentUserInfoBinding.textViewUserAddress.text = userAddress
+                fragmentUserInfoBinding.buttonReviewExp.text = userExperience.toString()
+                if(userTransCode == "") {
+                    fragmentUserInfoBinding.textViewUserTransCode.text = "[송금 코드가 아직 저장되어 있지 않습니다.]"
+                } else {
+                    fragmentUserInfoBinding.textViewUserTransCode.text = "[송금 코드가 저장되어 있습니다.]"
+                }
+            }
+        }
     }
 }
