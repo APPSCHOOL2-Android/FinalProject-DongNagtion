@@ -20,6 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
@@ -130,8 +131,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         locationSource = FusedLocationSource(this,5000)
         naverMap.locationSource = locationSource
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
         val currentLocation = getLatLng(userAddress)
-        val cameraPosition = CameraPosition(LatLng(currentLocation.latitude, currentLocation.longitude), 14.0)
+        val cameraPosition = CameraPosition(LatLng(currentLocation.latitude, currentLocation.longitude), 15.0)
         naverMap.cameraPosition = cameraPosition
         naverMap.run {
             uiSettings.run {
@@ -154,7 +156,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             val newLocation = getLatLng(dongAddress.split("동").firstOrNull().plus("동"))
             val newCameraPosition = CameraPosition(LatLng(newLocation.latitude, newLocation.longitude), 14.0)
             naverMap.cameraPosition = newCameraPosition
-            naverMap.moveCamera(cameraUpdate)
+            naverMap.moveCamera(cameraUpdate.animate(CameraAnimation.None))
         }
 
         loadMarkers()
@@ -256,6 +258,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                                                 .placeholder(R.mipmap.ic_launcher_logo)
                                                 .error(R.mipmap.ic_launcher_logo)
                                                 .into(imageView)
+                                        } else {
+                                            imageView.setImageResource(R.mipmap.ic_launcher_logo)
                                         }
                                     }
                                 }
