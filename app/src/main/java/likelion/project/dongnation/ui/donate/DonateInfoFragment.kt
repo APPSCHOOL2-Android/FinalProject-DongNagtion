@@ -19,6 +19,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.R
@@ -163,9 +165,11 @@ class DonateInfoFragment : Fragment() {
             textViewDonateInfoTitle.text = donateInfo.donationTitle
             textViewDonateInfoSubTitle.text = donateInfo.donationSubtitle
             textViewDonateInfoCategory.text = donateInfo.donationCategory
-            textViewDonateInfoReviewScore.text = getRateAverage(donateInfo.donationReview).toString()
             textViewDonateInfoContent.text = donateInfo.donationContent
-            textViewDonateInfoReviewNumber.text = "(${donateInfo.donationReview.size})"
+            textViewDonateInfoReviewScore.text = "0.0"
+            textViewDonateInfoReviewNumber.text = "(0)"
+
+            getReviewInstance(donateInfo)
 
             if (donateInfo.donationImg.isNotEmpty()){
                 for (image in donateInfo.donationImg){
@@ -205,17 +209,20 @@ class DonateInfoFragment : Fragment() {
         }
     }
 
-    fun getRateAverage(reviews : List<Review>) : Double{
-        var total = 0.0
-
-        if (reviews.isEmpty()){
-            return total
-        } else {
-            for (review in reviews){
-                total += review.reviewRate.toFloat()
+    private fun getReviewInstance(donateInfo: Donations) {
+        var rate = 0.0
+        var documentSize = 0
+        Firebase.firestore.collection("Reviews").whereEqualTo("donationBoardId", donateInfo.donationIdx).get().addOnSuccessListener { result ->
+            for(document in result) {
+                val reviewRate = document["reviewRate"] as String
+                rate += reviewRate.toDouble()
+                documentSize++
+            }
+            if(documentSize != 0) {
+                val averageRate = rate / documentSize.toDouble()
+                fragmentDonateInfoBinding.textViewDonateInfoReviewScore.text = "${averageRate}"
+                fragmentDonateInfoBinding.textViewDonateInfoReviewNumber.text = "(${documentSize})"
             }
         }
-
-        return round((total / reviews.size) * 10) / 10
     }
 }
