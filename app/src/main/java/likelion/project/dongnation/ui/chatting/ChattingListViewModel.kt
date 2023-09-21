@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import likelion.project.dongnation.model.ChattingRoom
+import likelion.project.dongnation.model.User
 import likelion.project.dongnation.repository.ChattingRoomRepository
 import likelion.project.dongnation.ui.login.LoginViewModel
 
@@ -21,6 +22,13 @@ class ChattingListViewModel : ViewModel() {
     fun notifyNewMessage()
     = viewModelScope.async{
         chattingRoomRepository.notifyNewMessage()
+    }
+
+    fun leaveChattingRoom(userId: String, userIdCounterpart: String)
+    = viewModelScope.async {
+        val user = User(userId = userId)
+        val userCounterpart = User(userId = userIdCounterpart)
+        chattingRoomRepository.leaveChattingRoom(user, userCounterpart)
     }
 
     companion object {

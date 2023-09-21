@@ -29,4 +29,7 @@ class ChattingRoomRepository {
 
     suspend fun notifyNewMessage()
     = chattingRoomDataSource.notifyNewMessage()
+
+    suspend fun leaveChattingRoom(user: User, userCounterpart: User)
+    = chattingRoomDataSource.leaveChattingRoom(user, userCounterpart)
 }
