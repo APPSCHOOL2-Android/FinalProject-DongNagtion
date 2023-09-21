@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import likelion.project.dongnation.databinding.ItemDonationlistBinding
 import likelion.project.dongnation.model.Donations
 import likelion.project.dongnation.ui.donate.DonateInfoFragment
@@ -57,10 +59,19 @@ class HomeAdapter(val mainActivity: MainActivity, var donates: List<Donations>) 
         holder.itemCategory.text = donates[position].donationCategory
         holder.itemTitle.text = donates[position].donationTitle
         holder.itemSubTitle.text = donates[position].donationSubtitle
-
-        rate = DonateInfoFragment().getRateAverage(donates[position].donationReview)
-
-        holder.itemReview.text = "$rate (${donates[position].donationReview.size})"
+        var rate = 0.0
+        var documentSize = 0
+        Firebase.firestore.collection("Reviews").whereEqualTo("donationBoardId", donates[position].donationIdx).get().addOnSuccessListener { result ->
+            for(document in result) {
+                val reviewRate = document["reviewRate"] as String
+                rate += reviewRate.toDouble()
+                documentSize++
+            }
+            if(documentSize != 0) {
+                val averageRate = rate / documentSize.toDouble()
+                holder.itemReview.text = "${averageRate} (${documentSize})"
+            }
+        }
 
         if (donates[position].donationImg.isNotEmpty()){
             Glide.with(holder.itemThumbnail)
@@ -78,4 +89,5 @@ class HomeAdapter(val mainActivity: MainActivity, var donates: List<Donations>) 
         donates = newItems.toMutableList()
         diffResult.dispatchUpdatesTo(this)
     }
+
 }
