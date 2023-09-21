@@ -45,6 +45,7 @@ import likelion.project.dongnation.ui.transfer.TransferFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoBoardFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFollowingFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFragment
+import likelion.project.dongnation.ui.userInfo.UserInfoProfileFragment
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -120,6 +121,7 @@ class MainActivity : AppCompatActivity() {
             TRANSFER_FRAGMENT -> TransferFragment()
             CHATTING_LIST_FRAGMENT -> ChattingListFragment()
             BOARD_RIPPLES_MODIFY_FRAGMENT -> BoardRipplesModifyFragment()
+            USER_INFO_PROFILE_FRAGMENT -> UserInfoProfileFragment()
             else -> Fragment()
         }
 
@@ -273,5 +275,6 @@ class MainActivity : AppCompatActivity() {
         val TRANSFER_FRAGMENT = "TransferFragment"
         val CHATTING_LIST_FRAGMENT = "ChattingListFragment"
         val BOARD_RIPPLES_MODIFY_FRAGMENT = "BoardRipplesModifyFragment"
+        val USER_INFO_PROFILE_FRAGMENT = "UserInfoProfileFragment"
     }
 }
