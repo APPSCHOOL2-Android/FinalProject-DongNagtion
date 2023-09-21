@@ -19,4 +19,6 @@ class UserRepository {
     suspend fun getUserForId(userId : String) = userDataSource.getUserForId(userId)
 
     suspend fun addUserExperience(userId: String) = userDataSource.addUserExperience(userId)
+
+    suspend fun getUserProfile(userId: String) = userDataSource.getUserProfile(userId)
 }

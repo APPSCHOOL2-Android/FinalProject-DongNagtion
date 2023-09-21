@@ -93,4 +93,19 @@ class UserDataSource {
             return@coroutineScope 0
         }
     }
+
+    suspend fun getUserProfile(userId: String): String? {
+        val querySnapshot = db.collection("users")
+            .whereEqualTo("userId", userId)
+            .get()
+            .await()
+
+        if (!querySnapshot.isEmpty) {
+            val userProfile = querySnapshot.documents[0].getString("userProfile")
+            return userProfile
+        } else {
+            return null
+        }
+    }
+
 }
