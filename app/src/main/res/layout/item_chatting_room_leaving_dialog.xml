@@ -15,7 +15,7 @@
         android:textAlignment="center" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/textView_chatting_room_leaving_cancel"
+        android:id="@+id/button_chatting_room_leaving_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -24,7 +24,7 @@
         app:cornerRadius="10dp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/textView_chatting_room_leaving_leaving"
+        android:id="@+id/button_chatting_room_leaving_leaving"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

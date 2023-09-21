@@ -123,4 +123,15 @@ class ChattingRoomDataSource {
                 ChattingListViewModel.receivingState.value = true
             }
     }
+
+    suspend fun leaveChattingRoom(user: User, userCounterpart: User) = withContext(Dispatchers.IO){
+        db.collection("chattingRoomsTest")
+            .whereEqualTo("chattingRoomUserId", user.userId)
+            .whereEqualTo("chattingRoomUserIdCounterpart", userCounterpart.userId)
+            .get()
+            .addOnSuccessListener {
+                val filePath = it.documents[0].reference.path
+                db.document(filePath).delete()
+            }
+    }
 }
