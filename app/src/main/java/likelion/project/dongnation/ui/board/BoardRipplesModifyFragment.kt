@@ -1,5 +1,6 @@
 package likelion.project.dongnation.ui.board
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
@@ -69,51 +71,62 @@ class BoardRipplesModifyFragment : Fragment() {
 
     fun ripplesModify() {
         fragmentBoardRipplesModifyBinding.buttonBoardRipplesModify.setOnClickListener {
+            hideKeyboard()
             val newContent = fragmentBoardRipplesModifyBinding.editTextBoardRipplesModify.text.toString()
             val rippleId = ripple.rippleIdx
 
-            val query = db.collection("tips")
-                .whereEqualTo("tipIdx", tipIdx)
+            if (newContent.isBlank()) {
+                Snackbar.make(requireView(), "내용을 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+            }
+            else {
+                val query = db.collection("tips")
+                    .whereEqualTo("tipIdx", tipIdx)
 
-            query.get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        val tipRipples = document["tipRipples"] as List<Map<String, Any>>?
+                query.get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            val tipRipples = document["tipRipples"] as List<Map<String, Any>>?
 
-                        if (tipRipples != null && tipRipples.isNotEmpty()) {
-                            for (ripple in tipRipples) {
-                                val rippleIdx = ripple["rippleIdx"] as String?
+                            if (tipRipples != null && tipRipples.isNotEmpty()) {
+                                for (ripple in tipRipples) {
+                                    val rippleIdx = ripple["rippleIdx"] as String?
 
-                                if (rippleIdx == rippleId) {
+                                    if (rippleIdx == rippleId) {
 
-                                    val updatedRipple = ripple.toMutableMap()
-                                    updatedRipple["rippleContent"] = newContent
+                                        val updatedRipple = ripple.toMutableMap()
+                                        updatedRipple["rippleContent"] = newContent
 
-                                    val updatedTipRipples = tipRipples.toMutableList()
-                                    val index = updatedTipRipples.indexOf(ripple)
-                                    if (index != -1) {
-                                        updatedTipRipples[index] = updatedRipple
+                                        val updatedTipRipples = tipRipples.toMutableList()
+                                        val index = updatedTipRipples.indexOf(ripple)
+                                        if (index != -1) {
+                                            updatedTipRipples[index] = updatedRipple
+                                        }
+
+                                        val tipRef = db.collection("tips").document(document.id)
+                                        tipRef.update("tipRipples", updatedTipRipples)
+                                            .addOnSuccessListener {
+                                                mainActivity.removeFragment(MainActivity.BOARD_RIPPLES_MODIFY_FRAGMENT)
+                                                Snackbar.make(requireView(), "댓글이 수정되었습니다.", Snackbar.LENGTH_SHORT).show()
+                                            }
+                                            .addOnFailureListener { exception ->
+                                                Log.e("BoardRipplesModifyFragment", "Error updating ripple content", exception)
+                                            }
                                     }
-
-                                    val tipRef = db.collection("tips").document(document.id)
-                                    tipRef.update("tipRipples", updatedTipRipples)
-                                        .addOnSuccessListener {
-                                            mainActivity.removeFragment(MainActivity.BOARD_RIPPLES_MODIFY_FRAGMENT)
-                                            Snackbar.make(requireView(), "댓글이 수정되었습니다.", Snackbar.LENGTH_SHORT).show()
-                                        }
-                                        .addOnFailureListener { exception ->
-                                            Log.e("BoardRipplesModifyFragment", "Error updating ripple content", exception)
-                                        }
                                 }
                             }
                         }
                     }
-                }
-                .addOnFailureListener { exception ->
-                    Log.e("BoardRipplesModifyFragment", "Error fetching documents", exception)
-                }
+                    .addOnFailureListener { exception ->
+                        Log.e("BoardRipplesModifyFragment", "Error fetching documents", exception)
+                    }
+            }
         }
 
+    }
+
+    private fun hideKeyboard() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
 }

@@ -1,5 +1,6 @@
 package likelion.project.dongnation.ui.board
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,8 +10,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -138,28 +141,42 @@ class BoardModifyFragment : Fragment() {
 
             buttonBoardModify.run {
                 setOnClickListener {
+                    hideKeyboard()
                     val newTitle = editTextBoardModifyTitle.text.toString()
                     val newContent = editTextBoardModifyContents.text.toString()
 
-                    // 새로운 제목과 내용으로 업데이트할 데이터 맵
-                    val updatedData = mapOf(
-                        "tipTitle" to newTitle,
-                        "tipContent" to newContent,
-                        "tipsImg" to images
-                    )
+                    if (newTitle.isBlank() && newContent.isBlank()) {
+                        Snackbar.make(requireView(), "제목과 내용을 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+                    }
+                    else if (newTitle.isBlank()) {
+                        Snackbar.make(requireView(), "제목을 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+                    }
+                    else if (newContent.isBlank()) {
+                        Snackbar.make(requireView(), "내용을 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+                    }
+                    else {
+                        // 새로운 제목과 내용으로 업데이트할 데이터 맵
+                        val updatedData = mapOf(
+                            "tipTitle" to newTitle,
+                            "tipContent" to newContent,
+                            "tipsImg" to images
+                        )
 
-                    // Firestore에서 해당 문서 업데이트
-                    val documentRef = db.collection("tips").document(board.tipIdx)
-                    documentRef
-                        .update(updatedData)
-                        .addOnSuccessListener {
+                        // Firestore에서 해당 문서 업데이트
+                        val documentRef = db.collection("tips").document(board.tipIdx)
+                        documentRef
+                            .update(updatedData)
+                            .addOnSuccessListener {
 
-                            mainActivity.removeFragment(MainActivity.BOARD_CONTENTS_FRAGMENT)
-                            mainActivity.removeFragment(MainActivity.BOARD_MODIFY_FRAGMENT)
-                        }
-                        .addOnFailureListener {
+                                mainActivity.removeFragment(MainActivity.BOARD_CONTENTS_FRAGMENT)
+                                mainActivity.removeFragment(MainActivity.BOARD_MODIFY_FRAGMENT)
+                                Snackbar.make(requireView(), "게시글이 수정되었습니다.", Snackbar.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
 
-                        }
+                            }
+                    }
+
                 }
             }
 
@@ -213,6 +230,11 @@ class BoardModifyFragment : Fragment() {
             .addOnFailureListener { e ->
                 onFailure(e)
             }
+    }
+
+    private fun hideKeyboard() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
 }

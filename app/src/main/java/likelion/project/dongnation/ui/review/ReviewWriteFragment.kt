@@ -3,12 +3,10 @@ package likelion.project.dongnation.ui.review
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +14,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentReviewWriteBinding
 import likelion.project.dongnation.model.Review
 import likelion.project.dongnation.ui.gallery.GalleryImage
@@ -28,6 +25,7 @@ class ReviewWriteFragment : Fragment() {
     private lateinit var mainActivity: MainActivity
     private lateinit var viewModel: ReviewViewModel
     private val imagesUri = mutableMapOf<Int, String>()
+    private lateinit var donationIdx: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,15 +33,17 @@ class ReviewWriteFragment : Fragment() {
     ): View? {
         binding = FragmentReviewWriteBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+        arguments?.let { donationIdx = it.getString("donationIdx").toString() }
         viewModel = ViewModelProvider(this)[ReviewViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
         setupImageUploadListener()
+        viewModel.getDonationsBoardInfo(donationIdx)
         observe()
+        initView()
     }
 
     private fun observe() {
@@ -69,6 +69,16 @@ class ReviewWriteFragment : Fragment() {
                 }
             }
         }
+        viewModel.donations.observe(mainActivity) { donations ->
+            binding.textViewReviewWriteDonationUser.text = donations.donationUser
+            binding.textViewReviewWriteDonationCategory.text = donations.donationCategory
+            binding.textViewReviewWriteDonationTitle.text = donations.donationTitle
+            if (donations.donationImg.isNotEmpty()) {
+                Glide.with(this)
+                    .load(donations.donationImg[0])
+                    .into(binding.imageViewReviewWriteDonationThumbnail)
+            }
+        }
     }
 
     private fun initView() {
@@ -89,7 +99,7 @@ class ReviewWriteFragment : Fragment() {
             binding.buttonReviewWriteSave.isEnabled = false
             viewModel.addReview(
                 Review(
-                    donationBoardId = "",
+                    donationBoardId = viewModel.donations.value?.donationIdx ?: "",
                     reviewWriter = binding.textViewReviewWriteDonationUser.text.toString(),
                     reviewContent = binding.editTextReviewWriteDonationContent.text.toString(),
                     reviewRate = "${binding.ratingBarReviewWrite.rating}",

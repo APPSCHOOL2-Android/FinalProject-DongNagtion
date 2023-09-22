@@ -1,19 +1,16 @@
 package likelion.project.dongnation.ui.review
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.databinding.FragmentReviewShowBinding
-import likelion.project.dongnation.model.Review
 import likelion.project.dongnation.ui.main.MainActivity
 
 class ReviewShowFragment : Fragment() {
@@ -24,7 +21,7 @@ class ReviewShowFragment : Fragment() {
     private val reviewAdapter by lazy {
         ReviewAdapter()
     }
-    private var donationIdx: String? = null
+    private lateinit var donationIdx: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,17 +31,7 @@ class ReviewShowFragment : Fragment() {
         mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(this)[ReviewViewModel::class.java]
 
-        arguments?.let { donationIdx = it.getString("reviews") }
-
-        binding.run {
-
-            toolbarReviewShow.run {
-                setNavigationOnClickListener {
-                    mainActivity.removeFragment("ReviewShowFragment")
-                }
-            }
-        }
-
+        arguments?.let { donationIdx = it.getString("reviews").toString() }
         return binding.root
     }
 
@@ -52,6 +39,7 @@ class ReviewShowFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observe()
         initRecyclerView()
+        initView()
     }
 
     private fun initRecyclerView() {
@@ -62,12 +50,26 @@ class ReviewShowFragment : Fragment() {
     }
 
     private fun observe() {
-        donationIdx?.let { viewModel.getReviews(it) }
+        viewModel.getReviews(donationIdx)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
                     reviewAdapter.submitList(it.reviews)
                 }
+            }
+        }
+    }
+
+    private fun initView() {
+        with(binding) {
+            toolbarReviewShow.setNavigationOnClickListener {
+                mainActivity.removeFragment("ReviewShowFragment")
+            }
+
+            floatingActionButtonReviewShowAdd.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("donationIdx", donationIdx)
+                mainActivity.replaceFragment(MainActivity.REVIEW_WRITE_FRAGMENT, true, bundle)
             }
         }
     }

@@ -144,6 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/shape_text"
+            android:hint="제목을 입력해주세요."
             android:maxLines="2"
             android:padding="10dp" />
 
@@ -155,6 +156,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/shape_text"
             android:gravity="top|start"
+            android:hint="내용을 입력해주세요."
             android:padding="10dp" />
 
         <Button
