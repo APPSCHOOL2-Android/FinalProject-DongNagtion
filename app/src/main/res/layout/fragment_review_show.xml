@@ -34,6 +34,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <TextView
+        android:id="@+id/textView_review_show_empty"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="작성된 리뷰가 없습니다.\n 리뷰를 작성해 보세요"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textAppearance="@style/Typography.Bold16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton_review_show_add"
         android:layout_width="wrap_content"

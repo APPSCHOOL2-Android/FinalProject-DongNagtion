@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.databinding.FragmentReviewShowBinding
 import likelion.project.dongnation.ui.main.MainActivity
@@ -55,6 +56,15 @@ class ReviewShowFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
                     reviewAdapter.submitList(it.reviews)
+                    if (it.isInitReviews) {
+                        if (it.reviews.isNotEmpty()) {
+                            binding.recyclerViewReviewShowList.visibility = View.VISIBLE
+                            binding.textViewReviewShowEmpty.visibility = View.GONE
+                        } else {
+                            binding.recyclerViewReviewShowList.visibility = View.GONE
+                            binding.textViewReviewShowEmpty.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         }

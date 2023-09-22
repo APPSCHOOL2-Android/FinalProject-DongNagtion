@@ -29,7 +29,7 @@ class ReviewViewModel : ViewModel() {
             reviewRepository.getReviews(donationIdx).collect {
                 it.onSuccess { reviews ->
                     _uiState.update {
-                        it.copy(reviews = reviews)
+                        it.copy(isInitReviews = true, reviews = reviews)
                     }
                 }.onFailure { throwable ->
                     _uiState.update { it.copy(message = throwable.message.toString()) }
@@ -66,6 +66,7 @@ class ReviewViewModel : ViewModel() {
 }
 
 data class UiState(
+    val isInitReviews: Boolean = false,
     val donations: Donations = Donations(),
     val reviews: List<Review> = emptyList(),
     val message: String = "",
