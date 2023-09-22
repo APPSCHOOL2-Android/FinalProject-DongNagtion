@@ -153,14 +153,20 @@ class UserInfoFragment : Fragment() {
                         val reviewRate = document2["reviewRate"] as String
                         userRate += reviewRate.toDouble()
                         documentSize++
-                        Log.d("테스트경원", reviewRate)
                     }
                     if(documentSize != 0) {
                         userReviewRate = userRate / documentSize.toDouble()
-                        fragmentUserInfoBinding.buttonInfoReviewStar.text = "$userReviewRate"
+                        fragmentUserInfoBinding.buttonInfoReviewStar.text = "${(userReviewRate * 10.0).roundToInt() / 10.0}"
                     }
                 }
             }
+        }
+    }
+    fun Double.roundToInt(): Int {
+        return if (this >= 0) {
+            (this + 0.5).toInt()
+        } else {
+            (this - 0.5).toInt()
         }
     }
 }

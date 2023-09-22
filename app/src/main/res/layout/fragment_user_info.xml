@@ -115,6 +115,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="20"
+                            android:textAppearance="@style/Typography.Bold14"
                             android:textColor="#000000"
                             android:textStyle="bold" />
 
@@ -125,6 +126,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="0.0"
+                            android:textAppearance="@style/Typography.Bold14"
                             android:textColor="#000000"
                             android:textStyle="bold"
                             app:icon="@drawable/ic_star_24dp"
@@ -137,6 +139,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="0 회"
+                            android:textAppearance="@style/Typography.Bold14"
                             android:textColor="#000000"
                             android:textStyle="bold"
                             app:icon="@drawable/ic_leaf_24dp"
@@ -166,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="프로필 등록"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Bold16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -203,7 +206,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="송금 코드"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Bold16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -213,6 +216,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
+                        android:textAppearance="@style/Typography.Regular16"
                         app:layout_constraintBottom_toBottomOf="@+id/textView10"
                         app:layout_constraintStart_toEndOf="@+id/textView10"
                         app:layout_constraintTop_toTopOf="@+id/textView10" />
@@ -249,7 +253,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="동네 변경"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Bold16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -259,6 +263,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
+                        android:textAppearance="@style/Typography.Regular16"
                         app:layout_constraintBottom_toBottomOf="@+id/textView14"
                         app:layout_constraintStart_toEndOf="@+id/textView14"
                         app:layout_constraintTop_toTopOf="@+id/textView14" />
@@ -294,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="이웃 팔로잉"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Bold16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -330,7 +335,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="게시판 작성 글"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Bold16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -366,7 +371,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="로그아웃"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Bold16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -402,7 +407,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="계정 탈퇴"
-                        android:textAppearance="@style/Typography.Medium14"
+                        android:textAppearance="@style/Typography.Bold16"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
