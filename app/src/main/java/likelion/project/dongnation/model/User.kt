@@ -7,6 +7,7 @@ data class User (
     val userEmail: String = "",
     val userAddress: String = "",
     val userTransCode: String = "",
+    val userProfile: String = "",
     val userFollowingNum: Int = 0,
     val userFollowList: List<String> = emptyList(),
     val userExperience: Int = 0
