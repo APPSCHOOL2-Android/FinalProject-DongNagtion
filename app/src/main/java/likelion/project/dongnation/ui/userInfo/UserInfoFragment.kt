@@ -92,6 +92,7 @@ class UserInfoFragment : Fragment() {
 
             // 로그아웃
             layoutInfoLogout.setOnClickListener {
+                mainActivity.selectBottomNavigationItem(R.id.item_bottom_donate)
                 mainActivity.replaceFragment("LoginFragment", false, null)
                 mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
                 Snackbar.make(requireView(), "로그아웃이 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
@@ -105,6 +106,7 @@ class UserInfoFragment : Fragment() {
                 val dialog = builder.create()
 
                 binding.buttonDrawelCheckYes.setOnClickListener {
+                    mainActivity.selectBottomNavigationItem(R.id.item_bottom_donate)
                     mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
                     mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, null)
                     Snackbar.make(requireView(), "탈퇴 처리가 완료되었습니다.", Snackbar.LENGTH_SHORT).show()

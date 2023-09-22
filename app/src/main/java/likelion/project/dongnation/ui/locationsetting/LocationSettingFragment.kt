@@ -132,6 +132,7 @@ class LocationSettingFragment : Fragment(), RegionPositionCallback, AreaNameCall
                             userAddress = areaName
                         )
                     )
+                    mainActivity.selectBottomNavigationItem(R.id.item_bottom_donate)
                     mainActivity.replaceFragment(MainActivity.HOME_FRAGMENT, false, null)
                     mainActivity.activityMainBinding.bottomNavigation.visibility =
                         View.VISIBLE
