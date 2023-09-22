@@ -21,10 +21,15 @@ class ChattingViewModel : ViewModel() {
     val chattingRoom = MutableLiveData<ChattingRoom>()
     val chattingRoomUserNameCounterpart = MutableLiveData<String>()
 
-    fun sendMessage(userId: String, userCounterpartId: String, userCounterpartName: String, content: String, date: String)
+    fun sendMessage(userId: String,
+                    userCounterpartId: String,
+                    userCounterpartName: String,
+                    userCounterpartProfile: String,
+                    content: String,
+                    date: String)
     = viewModelScope.launch{
-        val user = User(userId = userId, userName = LoginViewModel.loginUserInfo.userName)
-        val userCounterpart = User(userId = userCounterpartId, userName = userCounterpartName)
+        val user = User(userId = userId, userName = LoginViewModel.loginUserInfo.userName, userProfile = LoginViewModel.loginUserInfo.userProfile)
+        val userCounterpart = User(userId = userCounterpartId, userName = userCounterpartName, userProfile = userCounterpartProfile)
         val message = Message(userId, content, date)
 
         val result = async {

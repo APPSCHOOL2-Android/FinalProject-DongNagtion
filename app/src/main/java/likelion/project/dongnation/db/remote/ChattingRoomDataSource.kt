@@ -88,7 +88,7 @@ class ChattingRoomDataSource {
                     db.document(filePath).update("chattingRoomMessages", messageList)
                 }
                 else {
-                    val newChattingRoom = ChattingRoom(user.userId, userCounterpart.userId, userCounterpart.userName)
+                    val newChattingRoom = ChattingRoom(user.userId, userCounterpart.userId, userCounterpart.userName, userCounterpart.userProfile)
                     newChattingRoom.chattingRoomMessages.add(message)
                     db.collection("chattingRooms").add(newChattingRoom)
                 }
@@ -107,7 +107,7 @@ class ChattingRoomDataSource {
                     db.document(filePath).update("chattingRoomMessages", messageList)
                 }
                 else {
-                    val newChattingRoom = ChattingRoom(userCounterpart.userId, user.userId, user.userName)
+                    val newChattingRoom = ChattingRoom(userCounterpart.userId, user.userId, user.userName, user.userProfile)
                     newChattingRoom.chattingRoomMessages.add(message)
                     db.collection("chattingRooms").add(newChattingRoom)
                 }

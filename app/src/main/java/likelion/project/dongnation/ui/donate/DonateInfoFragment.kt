@@ -71,6 +71,10 @@ class DonateInfoFragment : Fragment() {
                 bundle.putString("chattingRoomUserIdCounterpart",
                     viewModel.userLiveData.value?.userId
                 )
+                bundle.putString("chattingRoomUserNameCounterpart",
+                    viewModel.userLiveData.value?.userName)
+                bundle.putString("chattingRoomUserProfileCounterpart",
+                    viewModel.userLiveData.value?.userProfile)
                 mainActivity.replaceFragment("ChattingFragment", true, bundle)
             }
 

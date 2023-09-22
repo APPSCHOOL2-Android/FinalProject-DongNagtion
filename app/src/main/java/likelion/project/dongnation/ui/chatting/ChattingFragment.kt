@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentChattingBinding
 import likelion.project.dongnation.databinding.ItemChattingMessageCounterpartRowBinding
@@ -32,6 +35,7 @@ class ChattingFragment : Fragment() {
 
     private lateinit var chattingRoomUserIdCounterpart: String
     private lateinit var chattingRoomUserNameCounterpart: String
+    private lateinit var chattingRoomUserProfileCounterpart: String
     private lateinit var chattingRoom: ChattingRoom
 
     override fun onCreateView(
@@ -46,7 +50,11 @@ class ChattingFragment : Fragment() {
             arguments?.getString("chattingRoomUserIdCounterpart", "").toString()
         chattingRoomUserNameCounterpart =
             arguments?.getString("chattingRoomUserNameCounterpart", "").toString()
+        chattingRoomUserProfileCounterpart =
+            arguments?.getString("chattingRoomUserProfileCounterpart", "").toString()
         chattingRoom = ChattingRoom()
+
+        Log.d("chatting", LoginViewModel.loginUserInfo.userProfile)
 
         initUI()
         observe()
@@ -136,7 +144,7 @@ class ChattingFragment : Fragment() {
     // 유저 채팅 생성
     private fun sendMessage(inputMessage: String){
         if(!chattingViewModel.chattingRoom.value?.chattingRoomBlock!!){
-            chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, chattingRoomUserNameCounterpart, inputMessage, getDate())
+            chattingViewModel.sendMessage(LoginViewModel.loginUserInfo.userId, chattingRoomUserIdCounterpart, chattingRoomUserNameCounterpart,chattingRoomUserProfileCounterpart, inputMessage, getDate())
             fragmentChattingBinding.editTextChattingMessage.run {
                 setText("")
             }
@@ -174,10 +182,12 @@ class ChattingFragment : Fragment() {
 
                 var textViewMessage: TextView
                 var textViewDate: TextView
+                var imageViewProfile: ImageView
 
                 init {
                     textViewMessage = itemChattingMessageCounterpartRowBinding.textViewItemChattingMessage
                     textViewDate = itemChattingMessageCounterpartRowBinding.textViewItemChattingDate
+                    imageViewProfile = itemChattingMessageCounterpartRowBinding.imageViewItemChattingProfile
                 }
             }
 
@@ -224,6 +234,11 @@ class ChattingFragment : Fragment() {
                 is ViewHolderCounterpart -> {
                     holder.textViewMessage.text = chattingRoom.chattingRoomMessages[position].messageContent
                     holder.textViewDate.text = chattingRoom.chattingRoomMessages[position].messageDate
+                    Glide
+                        .with(holder.imageViewProfile)
+                        .load(chattingRoom.chattingRoomUserProfileCounterpart.toUri())
+                        .circleCrop()
+                        .into(holder.imageViewProfile)
                 }
             }
         }

@@ -1,11 +1,8 @@
 package likelion.project.dongnation.db.remote
 
-import android.util.Log
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -100,12 +97,10 @@ class UserDataSource {
             .get()
             .await()
 
-        if (!querySnapshot.isEmpty) {
-            val userProfile = querySnapshot.documents[0].getString("userProfile")
-            return userProfile
+        return if (!querySnapshot.isEmpty) {
+            querySnapshot.documents[0].getString("userProfile")
         } else {
-            return null
+            null
         }
     }
-
 }

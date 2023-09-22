@@ -160,7 +160,7 @@ class LoginViewModel : ViewModel() {
                 }
             }
             // 로그인에 성공한 유저 정보를 LiveData에 저장
-            loginUserInfo = user
+            loginUserInfo = userList[0]
         }
         else {
             userRepository.saveUser(user)
