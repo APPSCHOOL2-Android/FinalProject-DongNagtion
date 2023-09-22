@@ -85,6 +85,7 @@ class BoardRepository {
 
         val querySnapshot = db.collection("tips")
             .whereEqualTo("tipWriterId", userId)
+            .orderBy("tipDate", Query.Direction.DESCENDING)
             .get()
             .await()
 
@@ -101,6 +102,7 @@ class BoardRepository {
         val myRippleList = mutableListOf<Tips>()
 
         val querySnapshot = db.collection("tips")
+            .orderBy("tipDate", Query.Direction.DESCENDING)
             .get()
             .await()
 
