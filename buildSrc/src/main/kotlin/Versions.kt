@@ -23,15 +23,18 @@ object Versions {
     const val RETROFIT_VERSION = "2.9.0"
     const val Indicator_VERSION = "5.0"
     const val FRAGMENT_VERSION = "1.6.1"
+    const val TEXTVIEW_MORE_VERSION = "1.0.0"
 }
 
 object AndroidXDeps {
     const val CORE_KTX = "androidx.core:core-ktx:${Versions.CORE_VERSION}"
-    const val APPCOMPAT =  "androidx.appcompat:appcompat:${Versions.APPCOMPAT_VERSION}"
-    const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT_VERSION}"
+    const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.APPCOMPAT_VERSION}"
+    const val CONSTRAINT_LAYOUT =
+        "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT_VERSION}"
     const val SPLASH_SCREEN = "androidx.core:core-splashscreen:${Versions.SPLASH_SCREEN_VERSION}"
     const val VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.VIEWMODEL_VERSION}"
-    const val LIFECYCLE_SCOPE = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_SCOPE_VERSION}"
+    const val LIFECYCLE_SCOPE =
+        "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_SCOPE_VERSION}"
     const val FRAGMENT = "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_VERSION}"
 }
 
@@ -45,7 +48,8 @@ object FirebaseDeps {
     const val FIREBASE_DATABASE = "com.google.firebase:firebase-firestore-ktx"
     const val FIREBASE_STORAGE = "com.google.firebase:firebase-storage-ktx"
     const val FIREBASE_AUTH = "com.google.firebase:firebase-auth-ktx"
-    const val FIREBASE_PLAY = "com.google.android.gms:play-services-auth:${Versions.FIREBASE_PLAY_VERSION}"
+    const val FIREBASE_PLAY =
+        "com.google.android.gms:play-services-auth:${Versions.FIREBASE_PLAY_VERSION}"
 }
 
 object LottieDeps {
@@ -64,12 +68,14 @@ object TestDeps {
 
 object DataStore {
     const val PREFERENCES = "androidx.datastore:datastore-preferences:${Versions.DATASTORE_VERSION}"
-    const val PREFERENCES_CORE =  "androidx.datastore:datastore-preferences-core:${Versions.DATASTORE_VERSION}"
+    const val PREFERENCES_CORE =
+        "androidx.datastore:datastore-preferences-core:${Versions.DATASTORE_VERSION}"
 }
 
 object GlideDeps {
     const val GLIDE = "com.github.bumptech.glide:glide:${Versions.GLIDE_VERSION}"
 }
+
 object KakaoDeps {
     const val KAKAO = "com.kakao.sdk:v2-all:${Versions.KAKAO_VERSION}" // 전체 모듈 설치, 2.11.0 버전부터 지원
 }
@@ -80,7 +86,8 @@ object NaverDeps {
 
 object MapDeps {
     const val NAVERMAP = "com.naver.maps:map-sdk:${Versions.NAVERMAP_VERSION}"
-    const val LOCATION = "com.google.android.gms:play-services-location:${Versions.LOCATION_VERSION}"
+    const val LOCATION =
+        "com.google.android.gms:play-services-location:${Versions.LOCATION_VERSION}"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:4.9.1"
     const val JSON = "org.json:json:20210307"
 }
@@ -89,14 +96,18 @@ object Room {
     const val ROOM_RUNTIME = "androidx.room:room-runtime:${Versions.ROOM_VERSION}"
     const val ROOM_CORUTINE = "androidx.room:room-ktx:${Versions.ROOM_VERSION}"
     const val ROOM_KAPT = "androidx.room:room-compiler:${Versions.ROOM_VERSION}"
-    const val KAPT_COMPILE =  "androidx.room:room-compiler:${Versions.ROOM_VERSION}"
+    const val KAPT_COMPILE = "androidx.room:room-compiler:${Versions.ROOM_VERSION}"
 }
 
 object RetrofitDeps {
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT_VERSION}"
-    const val CONVERTER_GSON =  "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT_VERSION}"
+    const val CONVERTER_GSON = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT_VERSION}"
 }
 
 object IndicatorDeps {
     const val Indicator = "com.tbuonomo:dotsindicator:${Versions.Indicator_VERSION}"
+}
+
+object TextViewMore {
+    const val TEXTVIEW_MORE = "kr.co.prnd:readmore-textview:${Versions.TEXTVIEW_MORE_VERSION}"
 }

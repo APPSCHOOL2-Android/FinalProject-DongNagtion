@@ -130,4 +130,7 @@ dependencies {
 
     // Indicator
     implementation(IndicatorDeps.Indicator)
+
+    // TextViewMore
+    implementation(TextViewMore.TEXTVIEW_MORE)
 }
