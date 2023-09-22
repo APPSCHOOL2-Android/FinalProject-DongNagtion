@@ -10,10 +10,13 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentChattingListBinding
@@ -82,12 +85,14 @@ class ChattingListFragment : Fragment() {
             var textViewName: TextView
             var textViewMessage: TextView
             var textViewDate: TextView
+            var imageViewProfile: ImageView
 
 
             init {
                 textViewName = itemChattingListRowBinding.textViewItemChattingListName
                 textViewMessage = itemChattingListRowBinding.textViewItemChattingListMessage
                 textViewDate = itemChattingListRowBinding.textViewItemChattingListDate
+                imageViewProfile = itemChattingListRowBinding.imageViewItemChattingListProfile
             }
 
             // 채팅방 이동
@@ -147,6 +152,11 @@ class ChattingListFragment : Fragment() {
             holder.textViewName.text = chattingList[position].chattingRoomUserNameCounterpart
             holder.textViewMessage.text = chattingList[position].chattingRoomMessages.last().messageContent
             holder.textViewDate.text = chattingList[position].chattingRoomMessages.last().messageDate
+            Glide
+                .with(holder.imageViewProfile)
+                .load(chattingList[position].chattingRoomUserProfileCounterpart.toUri())
+                .circleCrop()
+                .into(holder.imageViewProfile)
         }
     }
 }

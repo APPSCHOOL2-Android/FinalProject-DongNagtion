@@ -28,7 +28,7 @@ class ChattingViewModel : ViewModel() {
                     content: String,
                     date: String)
     = viewModelScope.launch{
-        val user = User(userId = userId, userName = LoginViewModel.loginUserInfo.userName, userProfile = LoginViewModel.loginUserInfo.userProfile)
+        val user = userRepository.getUser(User(userId = userId, userName = LoginViewModel.loginUserInfo.userName, userProfile = LoginViewModel.loginUserInfo.userProfile))[0]
         val userCounterpart = User(userId = userCounterpartId, userName = userCounterpartName, userProfile = userCounterpartProfile)
         val message = Message(userId, content, date)
 
