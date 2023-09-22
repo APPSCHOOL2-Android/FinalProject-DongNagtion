@@ -15,7 +15,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_logo_foreground" />
@@ -28,8 +27,11 @@
         android:layout_weight="1"
         android:layout_marginStart="10dp"
         android:text="리뷰 작성자"
-        android:textAppearance="@style/Typography.Medium20"
-        app:layout_constraintTop_toTopOf="@+id/imageView_itemReview_img"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/Typography.Medium15"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageView_itemReview_star"
         app:layout_constraintStart_toEndOf="@+id/imageView_itemReview_img"/>
 
     <ImageView
@@ -54,15 +56,16 @@
         app:layout_constraintEnd_toEndOf="@id/imageView_itemReview_star"/>
 
 
-    <TextView
+    <kr.co.prnd.readmore.ReadMoreTextView
         android:id="@+id/textView_itemReview_content"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="너무 친절하게 대해주셔서 너무 좋았습니다! 실력도 엄청 좋으세요!"
         android:textAppearance="@style/Typography.Medium16"
         android:layout_marginEnd="15dp"
-        android:maxLines="2"
-        android:ellipsize="end"
+        app:readMoreMaxLine="4"
+        app:readMoreColor="@color/green200"
+        app:readMoreText="...더보기"
         app:layout_constraintTop_toBottomOf="@id/textView_itemReview_writer"
         app:layout_constraintStart_toStartOf="@id/textView_itemReview_writer"
         app:layout_constraintEnd_toStartOf="@id/textView_itemReview_date"
@@ -73,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1시간 전"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="@id/textView_item_score"
         app:layout_constraintBottom_toBottomOf="parent"/>

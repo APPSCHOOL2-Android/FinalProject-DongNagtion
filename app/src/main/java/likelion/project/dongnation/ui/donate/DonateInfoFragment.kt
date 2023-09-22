@@ -86,8 +86,8 @@ class DonateInfoFragment : Fragment() {
                     startActivity(intent)
                 }
             }
+            textViewDonateInfoTitle.isSelected = true
         }
-
         viewModel.run {
             donateLiveData.observe(viewLifecycleOwner) { donateInfo ->
                 setDonationInfoViews(donateInfo)
@@ -99,7 +99,7 @@ class DonateInfoFragment : Fragment() {
                     fragmentDonateInfoBinding.run {
                         textViewDonateInfoUserName.text = user.userName
                         textViewDonateInfoLacation.text = user.userAddress
-                        textViewDonateInfoExperience.text = user.userExperience.toString()
+                        textViewDonateInfoLikeCount.text = user.userExperience.toString()
                         transferCode = user.userTransCode
 
                         val imgUrl = user.userProfile
@@ -113,7 +113,7 @@ class DonateInfoFragment : Fragment() {
 
                         val handler = Handler(Looper.getMainLooper())
                         handler.postDelayed({
-                            fragmentDonateInfoBinding.progressBarDonateInfo.visibility = View.GONE
+                            fragmentDonateInfoBinding.progressbarDonateInfo.visibility = View.GONE
                         }, 500) // 1초(1000 밀리초) 후에 실행
                     }
                 }
@@ -123,7 +123,14 @@ class DonateInfoFragment : Fragment() {
                 getReviews(donateIdx)
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     uiState.collect {
-                        reviewAdapter.submitList(it.reviews)
+                        if (it.reviews.isNotEmpty()) {
+                            reviewAdapter.submitList(it.reviews)
+                            fragmentDonateInfoBinding.recyclerViewDonateInfoReview.visibility = View.VISIBLE
+                            fragmentDonateInfoBinding.textViewDonateInfoReivewEmpty.visibility = View.GONE
+                        } else {
+                            fragmentDonateInfoBinding.recyclerViewDonateInfoReview.visibility = View.GONE
+                            fragmentDonateInfoBinding.textViewDonateInfoReivewEmpty.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -157,7 +164,7 @@ class DonateInfoFragment : Fragment() {
                 it.isClickable = false
                 it.setBackgroundColor(ContextCompat.getColor(mainActivity, R.color.green100))
                 viewModel.experienceLiveData.observe(viewLifecycleOwner) { experience ->
-                    textViewDonateInfoExperience.text = experience.toString()
+                    textViewDonateInfoLikeCount.text = experience.toString()
                 }
             }
 
