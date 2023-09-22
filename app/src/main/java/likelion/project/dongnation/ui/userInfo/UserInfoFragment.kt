@@ -26,6 +26,7 @@ class UserInfoFragment : Fragment() {
 
     lateinit var viewModel: UserInfoViewModel
     val userId = LoginViewModel.loginUserInfo.userId
+    var userReviewRate = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -129,11 +130,33 @@ class UserInfoFragment : Fragment() {
                 val userAddress = document["userAddress"] as String
                 val userExperience = document["userExperience"] as Long
                 fragmentUserInfoBinding.textViewUserAddress.text = userAddress
-                fragmentUserInfoBinding.buttonReviewExp.text = userExperience.toString()
+                fragmentUserInfoBinding.buttonReviewExp.text = "$userExperience 회"
                 if(userTransCode == "") {
                     fragmentUserInfoBinding.textViewUserTransCode.text = "[송금 코드가 아직 저장되어 있지 않습니다.]"
                 } else {
                     fragmentUserInfoBinding.textViewUserTransCode.text = "[송금 코드가 저장되어 있습니다.]"
+                }
+            }
+        }
+
+        var userRate = 0.0
+        var documentSize = 0
+
+        Firebase.firestore.collection("Donations").whereEqualTo("donationUser", LoginViewModel.loginUserInfo.userId).get().addOnSuccessListener {  result ->
+            for(document in result) {
+                val donationIdx = document["donationIdx"] as String
+                Log.d("테스트경원", donationIdx)
+                Firebase.firestore.collection("Reviews").whereEqualTo("donationBoardId", donationIdx).get().addOnSuccessListener { result2 ->
+                    for(document2 in result2){
+                        val reviewRate = document2["reviewRate"] as String
+                        userRate += reviewRate.toDouble()
+                        documentSize++
+                        Log.d("테스트경원", reviewRate)
+                    }
+                    if(documentSize != 0) {
+                        userReviewRate = userRate / documentSize.toDouble()
+                        fragmentUserInfoBinding.buttonInfoReviewStar.text = "$userReviewRate"
+                    }
                 }
             }
         }
