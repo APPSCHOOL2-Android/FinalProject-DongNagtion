@@ -69,7 +69,7 @@ class HomeAdapter(val mainActivity: MainActivity, var donates: List<Donations>) 
             }
             if(documentSize != 0) {
                 val averageRate = rate / documentSize.toDouble()
-                holder.itemReview.text = "${averageRate} (${documentSize})"
+                holder.itemReview.text = "${(averageRate * 10.0).roundToInt() / 10.0} (${documentSize})"
             }
         }
 
@@ -88,6 +88,14 @@ class HomeAdapter(val mainActivity: MainActivity, var donates: List<Donations>) 
 
         donates = newItems.toMutableList()
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun Double.roundToInt(): Int {
+        return if (this >= 0) {
+            (this + 0.5).toInt()
+        } else {
+            (this - 0.5).toInt()
+        }
     }
 
 }
