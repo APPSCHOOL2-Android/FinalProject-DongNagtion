@@ -1,6 +1,7 @@
 package likelion.project.dongnation.repository
 
 import android.net.Uri
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.Query
@@ -37,12 +38,14 @@ class DonateRepository {
     }
 
     suspend fun getOneDonate(idx: String): Donations {
+        Log.d("Donatsions66", "${idx}")
         val querySnapshot = db.collection("Donations")
             .whereEqualTo("donationIdx", idx)
             .get()
             .await()
+            .toObjects(Donations::class.java)
 
-        return querySnapshot.documents.firstOrNull()?.toObject(Donations::class.java)!!
+        return querySnapshot.find { it.donationIdx == idx } ?: Donations()
     }
 
     fun addDonate(donate: Donations): Task<Void> {
