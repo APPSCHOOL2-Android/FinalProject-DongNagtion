@@ -35,4 +35,7 @@ class ChattingRoomRepository {
 
     suspend fun blockChattingRoom(user: User, userCounterpart: User, block: Boolean)
     = chattingRoomDataSource.blockChattingRoom(user, userCounterpart, block)
+
+    suspend fun updateChattingRoomProfile(user: User)
+    = chattingRoomDataSource.updateChattingRoomProfile(user)
 }

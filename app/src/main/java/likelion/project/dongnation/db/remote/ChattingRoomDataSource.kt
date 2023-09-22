@@ -160,4 +160,17 @@ class ChattingRoomDataSource {
                 }
             }
     }
+
+    suspend fun updateChattingRoomProfile(user: User) = withContext(Dispatchers.IO){
+        // 상대 유저의 데이터 베이스 저장
+        db.collection("chattingRooms")
+            .whereEqualTo("chattingRoomUserIdCounterpart", user.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    val filePath = it.documents[0].reference.path
+                    db.document(filePath).update("chattingRoomUserProfileCounterpart", user.userProfile)
+                }
+            }
+    }
 }

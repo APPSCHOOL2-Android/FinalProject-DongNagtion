@@ -54,8 +54,6 @@ class ChattingFragment : Fragment() {
             arguments?.getString("chattingRoomUserProfileCounterpart", "").toString()
         chattingRoom = ChattingRoom()
 
-        Log.d("chatting", LoginViewModel.loginUserInfo.userProfile)
-
         initUI()
         observe()
 
@@ -96,6 +94,7 @@ class ChattingFragment : Fragment() {
                 layoutManager = LinearLayoutManager(mainActivity)
                 chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
                 chattingViewModel.notifyNewMessage()
+                chattingViewModel.notifyUserChange()
                 ChattingViewModel.receivingState.value = false
             }
 
@@ -136,7 +135,12 @@ class ChattingFragment : Fragment() {
             if(it){
                 chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
                 ChattingViewModel.receivingState.value = false
-                Log.d("chatting", "수신 프래그먼트")
+            }
+        }
+        ChattingViewModel.userChangeState.observe(viewLifecycleOwner){
+            if(it){
+                chattingViewModel.updateChattingRoomProfile(chattingRoomUserIdCounterpart)
+                ChattingViewModel.userChangeState.value = false
             }
         }
     }

@@ -20,6 +20,7 @@ class ChattingViewModel : ViewModel() {
     var sendingState = MutableLiveData<Int>()
     val chattingRoom = MutableLiveData<ChattingRoom>()
     val chattingRoomUserNameCounterpart = MutableLiveData<String>()
+    val chattingRoomUserCounterpart = MutableLiveData<User>()
 
     fun sendMessage(userId: String,
                     userCounterpartId: String,
@@ -54,6 +55,7 @@ class ChattingViewModel : ViewModel() {
     fun getUser(userId: String){
         viewModelScope.async {
             chattingRoomUserNameCounterpart.value = userRepository.getUserForId(userId)?.userName
+            chattingRoomUserCounterpart.value = userRepository.getUserForId(userId)
         }
     }
 
@@ -81,13 +83,23 @@ class ChattingViewModel : ViewModel() {
         sendingState.value = result.await()
     }
 
-    companion object {
-        const val SEND_MESSAGE_NORMAL = 0
-        const val SEND_MESSAGE_ATTEMPT = 1
-        const val SEND_MESSAGE_COMPLETE = 2
-        const val SEND_MESSAGE_FAILURE = 3
-        const val GET_MESSAGE_COMPLETE = 4
+    fun notifyUserChange()
+    = viewModelScope.async {
+        userRepository.notifyUserChange()
+    }
 
-        var receivingState = MutableLiveData<Boolean>()
+    fun updateChattingRoomProfile(userId: String)
+    = viewModelScope.async{
+        val user = async {
+            userRepository.getUser(User(userId = userId))[0]
+        }
+        chattingRoomRepository.updateChattingRoomProfile(user.await())
+    }
+
+    companion object {
+        const val SEND_MESSAGE_COMPLETE = 1
+        const val GET_MESSAGE_COMPLETE = 2
+        val receivingState = MutableLiveData<Boolean>()
+        val userChangeState = MutableLiveData<Boolean>()
     }
 }

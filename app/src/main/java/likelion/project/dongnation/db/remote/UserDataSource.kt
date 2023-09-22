@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import likelion.project.dongnation.model.User
+import likelion.project.dongnation.ui.chatting.ChattingListViewModel
+import likelion.project.dongnation.ui.chatting.ChattingViewModel
 
 class UserDataSource {
     private val db = Firebase.firestore
@@ -102,5 +104,13 @@ class UserDataSource {
         } else {
             null
         }
+    }
+
+    suspend fun notifyUserChange() = withContext(Dispatchers.IO){
+        db.collection("users")
+            .addSnapshotListener { value, error ->
+                ChattingViewModel.userChangeState.value = true
+                ChattingListViewModel.receivingState.value = true
+            }
     }
 }
