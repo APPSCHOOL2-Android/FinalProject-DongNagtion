@@ -1,5 +1,6 @@
 package likelion.project.dongnation.ui.board
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -8,8 +9,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -135,23 +138,30 @@ class BoardWriteFragment : Fragment() {
             }
 
             fragmentBoadWriteBinding.buttonBoardWrite.setOnClickListener {
+                hideKeyboard()
+                val tipTitle = fragmentBoadWriteBinding.editTextBoardWriteTitle.text.toString()
+                val tipContent = fragmentBoadWriteBinding.editTextBoardWrite.text.toString()
 
-                Log.d("BoardWriteFragment", "images : ${images}")
-
-                // 이미지가 선택된 경우
-                if (images.isNotEmpty()) {
-                    saveDataToFirestore(images)
-                } else {
-                    val tipTitle = fragmentBoadWriteBinding.editTextBoardWriteTitle.text.toString()
-                    val tipContent = fragmentBoadWriteBinding.editTextBoardWrite.text.toString()
-
-                    saveDataNoImgToFirestore(emptyList(), tipTitle, tipContent)
+                if (tipTitle.isBlank() && tipContent.isBlank()) {
+                    Snackbar.make(requireView(), "제목과 내용을 입력해주세요.", Snackbar.LENGTH_SHORT).show()
                 }
-
+                else if (tipTitle.isBlank()) {
+                    Snackbar.make(requireView(), "제목을 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+                }
+                else if (tipContent.isBlank()) {
+                    Snackbar.make(requireView(), "내용을 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+                }
+                else {
+                    // 이미지가 선택된 경우
+                    if (images.isNotEmpty()) {
+                        saveDataToFirestore(images, tipTitle, tipContent)
+                    } else {
+                        saveDataNoImgToFirestore(emptyList(), tipTitle, tipContent)
+                    }
+                    hideKeyboard()
+                }
             }
-
-
-
+            
         }
 
         return fragmentBoadWriteBinding.root
@@ -179,13 +189,11 @@ class BoardWriteFragment : Fragment() {
     }
 
     // Firestore에 이미지와 데이터를 저장하는 함수
-    private fun saveDataToFirestore(images: List<String>) {
+    private fun saveDataToFirestore(images: List<String>, tipTitle: String, tipContent: String) {
         val tipsCollection = db.collection("tips")
 
         val tipWriterId = userId
         val tipWriterName = userName
-        val tipTitle = fragmentBoadWriteBinding.editTextBoardWriteTitle.text.toString()
-        val tipContent = fragmentBoadWriteBinding.editTextBoardWrite.text.toString()
 
         // 현재 시간을 얻어와서 Timestamp로 변환
         val tipDate = Timestamp(Date())
@@ -211,6 +219,7 @@ class BoardWriteFragment : Fragment() {
                     .addOnSuccessListener {
                         // 작성이 완료되면 프래그먼트를 제거
                         mainActivity.removeFragment(MainActivity.BOARD_WRITE_FRAGMENT)
+                        Snackbar.make(requireView(), "게시글이 작성되었습니다.", Snackbar.LENGTH_SHORT).show()
                     }
                     .addOnFailureListener { e ->
                         Log.d("BoardWriteFragment", "Error updating tipIdx", e)
@@ -248,6 +257,7 @@ class BoardWriteFragment : Fragment() {
                     .update("tipIdx", newTipId)
                     .addOnSuccessListener {
                         mainActivity.removeFragment(MainActivity.BOARD_WRITE_FRAGMENT)
+                        Snackbar.make(requireView(), "게시글이 작성되었습니다.", Snackbar.LENGTH_SHORT).show()
                     }
                     .addOnFailureListener { e ->
                         Log.d("BoardWriteFragment", "Error updating tipIdx", e)
@@ -256,6 +266,11 @@ class BoardWriteFragment : Fragment() {
             .addOnFailureListener { e ->
                 Log.d("BoardWriteFragment", "Error adding document", e)
             }
+    }
+
+    private fun hideKeyboard() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
 }
