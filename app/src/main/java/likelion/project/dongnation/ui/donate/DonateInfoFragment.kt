@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.firestore.ktx.firestore
@@ -101,6 +103,12 @@ class DonateInfoFragment : Fragment() {
                         textViewDonateInfoLacation.text = user.userAddress
                         textViewDonateInfoExperience.text = user.userExperience.toString()
                         transferCode = user.userTransCode
+
+                        val imgUrl = user.userProfile
+                        Glide.with(mainActivity)
+                            .load(imgUrl)
+                            .transform(CircleCrop())
+                            .into(imageViewDonateInfoProflie)
 
                         val handler = Handler(Looper.getMainLooper())
                         handler.postDelayed({
@@ -222,7 +230,7 @@ class DonateInfoFragment : Fragment() {
             }
             if(documentSize != 0) {
                 val averageRate = rate / documentSize.toDouble()
-                fragmentDonateInfoBinding.textViewDonateInfoReviewScore.text = "${averageRate}"
+                fragmentDonateInfoBinding.textViewDonateInfoReviewScore.text = "$averageRate"
                 fragmentDonateInfoBinding.textViewDonateInfoReviewNumber.text = "(${documentSize})"
             }
         }
