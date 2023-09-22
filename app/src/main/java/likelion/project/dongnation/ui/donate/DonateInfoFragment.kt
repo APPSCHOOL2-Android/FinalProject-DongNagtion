@@ -16,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
@@ -95,6 +97,15 @@ class DonateInfoFragment : Fragment() {
                         textViewDonateInfoLacation.text = user.userAddress
                         textViewDonateInfoExperience.text = user.userExperience.toString()
                         transferCode = user.userTransCode
+
+                        val imgUrl = user.userProfile
+                        if(user.userProfile != ""){
+                            Glide.with(mainActivity)
+                                .load(imgUrl)
+                                .transform(CircleCrop())
+                                .into(imageViewDonateInfoProflie)
+                        }
+
 
                         val handler = Handler(Looper.getMainLooper())
                         handler.postDelayed({
