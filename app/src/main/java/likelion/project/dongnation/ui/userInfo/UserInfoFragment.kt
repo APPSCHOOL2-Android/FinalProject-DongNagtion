@@ -35,7 +35,7 @@ class UserInfoFragment : Fragment() {
         fragmentUserInfoBinding = FragmentUserInfoBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        viewModel = ViewModelProvider(this).get(UserInfoViewModel::class.java)
+        viewModel = ViewModelProvider(this)[UserInfoViewModel::class.java]
 
         viewModel.run {
             viewModel.userProfileLiveData.observe(viewLifecycleOwner) { userProfileUrl ->
@@ -111,6 +111,8 @@ class UserInfoFragment : Fragment() {
                     mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, null)
                     Snackbar.make(requireView(), "탈퇴 처리가 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
                     dialog.dismiss()
+
+                    viewModel.signOut(LoginViewModel.loginUserInfo.userType, mainActivity)
                 }
 
                 binding.buttonDrawelCheckNo.setOnClickListener {
