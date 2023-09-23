@@ -37,11 +37,15 @@
 
         <TextView
             android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="팁 제목"
             android:textAppearance="@style/Typography.Medium20"
+            app:layout_constraintEnd_toStartOf="@+id/textViewDate"
             app:layout_constraintStart_toEndOf="@+id/cardViewUserImage"
             app:layout_constraintTop_toTopOf="parent" />
 
