@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -27,10 +29,11 @@ class UserInfoViewModel : ViewModel() {
         }
     }
 
-    fun signOut(signOutType: Int, mainActivity: MainActivity){
+    fun signOut(signOutType: Int){
         when(signOutType){
             LoginViewModel.LOGIN_KAKAO -> signOutKAKAO()
             LoginViewModel.LOGIN_NAVER -> signOutNAVER()
+            LoginViewModel.LOGIN_GOOGLE -> signOutGOOGLE()
         }
     }
 
@@ -57,5 +60,9 @@ class UserInfoViewModel : ViewModel() {
                 onFailure(errorCode, message)
             }
         })
+    }
+
+    private fun signOutGOOGLE(){
+        Firebase.auth.signOut()
     }
 }

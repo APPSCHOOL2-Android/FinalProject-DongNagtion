@@ -112,7 +112,7 @@ class UserInfoFragment : Fragment() {
                     Snackbar.make(requireView(), "탈퇴 처리가 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
                     dialog.dismiss()
 
-                    viewModel.signOut(LoginViewModel.loginUserInfo.userType, mainActivity)
+                    viewModel.signOut(LoginViewModel.loginUserInfo.userType)
                 }
 
                 binding.buttonDrawelCheckNo.setOnClickListener {
