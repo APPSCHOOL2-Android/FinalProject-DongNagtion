@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -36,6 +37,8 @@ class UserInfoFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         viewModel = ViewModelProvider(this)[UserInfoViewModel::class.java]
+
+        observe()
 
         viewModel.run {
             viewModel.userProfileLiveData.observe(viewLifecycleOwner) { userProfileUrl ->
@@ -106,13 +109,8 @@ class UserInfoFragment : Fragment() {
                 val dialog = builder.create()
 
                 binding.buttonDrawelCheckYes.setOnClickListener {
-                    mainActivity.selectBottomNavigationItem(R.id.item_bottom_donate)
-                    mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
-                    mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, null)
-                    Snackbar.make(requireView(), "탈퇴 처리가 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
-                    dialog.dismiss()
-
                     viewModel.signOut(LoginViewModel.loginUserInfo.userType)
+                    dialog.dismiss()
                 }
 
                 binding.buttonDrawelCheckNo.setOnClickListener {
@@ -169,6 +167,17 @@ class UserInfoFragment : Fragment() {
             (this + 0.5).toInt()
         } else {
             (this - 0.5).toInt()
+        }
+    }
+
+    fun observe(){
+        viewModel.signOutStatus.observe(viewLifecycleOwner){
+            if(it){
+                mainActivity.selectBottomNavigationItem(R.id.item_bottom_donate)
+                mainActivity.activityMainBinding.bottomNavigation.visibility = View.GONE
+                mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, null)
+                Snackbar.make(requireView(), "탈퇴 처리가 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 }

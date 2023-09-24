@@ -113,4 +113,16 @@ class UserDataSource {
                 ChattingListViewModel.receivingState.value = true
             }
     }
+
+    suspend fun deleteUser(user: User) = withContext(Dispatchers.IO){
+        db.collection("users")
+            .whereEqualTo("userId", user.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    val filePath = it.documents[0].reference.path
+                    db.document(filePath).delete()
+                }
+            }
+    }
 }

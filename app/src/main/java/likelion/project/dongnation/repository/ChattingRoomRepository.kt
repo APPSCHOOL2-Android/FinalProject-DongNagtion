@@ -38,4 +38,7 @@ class ChattingRoomRepository {
 
     suspend fun updateChattingRoomProfile(user: User)
     = chattingRoomDataSource.updateChattingRoomProfile(user)
+
+    suspend fun deleteChattingRoom(user: User)
+    = chattingRoomDataSource.deleteChattingRoom(user)
 }

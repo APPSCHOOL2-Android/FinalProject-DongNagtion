@@ -4,9 +4,12 @@ import android.util.Log
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import likelion.project.dongnation.model.Tips
 import likelion.project.dongnation.model.TipsRipple
+import likelion.project.dongnation.model.User
 
 class BoardRepository {
 
@@ -126,4 +129,16 @@ class BoardRepository {
         return myRippleList
     }
 
+    suspend fun deleteTip(user: User) = withContext(Dispatchers.IO){
+        db.collection("tips")
+            .whereEqualTo("tipWriterId", user.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    for(document in it.documents){
+                        db.document(document.reference.path).delete()
+                    }
+                }
+            }
+    }
 }

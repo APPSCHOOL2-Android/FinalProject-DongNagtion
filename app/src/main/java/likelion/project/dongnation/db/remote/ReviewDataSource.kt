@@ -5,10 +5,13 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import likelion.project.dongnation.model.Review
+import likelion.project.dongnation.model.User
 
 class ReviewDataSource {
     private val db = Firebase.firestore
@@ -54,5 +57,18 @@ class ReviewDataSource {
                 emit(Result.failure(it))
             }
         }
+    }
+
+    suspend fun deleteReview(user: User) = withContext(Dispatchers.IO){
+        db.collection("Reviews")
+            .whereEqualTo("reviewWriter", user.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    for(document in it.documents){
+                        db.document(document.reference.path).delete()
+                    }
+                }
+            }
     }
 }

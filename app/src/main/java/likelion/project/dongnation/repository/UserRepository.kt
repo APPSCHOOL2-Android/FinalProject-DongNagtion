@@ -23,4 +23,6 @@ class UserRepository {
     suspend fun getUserProfile(userId: String) = userDataSource.getUserProfile(userId)
 
     suspend fun notifyUserChange() = userDataSource.notifyUserChange()
+
+    suspend fun deleteUser(user: User) = userDataSource.deleteUser(user)
 }

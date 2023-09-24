@@ -11,16 +11,26 @@ import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import likelion.project.dongnation.repository.BoardRepository
+import likelion.project.dongnation.repository.ChattingRoomRepository
+import likelion.project.dongnation.repository.DonateRepository
+import likelion.project.dongnation.repository.ReviewRepository
 import likelion.project.dongnation.repository.UserRepository
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
 class UserInfoViewModel : ViewModel() {
 
-    val userRepository = UserRepository()
+    private val userRepository = UserRepository()
+    private val donationRepository = DonateRepository()
+    private val reviewRepository = ReviewRepository()
+    private val boardRepository = BoardRepository()
+    private val chattingRoomRepository = ChattingRoomRepository()
 
     val userProfileLiveData = MutableLiveData<String?>()
+    val signOutStatus = MutableLiveData<Boolean>()
 
     fun getUserProfileInfo(userId: String) {
         viewModelScope.launch {
@@ -43,6 +53,7 @@ class UserInfoViewModel : ViewModel() {
                 Log.e("signOut", error.printStackTrace().toString())
             } else {
                 Log.d("signOut", "카카오 연결 끊기 성공")
+                deleteUserInfo()
             }
         }
     }
@@ -50,6 +61,7 @@ class UserInfoViewModel : ViewModel() {
     private fun signOutNAVER(){
         NidOAuthLogin().callDeleteTokenApi(object : OAuthLoginCallback {
             override fun onSuccess() {
+                deleteUserInfo()
                 Log.d("signOut", "네이버 연결 끊기 성공")
             }
             override fun onFailure(httpStatus: Int, message: String) {
@@ -64,5 +76,22 @@ class UserInfoViewModel : ViewModel() {
 
     private fun signOutGOOGLE(){
         Firebase.auth.signOut()
+        deleteUserInfo()
+    }
+
+    private fun deleteUserInfo()
+    = viewModelScope.async {
+        val user = LoginViewModel.loginUserInfo.copy()
+        Log.d("signOut", "dslfk")
+
+        val result = async {
+            userRepository.deleteUser(user)
+            donationRepository.deleteDonation(user)
+            reviewRepository.deleteReview(user)
+            boardRepository.deleteTip(user)
+            chattingRoomRepository.deleteChattingRoom(user)
+            true
+        }
+        signOutStatus.value = result.await()
     }
 }

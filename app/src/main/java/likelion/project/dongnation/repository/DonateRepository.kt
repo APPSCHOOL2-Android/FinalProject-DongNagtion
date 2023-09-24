@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import likelion.project.dongnation.model.Donations
+import likelion.project.dongnation.model.User
 import java.util.UUID
 
 class DonateRepository {
@@ -97,5 +98,18 @@ class DonateRepository {
     fun deleteImage(fileUrl: String) {
         val imageRef = storageRef.child(fileUrl)
         imageRef.delete()
+    }
+
+    suspend fun deleteDonation(user: User) = withContext(Dispatchers.IO){
+        db.collection("Donations")
+            .whereEqualTo("donationUser", user.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    for(document in it.documents){
+                        db.document(document.reference.path).delete()
+                    }
+                }
+            }
     }
 }

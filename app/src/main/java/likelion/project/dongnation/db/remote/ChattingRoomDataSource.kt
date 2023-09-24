@@ -173,4 +173,28 @@ class ChattingRoomDataSource {
                 }
             }
     }
+
+    suspend fun deleteChattingRoom(user: User) = withContext(Dispatchers.IO){
+        db.collection("chattingRooms")
+            .whereEqualTo("chattingRoomUserId", user.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    for(document in it.documents){
+                        db.document(document.reference.path).delete()
+                    }
+                }
+            }
+
+        db.collection("chattingRooms")
+            .whereEqualTo("chattingRoomUserIdCounterpart", user.userId)
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size != 0){
+                    for(document in it.documents){
+                        db.document(document.reference.path).delete()
+                    }
+                }
+            }
+    }
 }
