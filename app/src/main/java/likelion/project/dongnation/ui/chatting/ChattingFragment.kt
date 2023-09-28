@@ -36,7 +36,6 @@ class ChattingFragment : Fragment() {
     private lateinit var chattingRoomUserIdCounterpart: String
     private lateinit var chattingRoomUserNameCounterpart: String
     private lateinit var chattingRoomUserProfileCounterpart: String
-    private lateinit var chattingRoom: ChattingRoom
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +51,6 @@ class ChattingFragment : Fragment() {
             arguments?.getString("chattingRoomUserNameCounterpart", "").toString()
         chattingRoomUserProfileCounterpart =
             arguments?.getString("chattingRoomUserProfileCounterpart", "").toString()
-        chattingRoom = ChattingRoom()
 
         initUI()
         observe()
@@ -106,7 +104,6 @@ class ChattingFragment : Fragment() {
 
     private fun observe(){
         chattingViewModel.chattingRoom.observe(viewLifecycleOwner){
-            chattingRoom = chattingViewModel.chattingRoom.value!!
             if(it.chattingRoomBlock){
                 fragmentChattingBinding.editTextChattingMessage.isEnabled = false
                 fragmentChattingBinding.editTextChattingMessage.setText("대화가 불가능한 상태입니다")
@@ -196,7 +193,7 @@ class ChattingFragment : Fragment() {
             }
 
         override fun getItemViewType(position: Int): Int {
-            return if(chattingRoom.chattingRoomMessages[position].messageUserId == LoginViewModel.loginUserInfo.userId){
+            return if(chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageUserId == LoginViewModel.loginUserInfo.userId){
                 MESSAGE_ONESELF
             } else{
                 MESSAGE_COUNTERPART
@@ -226,21 +223,21 @@ class ChattingFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return chattingRoom.chattingRoomMessages.size
+            return chattingViewModel.chattingRoom.value!!.chattingRoomMessages.size
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when(holder){
                 is ViewHolderOneself -> {
-                    holder.textViewMessage.text = chattingRoom.chattingRoomMessages[position].messageContent
-                    holder.textViewDate.text = chattingRoom.chattingRoomMessages[position].messageDate
+                    holder.textViewMessage.text = chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageContent
+                    holder.textViewDate.text = chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageDate
                 }
                 is ViewHolderCounterpart -> {
-                    holder.textViewMessage.text = chattingRoom.chattingRoomMessages[position].messageContent
-                    holder.textViewDate.text = chattingRoom.chattingRoomMessages[position].messageDate
+                    holder.textViewMessage.text = chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageContent
+                    holder.textViewDate.text = chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageDate
                     Glide
                         .with(holder.imageViewProfile)
-                        .load(chattingRoom.chattingRoomUserProfileCounterpart.toUri())
+                        .load(chattingViewModel.chattingRoom.value!!.chattingRoomUserProfileCounterpart.toUri())
                         .circleCrop()
                         .into(holder.imageViewProfile)
                 }

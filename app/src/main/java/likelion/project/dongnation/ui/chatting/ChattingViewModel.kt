@@ -22,6 +22,10 @@ class ChattingViewModel : ViewModel() {
     val chattingRoomUserNameCounterpart = MutableLiveData<String>()
     val chattingRoomUserCounterpart = MutableLiveData<User>()
 
+    init {
+        chattingRoom.value = ChattingRoom()
+    }
+
     fun sendMessage(userId: String,
                     userCounterpartId: String,
                     userCounterpartName: String,
