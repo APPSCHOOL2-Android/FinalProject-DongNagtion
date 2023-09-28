@@ -1,14 +1,11 @@
 package likelion.project.dongnation.ui.chatting
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
@@ -19,9 +16,6 @@ import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentChattingBinding
 import likelion.project.dongnation.databinding.ItemChattingMessageCounterpartRowBinding
 import likelion.project.dongnation.databinding.ItemChattingMessageOneselfRowBinding
-import likelion.project.dongnation.databinding.ItemChattingMessageOneselfRowBinding.*
-import likelion.project.dongnation.model.ChattingRoom
-import likelion.project.dongnation.model.User
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import java.text.SimpleDateFormat
@@ -52,10 +46,19 @@ class ChattingFragment : Fragment() {
         chattingRoomUserProfileCounterpart =
             arguments?.getString("chattingRoomUserProfileCounterpart", "").toString()
 
+        initData()
         initUI()
         observe()
 
         return fragmentChattingBinding.root
+    }
+
+    private fun initData(){
+        chattingViewModel.run{
+            getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
+            notifyNewMessage()
+            notifyUserChange()
+        }
     }
 
     private fun initUI(){
@@ -90,9 +93,6 @@ class ChattingFragment : Fragment() {
             recyclerViewChatting.run{
                 adapter = RecyclerAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
-                chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
-                chattingViewModel.notifyNewMessage()
-                chattingViewModel.notifyUserChange()
                 ChattingViewModel.receivingState.value = false
             }
 
