@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ import likelion.project.dongnation.databinding.FragmentChattingListBinding
 import likelion.project.dongnation.databinding.ItemChattingListRowBinding
 import likelion.project.dongnation.databinding.ItemChattingRoomLeavingDialogBinding
 import likelion.project.dongnation.model.ChattingRoom
+import likelion.project.dongnation.model.User
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 
@@ -30,9 +32,6 @@ class ChattingListFragment : Fragment() {
     private lateinit var fragmentChattingListBinding: FragmentChattingListBinding
     private lateinit var chattingListViewModel: ChattingListViewModel
     private lateinit var mainActivity: MainActivity
-
-    private lateinit var chattingList: ArrayList<ChattingRoom>
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,12 +40,17 @@ class ChattingListFragment : Fragment() {
         chattingListViewModel = ViewModelProvider(this)[ChattingListViewModel::class.java]
         mainActivity = activity as MainActivity
 
-        chattingList = ArrayList()
-
+        initData()
         initUI()
         observe()
 
         return fragmentChattingListBinding.root
+    }
+
+    private fun initData(){
+        chattingListViewModel.run{
+            getChattingList()
+        }
     }
 
     private fun initUI(){
@@ -66,9 +70,16 @@ class ChattingListFragment : Fragment() {
 
     private fun observe(){
         chattingListViewModel.chattingList.observe(viewLifecycleOwner){
+            chattingListViewModel.getUserList(chattingListViewModel.chattingList)
             fragmentChattingListBinding.run{
                 recyclerViewChattingList.run{
-                    chattingList = chattingListViewModel.chattingList.value!!
+                    adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+        chattingListViewModel.chattingRoomUserCounterpartList.observe(viewLifecycleOwner){
+            fragmentChattingListBinding.run{
+                recyclerViewChattingList.run{
                     adapter?.notifyDataSetChanged()
                 }
             }
@@ -98,7 +109,7 @@ class ChattingListFragment : Fragment() {
             // 채팅방 이동
             override fun onClick(p0: View?) {
                 val bundle = Bundle()
-                bundle.putString("chattingRoomUserIdCounterpart", chattingList[absoluteAdapterPosition].chattingRoomUserIdCounterpart)
+                bundle.putString("chattingRoomUserIdCounterpart", chattingListViewModel.chattingList.value!![absoluteAdapterPosition].chattingRoomUserIdCounterpart)
                 mainActivity.replaceFragment("ChattingFragment", true, bundle)
             }
 
@@ -114,7 +125,7 @@ class ChattingListFragment : Fragment() {
                         dialog.dismiss()
                     }
                     buttonChattingRoomLeavingLeaving.setOnClickListener {
-                        chattingListViewModel.leaveChattingRoom(LoginViewModel.loginUserInfo.userId, chattingList[absoluteAdapterPosition].chattingRoomUserIdCounterpart)
+                        chattingListViewModel.leaveChattingRoom(LoginViewModel.loginUserInfo.userId, chattingListViewModel.chattingList.value!![absoluteAdapterPosition].chattingRoomUserIdCounterpart)
                         dialog.dismiss()
                     }
                 }
@@ -145,18 +156,20 @@ class ChattingListFragment : Fragment() {
 
         // 전체 행 개수 반환
         override fun getItemCount(): Int {
-            return chattingList.size
+            return chattingListViewModel.chattingList.value!!.size
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.textViewName.text = chattingList[position].chattingRoomUserNameCounterpart
-            holder.textViewMessage.text = chattingList[position].chattingRoomMessages.last().messageContent
-            holder.textViewDate.text = chattingList[position].chattingRoomMessages.last().messageDate
-            Glide
-                .with(holder.imageViewProfile)
-                .load(chattingList[position].chattingRoomUserProfileCounterpart.toUri())
-                .circleCrop()
-                .into(holder.imageViewProfile)
+            if(chattingListViewModel.chattingRoomUserCounterpartList.value!!.size != 0){
+                holder.textViewName.text = chattingListViewModel.chattingRoomUserCounterpartList.value!![position].userName
+                holder.textViewMessage.text = chattingListViewModel.chattingList.value!![position].chattingRoomMessages.last().messageContent
+                holder.textViewDate.text = chattingListViewModel.chattingList.value!![position].chattingRoomMessages.last().messageDate
+                Glide
+                    .with(holder.imageViewProfile)
+                    .load(chattingListViewModel.chattingRoomUserCounterpartList.value!![position].userProfile.toUri())
+                    .circleCrop()
+                    .into(holder.imageViewProfile)
+            }
         }
     }
 }

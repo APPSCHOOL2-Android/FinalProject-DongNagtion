@@ -56,6 +56,7 @@ class ChattingFragment : Fragment() {
     private fun initData(){
         chattingViewModel.run{
             getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
+            getUser(chattingRoomUserIdCounterpart)
             notifyNewMessage()
             notifyUserChange()
         }
@@ -87,7 +88,6 @@ class ChattingFragment : Fragment() {
                     }
                     false
                 }
-                chattingViewModel.getUser(chattingRoomUserIdCounterpart)
             }
 
             recyclerViewChatting.run{
@@ -125,8 +125,11 @@ class ChattingFragment : Fragment() {
                 }
             }
         }
-        chattingViewModel.chattingRoomUserNameCounterpart.observe(viewLifecycleOwner){
-            fragmentChattingBinding.toolbarChatting.title = chattingViewModel.chattingRoomUserNameCounterpart.value
+        chattingViewModel.chattingRoomUserCounterpart.observe(viewLifecycleOwner){
+            fragmentChattingBinding.run {
+                toolbarChatting.title = chattingViewModel.chattingRoomUserCounterpart.value!!.userName
+                recyclerViewChatting.adapter?.notifyDataSetChanged()
+            }
         }
         ChattingViewModel.receivingState.observe(viewLifecycleOwner){
             if(it){
@@ -237,7 +240,7 @@ class ChattingFragment : Fragment() {
                     holder.textViewDate.text = chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageDate
                     Glide
                         .with(holder.imageViewProfile)
-                        .load(chattingViewModel.chattingRoom.value!!.chattingRoomUserProfileCounterpart.toUri())
+                        .load(chattingViewModel.chattingRoomUserCounterpart.value!!.userProfile.toUri())
                         .circleCrop()
                         .into(holder.imageViewProfile)
                 }

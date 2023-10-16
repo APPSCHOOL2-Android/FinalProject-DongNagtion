@@ -1,12 +1,10 @@
 package likelion.project.dongnation.ui.chatting
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import likelion.project.dongnation.model.ChattingRoom
 import likelion.project.dongnation.model.Message
 import likelion.project.dongnation.model.User
@@ -19,11 +17,11 @@ class ChattingViewModel : ViewModel() {
     private val userRepository = UserRepository()
     var sendingState = MutableLiveData<Int>()
     val chattingRoom = MutableLiveData<ChattingRoom>()
-    val chattingRoomUserNameCounterpart = MutableLiveData<String>()
     val chattingRoomUserCounterpart = MutableLiveData<User>()
 
     init {
         chattingRoom.value = ChattingRoom()
+        chattingRoomUserCounterpart.value = User()
     }
 
     fun sendMessage(userId: String,
@@ -58,8 +56,8 @@ class ChattingViewModel : ViewModel() {
 
     fun getUser(userId: String){
         viewModelScope.async {
-            chattingRoomUserNameCounterpart.value = userRepository.getUserForId(userId)?.userName
-            chattingRoomUserCounterpart.value = userRepository.getUserForId(userId)
+            val user = User(userId = userId)
+            chattingRoomUserCounterpart.value = userRepository.getUser(user)[0]
         }
     }
 
