@@ -45,8 +45,7 @@ class ChattingListViewModel : ViewModel() {
             val userList = ArrayList<User>()
             for(chattingRoom in chattingList.value!!){
                 val user = async {
-                    Log.d("chatting", chattingRoom.chattingRoomUserId)
-                    userRepository.getUser(User(userId = chattingRoom.chattingRoomUserId))[0]
+                    userRepository.getUser(User(userId = chattingRoom.chattingRoomUserIdCounterpart))[0]
                 }
                 userList.add(user.await())
             }
